@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Main Page</title>
+		<meta charset="utf-8">
+		<link rel = "stylesheet" type = "text/css" href = "SDKstyle.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="headerContainer">
+				<div class="siteName">
+					<img src="SDKlogo.jpg" alt="Logo"/>
+					<h1>Son's Doner Kebab</h1>
+				</div>
+				<div class ="headerButtons">
+					<div class="headerButton">
+						<a href="">Home</a>
+						<a href="">Menu</a>
+						<a href="">Order</a>
+						<a href="">Contact Us</a>
+					</div>
+				</div>
+			</div>
+			<div class="space"></div>
+			<div class="articleContainer">
+				<div class="orderPopup" id="orderPopup">
+					<div class="popupContent">
+						<span class="close">x</span><p></p>
+						<form action="" id="orderItem">
+							<select id="menuNumber" value="Select a menu item">
+								<option>Choose a menu item</option>
+							</select>
+						</form>
+					</div>
+				</div>
+				<div class="orderForm">
+				<form action="action_page.php">
+					<label for="customerName"><h2>Name</h2></label><p></p>
+					<input type="text" id="customerName" name="custName">
+					<p></p>
+					<label for="lname"><h2>When will you pick up your order?</h2></label><p></p>
+					<p>Date</p>
+					<input type="date" id="pickupDate" name="orderPickupDate"><p></p>
+					<p>Time</p>
+					<input type="time" id="pickupTime" name="orderPickupTime"><p></p>
+					<input type="button" id="addOrderItemButton" value="Add item to order" onclick=""><p></p>
+					<input type="submit" value="Submit">
+				</form>
+				</div>
+				<div class="currentItems">
+					<h1>Current Items in Order</h1>
+					<p>Insert items here</p>
+				</div>
+			</div>
+		</div>
+		<script src="SDKscripts.js" type="text/javascript"></script>
+	</body>
+</html>
