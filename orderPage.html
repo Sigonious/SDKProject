@@ -9,17 +9,17 @@
 	<body>
 		<div class="container">
 			<div class="headerContainer">
-				<div class="siteName">
-					<img src="SDKlogo.jpg" alt="Logo"/>
-					<h1>Son's Doner Kebab</h1>
-				</div>
-				<div class ="headerButtons">
-					<div class="headerButton">
-						<a href="">Home</a>
-						<a href="">Menu</a>
-						<a href="">Order</a>
-						<a href="">Contact Us</a>
+				<div class ="headerContent">
+					<div class="siteName">
+						<img src="SDKlogo.jpg" alt="Logo"/>
+						<h1>Son's Doner Kebab</h1>
 					</div>
+						<div class="headerButton">
+							<a href="">Home</a>
+							<a href="">Menu</a>
+							<a href="">Order</a>
+							<a href="">Contact Us</a>
+						</div>
 				</div>
 			</div>
 			<div class="space"></div>
@@ -41,9 +41,11 @@
 					<p></p>
 					<label for="lname"><h2>When will you pick up your order?</h2></label><p></p>
 					<p>Date</p>
-					<input type="date" id="pickupDate" name="orderPickupDate"><p></p>
+					<input type="date" id="pickupDate" name="orderPickupDate" min="2016-10-17" max="2016-10-24"><p></p>
 					<p>Time</p>
-					<input type="time" id="pickupTime" name="orderPickupTime"><p></p>
+					<select id="pickupTime" name="orderPickupTime">
+						<option>Select Pickup Time</option>
+					</select><p></p>
 					<input type="button" id="addOrderItemButton" value="Add item to order" onclick=""><p></p>
 					<input type="submit" value="Submit">
 				</form>
