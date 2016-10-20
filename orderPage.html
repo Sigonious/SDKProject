@@ -1,8 +1,22 @@
 <!DOCTYPE html>
 
+<!--
+	Short term Todo list:
+
+	Add in php functions such as form checking
+	Finish adding javascript functions to item page
+	Link order to database
+	
+	Long Term:
+	
+	Add links to header buttons
+	Fix scaling (it looks rough right now)
+	Add more style to website (way too bland as is)
+!-->
+
 <html>
 	<head>
-		<title>Main Page</title>
+		<title>Order Page</title>
 		<meta charset="utf-8">
 		<link rel = "stylesheet" type = "text/css" href = "SDKstyle.css">
 	</head>
@@ -28,9 +42,63 @@
 					<div class="popupContent">
 						<span class="close">x</span><p></p>
 						<form action="" id="orderItem">
+							<p>Select a menu item</p>
 							<select id="menuNumber" value="Select a menu item">
 								<option>Choose a menu item</option>
 							</select>
+							<br><br>
+							<b>Meat: </b>
+							<input type="radio" name="meat" value="beef&lamb" checked>Beef and Lamb    
+							<input type="radio" name="meat" value="chicken">Chicken<br>
+							<br>
+							<b>Sauce:</b>
+								<table>
+										<tr>
+											<td><input type="checkbox" name="sauce" value="plainYogurt"> Yogurt</td>
+											<td> </td>
+											<td><input type="checkbox" name="sauce" value="garlicYogurt"> Garlic Yogurt</td>
+										</tr><br>
+										<tr>
+											<td><input type="checkbox" name="sauce" value="hotsauce"> Hot</td>
+											<td> </td>
+											<td><input type="checkbox" name="sauce" value="sriracha"> Sriracha</td>
+										</tr><br>
+								</table>
+							<br>
+							<b>Vegetables: </b><br>
+							<table>
+								<tr>
+									<td><input type="checkbox" name="vegetables" value="lettuce" checked> Lettuce</td>
+									<td><input type="checkbox" name="vegetables" value="onion" checked> Onion</td>
+									<td><input type="checkbox" name="vegetables" value="tomato" checked> Tomato</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" name="vegetables" value="cucumber" checked> Cucumber</td>
+									<td><input type="checkbox" name="vegetables" value="whitecabbage" checked> White Cabbage</td>
+									<td><input type="checkbox" name="vegetables" value="redcabbage" checked> Red Cabbage</td>
+								</tr>
+							</table>
+							<br>
+							<b>Extras:</b><br>
+								<table>
+									<tr>
+										<td><input type="checkbox" name="extras" value="extrameat">Extra Meat</td>
+										<td><input type="checkbox" name="extras" value="fetacheese">Feta Cheese</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" name="extras" value="fries">Fries: 
+											<input type="number" id="friestQuantity" name="quantity" min="0" max="4" value="0">
+										</td>
+										<td>
+											<input type="checkbox" name="extras" value="rice">Rice: 
+											<input type="number" id="riceQuantity" name="quantity" min="0" max="4" value="0">
+											</td>
+									</tr>
+								</table>
+							<b>Additional Requests:</b><br>
+							<textarea></textarea><br></br>
+							<input type="submit" value="Add to Order">
 						</form>
 					</div>
 				</div>
@@ -41,7 +109,9 @@
 					<p></p>
 					<label for="lname"><h2>When will you pick up your order?</h2></label><p></p>
 					<p>Date</p>
-					<input type="date" id="pickupDate" name="orderPickupDate" min="2016-10-17" max="2016-10-24"><p></p>
+					<select id="pickupDate" name="orderPickupDate" min="2016-10-17" max="2016-10-24"><p></p>
+						<option>Select Date for order</option>
+					</select>
 					<p>Time</p>
 					<select id="pickupTime" name="orderPickupTime">
 						<option>Select Pickup Time</option>
@@ -52,10 +122,10 @@
 				</div>
 				<div class="currentItems">
 					<h1>Current Items in Order</h1>
-					<p>Insert items here</p>
+					<p>Items will go here as they are added.</p>
 				</div>
 			</div>
 		</div>
-		<script src="SDKscripts.js" type="text/javascript"></script>
+		<script src="orderPageScripts.js" type="text/javascript"></script>
 	</body>
 </html>

@@ -151,7 +151,7 @@ div.articleContainer {
 }
 
 div.articleContainer h1, p {
-	text-align:center;
+	text-align:left;
 }
 
 @media screen and (max-width: 800px) {
@@ -247,6 +247,11 @@ input[type=submit]:hover, input[type=button]:hover {
     width: 80%;
 	height:80%;
 	overflow-y:scroll;
+}
+
+.popupContent textarea {
+	height:150px;
+	width:50%;
 }
 
 .close {
