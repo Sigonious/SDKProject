@@ -41,71 +41,77 @@
 				<div class="orderPopup" id="orderPopup">
 					<div class="popupContent">
 						<span class="close">x</span><p></p>
-						<form action="" id="orderItem">
+						<form id="orderItem">
 							<p>Select a menu item</p>
 							<select id="menuNumber" value="Select a menu item">
 								<option>Choose a menu item</option>
 							</select>
 							<br><br>
-							<b>Meat: </b>
-							<input type="radio" name="meat" value="beef&lamb" checked>Beef and Lamb    
-							<input type="radio" name="meat" value="chicken">Chicken<br>
-							<br>
-							<b>Sauce:</b>
-								<table>
-										<tr>
-											<td><input type="checkbox" name="sauce" value="plainYogurt"> Yogurt</td>
-											<td> </td>
-											<td><input type="checkbox" name="sauce" value="garlicYogurt"> Garlic Yogurt</td>
-										</tr><br>
-										<tr>
-											<td><input type="checkbox" name="sauce" value="hotsauce"> Hot</td>
-											<td> </td>
-											<td><input type="checkbox" name="sauce" value="sriracha"> Sriracha</td>
-										</tr><br>
-								</table>
-							<br>
-							<b>Vegetables: </b><br>
-							<table>
+							<table id="meatTable">
 								<tr>
-									<td><input type="checkbox" name="vegetables" value="lettuce" checked> Lettuce</td>
-									<td><input type="checkbox" name="vegetables" value="onion" checked> Onion</td>
-									<td><input type="checkbox" name="vegetables" value="tomato" checked> Tomato</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" name="vegetables" value="cucumber" checked> Cucumber</td>
-									<td><input type="checkbox" name="vegetables" value="whitecabbage" checked> White Cabbage</td>
-									<td><input type="checkbox" name="vegetables" value="redcabbage" checked> Red Cabbage</td>
+								<td><b>Meat: </b></td>
+								<td><input type="radio" name="meat" value="Beef & Lamb" checked>Beef and Lamb</td>
+								<td><input type="radio" name="meat" value="Chicken">Chicken</td>
+								<td><input type="radio" name="meat" value="none">None</td>
 								</tr>
 							</table>
 							<br>
-							<b>Extras:</b><br>
-								<table>
+							<table id="sauceTable">
+								<b>Sauce:</b>
 									<tr>
-										<td><input type="checkbox" name="extras" value="extrameat">Extra Meat</td>
-										<td><input type="checkbox" name="extras" value="fetacheese">Feta Cheese</td>
+										<td><input type="checkbox" name="sauce" value="Yogurt Sauce"> Yogurt</td>
+										<td> </td>
+										<td><input type="checkbox" name="sauce" value="Garlic Yogurt"> Garlic Yogurt</td>
 									</tr>
 									<tr>
-										<td>
-											<input type="checkbox" name="extras" value="fries">Fries: 
-											<input type="number" id="friestQuantity" name="quantity" min="0" max="4" value="0">
+										<td><input type="checkbox" name="sauce" value="Hot Sauce"> Hot</td>
+										<td> </td>
+										<td><input type="checkbox" name="sauce" value="Sriracha"> Sriracha</td>
+									</tr>
+							</table>
+							<br>
+							<table id="vegetableTable">
+								<b>Vegetables: </b><br>
+									<tr>
+										<td><input type="checkbox" name="vegetables" value="lettuce" checked> Lettuce</td>
+										<td><input type="checkbox" name="vegetables" value="onion" checked> Onion</td>
+										<td><input type="checkbox" name="vegetables" value="tomato" checked> Tomato</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="vegetables" value="cucumber" checked> Cucumber</td>
+										<td><input type="checkbox" name="vegetables" value="white cabbage" checked> White Cabbage</td>
+										<td><input type="checkbox" name="vegetables" value="red cabbage" checked> Red Cabbage</td>
+									</tr>
+							</table>
+							<br>
+							<table id="extrasTable">
+								<b>Extras:</b><br>
+								<tr>
+									<td><input type="checkbox" name="extras" value="Extra Meat">Extra Meat</td>
+									<td><input type="checkbox" name="extras" value="Feta Cheese">Feta Cheese</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox" name="extras" value="Fries">Fries: 
+										<input type="number" id="friesQuantity" name="friesQuantity" min="0" max="4" value="0">
+									</td>
+									<td>
+										<input type="checkbox" name="extras" value="Rice">Rice: 
+										<input type="number" id="riceQuantity" name="riceQuantity" min="0" max="4" value="0">
 										</td>
-										<td>
-											<input type="checkbox" name="extras" value="rice">Rice: 
-											<input type="number" id="riceQuantity" name="quantity" min="0" max="4" value="0">
-											</td>
-									</tr>
-								</table>
+								</tr>
+							</table>
 							<b>Additional Requests:</b><br>
 							<textarea></textarea><br></br>
-							<input type="submit" value="Add to Order">
+							<input type="button" value="Add to Order" onclick="addItemToList()">
 						</form>
 					</div>
 				</div>
 				<div class="orderForm">
 				<form action="action_page.php">
 					<label for="customerName"><h2>Name</h2></label><p></p>
-					<input type="text" id="customerName" name="custName">
+					<input type="text" id="customerName" name="custName" onblur="validate('name', this.value)">
+					<b id="name"></b>
 					<p></p>
 					<label for="lname"><h2>When will you pick up your order?</h2></label><p></p>
 					<p>Date</p>
@@ -116,14 +122,11 @@
 					<select id="pickupTime" name="orderPickupTime">
 						<option>Select Pickup Time</option>
 					</select><p></p>
-					<input type="button" id="addOrderItemButton" value="Add item to order" onclick=""><p></p>
+					<input type="button" id="addOrderItemButton" value="Add item to order" onclick="createItemList()"><p></p>
 					<input type="submit" value="Submit">
 				</form>
 				</div>
-				<div class="currentItems">
-					<h1>Current Items in Order</h1>
-					<p>Items will go here as they are added.</p>
-				</div>
+				<div class="currentItems" id="currentItemsDiv"></div>
 			</div>
 		</div>
 		<script src="orderPageScripts.js" type="text/javascript"></script>
