@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <!--
 	Short term Todo list:
@@ -44,15 +44,15 @@
 						<form id="orderItem">
 							<p>Select a menu item</p>
 							<select id="menuNumber" value="Select a menu item">
-								<option>Choose a menu item</option>
+								<option value="choose">Choose a menu item</option>
 							</select>
 							<br><br>
 							<table id="meatTable">
 								<tr>
 								<td><b>Meat: </b></td>
-								<td><input type="radio" name="meat" value="Beef & Lamb" checked>Beef and Lamb</td>
+								<td><input type="radio" name="meat" value="Beef and Lamb" checked>Beef and Lamb</td>
 								<td><input type="radio" name="meat" value="Chicken">Chicken</td>
-								<td><input type="radio" name="meat" value="none">None</td>
+								<td><input type="radio" name="meat" value="No Meat">No Meat</td>
 								</tr>
 							</table>
 							<br>
@@ -102,8 +102,9 @@
 								</tr>
 							</table>
 							<b>Additional Requests:</b><br>
-							<textarea></textarea><br></br>
-							<input type="button" value="Add to Order" onclick="addItemToList()">
+							<textarea></textarea><br>
+							<input type="button" value="Add to Order" onclick="addItemToList()" id="addToOrderBtn"/>
+                            <input type="button" value="Done Editing" onclick="finishEditingItem()" id="finishEditBtn"/>
 						</form>
 					</div>
 				</div>
@@ -115,7 +116,7 @@
 					<p></p>
 					<label for="lname"><h2>When will you pick up your order?</h2></label><p></p>
 					<p>Date</p>
-					<select id="pickupDate" name="orderPickupDate" min="2016-10-17" max="2016-10-24"><p></p>
+					<select id="pickupDate" name="orderPickupDate" min="2016-10-17" max="2016-10-24">
 						<option>Select Date for order</option>
 					</select>
 					<p>Time</p>

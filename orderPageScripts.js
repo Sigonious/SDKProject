@@ -10,6 +10,10 @@ var monthList = ["January", "February", "March", "April", "May", "June",
 				 "July", "August", "September", "October", "November", "December"];
 				 
 var itemToAdd;
+var itemIndex;
+var orderItemNumber = 1;
+var selectedTable = 1;
+var totalItems = 0;
 
 /**********End Global Variables*************/
 
@@ -25,22 +29,31 @@ var menuItems = ["Doner Kebab Box","Doner Kebab Pita","Doner Kebab",
 				 "Vegetarian plate"];
 var selectedItem;
 
-for(var i = 0; i < menuItems.length; i++) {
+for (var i = 0; i < menuItems.length; i++)
+{
 		var currentItem = menuItems[i];
 		var ele = document.createElement("option");
 		ele.textContent = (i+1)+": "+currentItem;
 		ele.value = i+1;
 		menuNumbers.appendChild(ele);
-	}
+}
 	 
 function createItemList()
 {
-	orderPopup.style.display = "block";	
+    if (totalItems > 9)
+    {
+        window.alert("To order more than 10 items, please call the store.");
+        return;
+    }
+    var editButton = document.getElementById("finishEditBtn");
+    var addButton = document.getElementById("addToOrderBtn");
+    editButton.style.display = "none";
+    addButton.style.display = "block";
+    orderPopup.style.display = "block";
 }
 
 span.onclick = function() {
 	orderPopup.style.display = "none";
-	menuNumbers.options.length = 0;
 };
 
 /****************End add item page*****************/
@@ -48,7 +61,7 @@ span.onclick = function() {
 /***********Handle certain item combinations***********/
 
 menuNumbers.onchange = function() {
-	selectedItem = menuNumber.options[menuNumber.selectedIndex].value;
+	selectedItem = menuNumbers.options[menuNumber.selectedIndex].value;
 	var meatTable = document.getElementById("meatTable");
 	if(selectedItem == 10)
 	{
@@ -58,8 +71,6 @@ menuNumbers.onchange = function() {
 		meatTable.hidden = false;
 	}
 };
-
-var orderItemNumber = 1;
 
 function addItemToList()
 {
@@ -104,15 +115,24 @@ function addItemToList()
 	}
 	
 	var currentItemDiv = document.getElementById("currentItemsDiv");
-	
-	var bigText = document.createElement("h2");
-	var bigTextHolder = document.createTextNode("Order Item #"+orderItemNumber);
-	bigText.appendChild(bigTextHolder);
-	currentItemDiv.appendChild(bigText);
-	
+
 	var itemTable = document.createElement("table");
-	itemTable.setAttribute("id", "orderItem"+orderItemNumber);
+	itemTable.setAttribute("id", "orderItem" + orderItemNumber);
 	var itemTableBody = document.createElement("tbody");
+
+	var itemButton = document.createElement("input");
+	itemButton.setAttribute("type", "button");
+	itemButton.setAttribute("value", "Order Item #"+orderItemNumber);
+	itemButton.setAttribute("id", "itemButton" + orderItemNumber);
+    itemButton.setAttribute("style", "width:100%")
+	itemButton.setAttribute("onclick", "editItem(this)");
+	var tableRow0 = document.createElement("tr");
+	var tableCol0 = document.createElement("td");
+	tableCol0.setAttribute("colspan", 3);
+	tableCol0.appendChild(itemButton);
+	tableRow0.appendChild(tableCol0);
+	itemTableBody.appendChild(tableRow0);
+
 	
 	//create table row for Menu Item type
 	var tableRow1 = document.createElement("tr");
@@ -124,6 +144,8 @@ function addItemToList()
 	tableRow1.appendChild(tableCol1);
 	tableCol1 = document.createElement("td");
 	para1 = document.createElement("P");
+	para1.setAttribute("value", selectedMenuItem.selectedIndex);
+	para1.setAttribute("id", "menuItem" + orderItemNumber);
 	ptext1 = document.createTextNode(menuItemValue);
 	para1.appendChild(ptext1);
 	tableCol1.appendChild(para1);
@@ -140,6 +162,7 @@ function addItemToList()
 	tableRow2.appendChild(tableCol2);
 	tableCol2 = document.createElement("td");
 	para2 = document.createElement("P");
+	para2.setAttribute("id", "meat" + orderItemNumber);
 	ptext2 = document.createTextNode(meatType);
 	para2.appendChild(ptext2);
 	tableCol2.appendChild(para2);
@@ -156,6 +179,7 @@ function addItemToList()
 	tableRow3.appendChild(tableCol3);
 	tableCol3 = document.createElement("td");
 	para3 = document.createElement("P");
+	para3.setAttribute("id", "vegetables" + orderItemNumber);
 	if(checkedVeggies.length == 6)
 	{
 		ptext3 = document.createTextNode("All Vegetables");
@@ -183,6 +207,7 @@ function addItemToList()
 	tableRow4.appendChild(tableCol4);
 	tableCol4 = document.createElement("td");
 	para4 = document.createElement("P");
+	para4.setAttribute("id", "sauces" + orderItemNumber);
 	if(sauceCheck.length == 0)
 	{
 		ptext4 = document.createTextNode("No Sauce");
@@ -206,18 +231,39 @@ function addItemToList()
 	tableRow5.appendChild(tableCol5);
 	tableCol5 = document.createElement("td");
 	para5 = document.createElement("P");
-	ptext5 = document.createTextNode(extraCheck);
+	para5.setAttribute("id", "extras" + orderItemNumber);
+	if (extraCheck.length == 0)
+	{
+	    ptext5 = document.createTextNode("No extras");
+	}
+	else
+	{
+	    ptext5 = document.createTextNode(extraCheck);
+	}
 	para5.appendChild(ptext5);
 	tableCol5.appendChild(para5);
 	tableRow5.appendChild(tableCol5);
 	itemTableBody.appendChild(tableRow5);
 	
-	//create table row for additional requests
+	itemIndex = orderItemNumber;
+    //create table row for remove item button
+	var tableRow6 = document.createElement("tr");
+	var tableCol6 = document.createElement("td");
+	tableCol6.setAttribute("colspan", 2);
+	var removeButton = document.createElement("input");
+	removeButton.setAttribute("type", "button");
+	removeButton.setAttribute("value", "Remove Item");
+	removeButton.setAttribute("style", "width:100%");
+	removeButton.setAttribute("onclick", "deleteTable(this)");
+	tableCol6.appendChild(removeButton);
+	tableRow6.appendChild(tableCol6);
+	itemTableBody.appendChild(tableRow6);
 	
 	itemTable.appendChild(itemTableBody);
 	currentItemDiv.appendChild(itemTable);
 	orderPopup.style.display = "none";
 	orderItemNumber++;
+	totalItems++;
 }
 
 /************End items combo handling******************/
@@ -402,3 +448,146 @@ function validate(field, value)
 		}
 
 /***************End Form Validation*******************/
+
+function alertTest()
+{
+	window.alert("Add a real function to this!");
+}
+
+function editItem(itemInList) {
+
+    var tableCol = itemInList.parentNode;
+    var tableRow = tableCol.parentNode;
+    var tableBody = tableRow.parentNode;
+    var table = tableBody.parentNode;
+    var tableID = table.getAttribute("id").toString();
+    itemToAdd = tableID.substring(tableID.length - 1, tableID.length);
+
+    var editButton = document.getElementById("finishEditBtn");
+    var addButton = document.getElementById("addToOrderBtn");
+    editButton.style.display = "block";
+    addButton.style.display = "none";
+
+    orderPopup.style.display = "block";
+}
+
+function finishEditingItem() {
+
+    //get menu number
+    var selectedMenuItem = document.getElementById("menuNumber");
+    var menuItemValue = selectedMenuItem.options[selectedMenuItem.selectedIndex].textContent;
+
+    //get type of meat selected
+    var meatType = document.getElementsByName("meat");
+    var checkedMeatType;
+
+    for (var i = 0; i < meatType.length; i++)
+    {
+        if(meatType[i].checked)
+        {
+            checkedMeatType = meatType[i].value;
+        }
+    }
+
+    //get list of vegetables
+    var vegeCheck = document.getElementsByName("vegetables");
+    var checkedVeggies = [];
+    for (var i = 0; i < vegeCheck.length; i++) {
+        if (vegeCheck[i].checked) {
+            checkedVeggies.push(" " + (vegeCheck[i].value));
+        }
+    }
+
+    //Get sauces
+    var sauceList = document.getElementsByName("sauce");
+    var sauceCheck = [];
+    for (var i = 0; i < sauceList.length; i++) {
+        if (sauceList[i].checked) {
+            sauceCheck.push(" " + (sauceList[i].value));
+        }
+    }
+
+    //Get extras
+    var extraList = document.getElementsByName("extras");
+    var extraCheck = [];
+    for (var i = 0; i < extraList.length; i++) {
+        if (extraList[i].checked) {
+            extraCheck.push(" " + (extraList[i].value));
+        }
+    }
+
+    //Get Table
+    var selectedItem = document.getElementById("orderItem" + itemToAdd);
+
+    var addNode = document.createTextNode(menuItemValue);
+
+    //Update Table
+    //Menu item
+    var updateMenuItem = document.getElementById("menuItem" + itemToAdd);
+    updateMenuItem.removeChild(updateMenuItem.childNodes[0]);
+    updateMenuItem.appendChild(addNode);
+
+    //Meat
+    var updateMeat = document.getElementById("meat" + itemToAdd);
+    updateMeat.removeChild(updateMeat.childNodes[0]);
+    addNode = document.createTextNode(checkedMeatType);
+    updateMeat.appendChild(addNode);
+
+    //Vegetables
+    var updateVegetables = document.getElementById("vegetables" + itemToAdd);
+    updateVegetables.removeChild(updateVegetables.childNodes[0]);
+    if (checkedVeggies.length == 0)
+    {
+        addNode = document.createTextNode("No vegetables");
+    }
+    else if (checkedVeggies.length == 6)
+    {
+        addNode = document.createTextNode("All vegetables");
+    }
+    else
+    {
+        addNode = document.createTextNode(checkedVeggies);
+    }
+    updateVegetables.appendChild(addNode);
+
+    //Sauces
+    var updateSauces = document.getElementById("sauces" + itemToAdd);
+    updateSauces.removeChild(updateSauces.childNodes[0]);
+    if (sauceCheck.length == 0)
+    {
+        addNode = document.createTextNode("No sauce");
+    }
+    else
+    {
+        addNode = document.createTextNode(sauceCheck);
+    }
+    updateSauces.appendChild(addNode);
+
+    //Extras
+    var updateExtras = document.getElementById("extras" + itemToAdd);
+    updateExtras.removeChild(updateExtras.childNodes[0]);
+    if (extraCheck.length == 0)
+    {
+        addNode = document.createTextNode("No Extras");
+    }
+    else
+    {
+        addNode = document.createTextNode(extraCheck);
+    }
+    updateExtras.appendChild(addNode);
+
+    orderPopup.style.display = "none";
+}
+
+function deleteTable(source)
+{
+    //Get the parent table to remove
+    var tableCol = source.parentNode;
+    var tableRow = tableCol.parentNode;
+    var tableBody = tableRow.parentNode;
+    var table = tableBody.parentNode;
+
+    var parentDiv = document.getElementById("currentItemsDiv");
+    parentDiv.removeChild(table);
+    totalItems--;
+}
