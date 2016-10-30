@@ -46,46 +46,66 @@
 							<select id="menuNumber" value="Select a menu item">
 								<option value="choose">Choose a menu item</option>
 							</select>
-							<br><br>
+                            <b id="menuNumberText"></b>
+							<br>
+                            <select id="bobaTeaFlavors" value="Select a boba tea flavor">
+                                <option value="flavor">Choose a flavor</option>
+                            </select>
+                            <b id="bobaTeaFlavorCheck"></b>
+                            <table id="bobaPearls">
+                                <tr>
+                                    <td><b>Would you like tapioca (boba) pearls?</b></td>
+                                    <td><input type="radio" name="pearls" value="Yes" checked>Yes</td>
+                                    <td><input type="radio" name="pearls" value="No">No</td>
+                                </tr>
+                            </table>
 							<table id="meatTable">
 								<tr>
-								<td><b>Meat: </b></td>
-								<td><input type="radio" name="meat" value="Beef and Lamb" checked>Beef and Lamb</td>
-								<td><input type="radio" name="meat" value="Chicken">Chicken</td>
-								<td><input type="radio" name="meat" value="No Meat">No Meat</td>
+								    <td><b>Meat: </b></td>
+								    <td><input type="radio" name="meat" value="Beef and Lamb" checked>Beef and Lamb</td>
+								    <td><input type="radio" name="meat" value="Chicken">Chicken</td>
+								    <td><input type="radio" name="meat" value="No Meat">No Meat</td>
 								</tr>
 							</table>
 							<br>
 							<table id="sauceTable">
-								<b>Sauce:</b>
-									<tr>
-										<td><input type="checkbox" name="sauce" value="Yogurt Sauce"> Yogurt</td>
-										<td> </td>
-										<td><input type="checkbox" name="sauce" value="Garlic Yogurt"> Garlic Yogurt</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox" name="sauce" value="Hot Sauce"> Hot</td>
-										<td> </td>
-										<td><input type="checkbox" name="sauce" value="Sriracha"> Sriracha</td>
-									</tr>
+								<tr>
+                                    <td>
+                                        <b>Sauce:</b>
+                                    </td>
+                                </tr>
+								<tr>
+									<td><input type="checkbox" name="sauce" value="Yogurt Sauce"> Yogurt</td>
+									<td> </td>
+									<td><input type="checkbox" name="sauce" value="Garlic Yogurt"> Garlic Yogurt</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" name="sauce" value="Hot Sauce"> Hot</td>
+									<td> </td>
+									<td><input type="checkbox" name="sauce" value="Sriracha"> Sriracha</td>
+								</tr>
 							</table>
 							<br>
 							<table id="vegetableTable">
-								<b>Vegetables: </b><br>
-									<tr>
-										<td><input type="checkbox" name="vegetables" value="lettuce" checked> Lettuce</td>
-										<td><input type="checkbox" name="vegetables" value="onion" checked> Onion</td>
-										<td><input type="checkbox" name="vegetables" value="tomato" checked> Tomato</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox" name="vegetables" value="cucumber" checked> Cucumber</td>
-										<td><input type="checkbox" name="vegetables" value="white cabbage" checked> White Cabbage</td>
-										<td><input type="checkbox" name="vegetables" value="red cabbage" checked> Red Cabbage</td>
-									</tr>
+                                <tr>
+                                    <td><b>Vegetables: </b></td>
+                                </tr>
+								<tr>
+									<td><input type="checkbox" name="vegetables" value="lettuce" checked> Lettuce</td>
+									<td><input type="checkbox" name="vegetables" value="onion" checked> Onion</td>
+									<td><input type="checkbox" name="vegetables" value="tomato" checked> Tomato</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" name="vegetables" value="cucumber" checked> Cucumber</td>
+									<td><input type="checkbox" name="vegetables" value="white cabbage" checked> White Cabbage</td>
+									<td><input type="checkbox" name="vegetables" value="red cabbage" checked> Red Cabbage</td>
+								</tr>
 							</table>
 							<br>
 							<table id="extrasTable">
-								<b>Extras:</b><br>
+                                <tr>
+                                    <td><b>Extras:</b></td>
+                                </tr>
 								<tr>
 									<td><input type="checkbox" name="extras" value="Extra Meat">Extra Meat</td>
 									<td><input type="checkbox" name="extras" value="Feta Cheese">Feta Cheese</td>
@@ -98,18 +118,23 @@
 									<td>
 										<input type="checkbox" name="extras" value="Rice">Rice: 
 										<input type="number" id="riceQuantity" name="riceQuantity" min="0" max="4" value="0">
-										</td>
-								</tr>
+									</td>
+                                    <td>
+                                        <input type="checkbox" name="extras" value="drink">Drink:
+                                        <input type="number" id="drinkQuantity" name="drinkQuantity" min="0" max="4" value="0">
+                                    </td>
+                                </tr>
 							</table>
+                            <br/>
 							<b>Additional Requests:</b><br>
-							<textarea></textarea><br>
+							<textarea id="requests"></textarea><br>
 							<input type="button" value="Add to Order" onclick="addItemToList()" id="addToOrderBtn"/>
                             <input type="button" value="Done Editing" onclick="finishEditingItem()" id="finishEditBtn"/>
 						</form>
 					</div>
 				</div>
 				<div class="orderForm">
-				<form action="action_page.php">
+				<form method="post" action="htmlspecialchars(action_page.php)">
 					<label for="customerName"><h2>Name</h2></label><p></p>
 					<input type="text" id="customerName" name="custName" onblur="validate('name', this.value)">
 					<b id="name"></b>

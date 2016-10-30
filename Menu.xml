@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+  <food>
+    <name>Döner Kebab Box</name>
+    <price>4.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Pita</name>
+    <price>5.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab</name>
+    <price>6.49</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Wrap</name>
+    <price>6.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Plate with Fries</name>
+    <price>7.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Plate with Rice</name>
+    <price>7.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Plate with White Bread</name>
+    <price>7.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Plate with Pita Bread</name>
+    <price>7.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Döner Kebab Plate with Flat Bread</name>
+    <price>7.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Vegetarian Plate</name>
+    <price>7.99</price>
+    <description></description>
+  </food>
+  <food>
+    <name>Boba Tea</name>
+    <price>3.49</price>
+    <flavors>
+      <flavor>
+        <name>Taro</name>
+      </flavor>
+      <flavor>
+        <name>Mango</name>
+      </flavor>
+      <flavor>
+        <name>Coconut</name>
+      </flavor><flavor>
+        <name>Honeydew</name>
+      </flavor><flavor>
+        <name>Strawberry</name>
+      </flavor>
+      <flavor>
+        <name>Mocha</name>
+      </flavor>
+      <flavor>
+        <name>Green Tea</name>
+      </flavor>
+      <flavor>
+        <name>Milk Tea</name>
+      </flavor>
+    </flavors>
+    <description></description>
+  </food>
+</menu>

@@ -26,7 +26,10 @@ var menuItems = ["Doner Kebab Box","Doner Kebab Pita","Doner Kebab",
 				 "Doner Kebab Wrap","Doner Kebab plate with fries",
 				 "Doner Kebab plate with rice","Doner Kebab plate with white bread",
 				 "Doner Kebab plate with pita bread","Doner Kebab plate with flat bread",
-				 "Vegetarian plate"];
+				 "Vegetarian plate", "Boba Tea"];
+
+
+var bobaTeas = ["Taro", "Honeydew", "Mango", "Coconut", "Strawbery", "Mocha", "Green Tea", "Milk Tea"];
 var selectedItem;
 
 for (var i = 0; i < menuItems.length; i++)
@@ -37,6 +40,18 @@ for (var i = 0; i < menuItems.length; i++)
 		ele.value = i+1;
 		menuNumbers.appendChild(ele);
 }
+
+var bobaTeaFlavors = document.getElementById("bobaTeaFlavors");
+for (var i = 0; i < bobaTeas.length; i++)
+{
+    var ele = document.createElement("option");
+    ele.textContent = bobaTeas[i];
+    ele.value = i;
+    bobaTeaFlavors.appendChild(ele);
+}
+bobaTeaFlavors.style.visibility = 'hidden';
+var bobaPearls = document.getElementById("bobaPearls");
+bobaPearls.hidden = true;
 	 
 function createItemList()
 {
@@ -50,6 +65,42 @@ function createItemList()
     editButton.style.display = "none";
     addButton.style.display = "block";
     orderPopup.style.display = "block";
+    resetItemList();
+}
+
+function resetItemList()
+{
+    menuNumber.selectedIndex = 0;
+    
+    var veggies = document.getElementsByName("vegetables");
+    for( var i = 0; i < veggies.length; i++)
+    {
+        if(!(veggies[i].checked))
+        {
+            veggies[i].checked = true;
+        }
+    }
+
+    var sauces = document.getElementsByName("sauce");
+    for( var i = 0; i < sauces.length; i++)
+    {
+        if(sauces[i].checked)
+        {
+            sauces[i].checked = false;
+        }
+    }
+
+    var extras = document.getElementsByName("extras");
+    for( var i = 0; i < extras.length; i++ )
+    {
+        if(extras[i].checked)
+        {
+            extras[i].checked = false;
+        }
+    }
+
+    var requests = document.getElementById("requests");
+    requests.value = "";
 }
 
 span.onclick = function() {
@@ -63,12 +114,36 @@ span.onclick = function() {
 menuNumbers.onchange = function() {
 	selectedItem = menuNumbers.options[menuNumber.selectedIndex].value;
 	var meatTable = document.getElementById("meatTable");
-	if(selectedItem == 10)
+	var sauceTable = document.getElementById("sauceTable");
+	var vegetableTable = document.getElementById("vegetableTable");
+	var extrasTable = document.getElementById("extrasTable");
+	var bobaTeaList = document.getElementById("bobaTeaFlavors");
+ 	if(selectedItem == 10)
 	{
-		meatTable.hidden = true;
+ 	    meatTable.hidden = true;
+ 	    sauceTable.hidden = false;
+ 	    vegetableTable.hidden = false;
+ 	    extrasTable.hidden = false;
+ 	    bobaTeaList.style.visibility = 'hidden';
+ 	    bobaPearls.hidden = true;
+	}
+	else if(selectedItem == 11)
+	{
+	    meatTable.hidden = true;
+	    sauceTable.hidden = true;
+	    vegetableTable.hidden = true;
+	    extrasTable.hidden = true;
+	    bobaTeaList.style.visibility = 'visible';
+	    bobaPearls.hidden = false;
+
 	}
 	else {
-		meatTable.hidden = false;
+	    meatTable.hidden = false;
+	    sauceTable.hidden = false;
+	    vegetableTable.hidden = false;
+	    extrasTable.hidden = false;
+	    bobaTeaList.style.visibility = 'hidden';
+	    bobaPearls.hidden = true;
 	}
 };
 
@@ -77,6 +152,16 @@ function addItemToList()
 	//get menu number
 	var selectedMenuItem = document.getElementById("menuNumber");
 	var menuItemValue = selectedMenuItem.options[selectedMenuItem.selectedIndex].textContent;
+	var menuNumberText = document.getElementById("menuNumberText");
+	if (selectedMenuItem.selectedIndex == 0)
+	{
+	    menuNumberText.innerHTML = "Please select a menu item.";
+	    return;
+	}
+	else
+	{
+	    menuNumberText.innerHTML = "";
+	}
 	
 	//get type of meat selected
 	var meatType = document.querySelector('input[name="meat"]:checked').value;
@@ -114,6 +199,11 @@ function addItemToList()
 		}
 	}
 	
+    //Get boba flavor
+	var bobaFlavor = document.getElementById("bobaTeaFlavors");
+	var bobaFlavorValue = bobaFlavor.options[bobaFlavor.selectedIndex].textContent;
+
+    //Print everything to order list
 	var currentItemDiv = document.getElementById("currentItemsDiv");
 
 	var itemTable = document.createElement("table");
@@ -152,98 +242,113 @@ function addItemToList()
 	tableRow1.appendChild(tableCol1);
 	itemTableBody.appendChild(tableRow1);
 	
-	//create table row for meat type
-	var tableRow2 = document.createElement("tr");
-	var tableCol2 = document.createElement("td");
-	var para2 = document.createElement("P");
-	var ptext2 = document.createTextNode("Meat Type: ");
-	para2.appendChild(ptext2);
-	tableCol2.appendChild(para2);
-	tableRow2.appendChild(tableCol2);
-	tableCol2 = document.createElement("td");
-	para2 = document.createElement("P");
-	para2.setAttribute("id", "meat" + orderItemNumber);
-	ptext2 = document.createTextNode(meatType);
-	para2.appendChild(ptext2);
-	tableCol2.appendChild(para2);
-	tableRow2.appendChild(tableCol2);
-	itemTableBody.appendChild(tableRow2);
+	if (selectedMenuItem.selectedIndex != 11 && selectedMenuItem.selectedIndex != 10) {
+	    //create table row for meat type
+	    var tableRow2 = document.createElement("tr");
+	    var tableCol2 = document.createElement("td");
+	    var para2 = document.createElement("P");
+	    var ptext2 = document.createTextNode("Meat Type: ");
+	    para2.appendChild(ptext2);
+	    tableCol2.appendChild(para2);
+	    tableRow2.appendChild(tableCol2);
+	    tableCol2 = document.createElement("td");
+	    para2 = document.createElement("P");
+	    para2.setAttribute("id", "meat" + orderItemNumber);
+	    ptext2 = document.createTextNode(meatType);
+	    para2.appendChild(ptext2);
+	    tableCol2.appendChild(para2);
+	    tableRow2.appendChild(tableCol2);
+	    itemTableBody.appendChild(tableRow2);
+	}
 	
-	//create table row for vegetables
-	var tableRow3 = document.createElement("tr");
-	var tableCol3 = document.createElement("td");
-	var para3 = document.createElement("P");
-	var ptext3 = document.createTextNode("Vegetables: ");
-	para3.appendChild(ptext3);
-	tableCol3.appendChild(para3);
-	tableRow3.appendChild(tableCol3);
-	tableCol3 = document.createElement("td");
-	para3 = document.createElement("P");
-	para3.setAttribute("id", "vegetables" + orderItemNumber);
-	if(checkedVeggies.length == 6)
-	{
-		ptext3 = document.createTextNode("All Vegetables");
+	if (selectedMenuItem.selectedIndex != 11) {
+	    //create table row for vegetables
+	    var tableRow3 = document.createElement("tr");
+	    var tableCol3 = document.createElement("td");
+	    var para3 = document.createElement("P");
+	    var ptext3 = document.createTextNode("Vegetables: ");
+	    para3.appendChild(ptext3);
+	    tableCol3.appendChild(para3);
+	    tableRow3.appendChild(tableCol3);
+	    tableCol3 = document.createElement("td");
+	    para3 = document.createElement("P");
+	    para3.setAttribute("id", "vegetables" + orderItemNumber);
+	    if (checkedVeggies.length == 6) {
+	        ptext3 = document.createTextNode("All Vegetables");
+	    }
+	    else if (checkedVeggies.length == 0) {
+	        ptext3 = document.createTextNode("No Vegetables");
+	    }
+	    else {
+	        ptext3 = document.createTextNode(checkedVeggies);
+	    }
+	    para3.appendChild(ptext3);
+	    tableCol3.appendChild(para3);
+	    tableRow3.appendChild(tableCol3);
+	    itemTableBody.appendChild(tableRow3);
+
+	    //create table row for sauces
+	    var tableRow4 = document.createElement("tr");
+	    var tableCol4 = document.createElement("td");
+	    var para4 = document.createElement("P");
+	    var ptext4 = document.createTextNode("Sauces: ");
+	    para4.appendChild(ptext4);
+	    tableCol4.appendChild(para4);
+	    tableRow4.appendChild(tableCol4);
+	    tableCol4 = document.createElement("td");
+	    para4 = document.createElement("P");
+	    para4.setAttribute("id", "sauces" + orderItemNumber);
+	    if (sauceCheck.length == 0) {
+	        ptext4 = document.createTextNode("No Sauce");
+	    }
+	    else {
+	        ptext4 = document.createTextNode(sauceCheck);
+	    }
+	    para4.appendChild(ptext4);
+	    tableCol4.appendChild(para4);
+	    tableRow4.appendChild(tableCol4)
+	    itemTableBody.appendChild(tableRow4);
+
+	    //create table row for extras
+	    var tableRow5 = document.createElement("tr");
+	    var tableCol5 = document.createElement("td");
+	    var para5 = document.createElement("P");
+	    var ptext5 = document.createTextNode("Extras: ");
+	    para5.appendChild(ptext5);
+	    tableCol5.appendChild(para5);
+	    tableRow5.appendChild(tableCol5);
+	    tableCol5 = document.createElement("td");
+	    para5 = document.createElement("P");
+	    para5.setAttribute("id", "extras" + orderItemNumber);
+	    if (extraCheck.length == 0) {
+	        ptext5 = document.createTextNode("No extras");
+	    }
+	    else {
+	        ptext5 = document.createTextNode(extraCheck);
+	    }
+	    para5.appendChild(ptext5);
+	    tableCol5.appendChild(para5);
+	    tableRow5.appendChild(tableCol5);
+	    itemTableBody.appendChild(tableRow5);
 	}
-	else if(checkedVeggies.length == 0)
+
+	if (selectedMenuItem.selectedIndex == 11)
 	{
-		ptext3 = document.createTextNode("No Vegetables");
+	    var bobaFlavorRow = document.createElement("tr");
+	    var bobaFlavorCol = document.createElement("td");
+	    var bobaFlavorPara = document.createElement("P");
+	    var bobaFlavorText = document.createTextNode("Flavor: ");
+	    bobaFlavorPara.appendChild(bobaFlavorText);
+	    bobaFlavorCol.appendChild(bobaFlavorPara);
+	    bobaFlavorRow.appendChild(bobaFlavorCol);
+	    bobaFlavorCol = document.createElement("td");
+	    bobaFlavorPara = document.createElement("P");
+	    bobaFlavorText = document.createTextNode(bobaFlavorValue);
+	    bobaFlavorPara.appendChild(bobaFlavorText);
+	    bobaFlavorCol.appendChild(bobaFlavorPara);
+	    bobaFlavorRow.appendChild(bobaFlavorCol);
+	    itemTableBody.appendChild(bobaFlavorRow);
 	}
-	else
-	{
-		ptext3 = document.createTextNode(checkedVeggies);
-	}
-	para3.appendChild(ptext3);
-	tableCol3.appendChild(para3);
-	tableRow3.appendChild(tableCol3);
-	itemTableBody.appendChild(tableRow3);
-	
-	//create table row for sauces
-	var tableRow4 = document.createElement("tr");
-	var tableCol4 = document.createElement("td");
-	var para4 = document.createElement("P");
-	var ptext4 = document.createTextNode("Sauces: ");
-	para4.appendChild(ptext4);
-	tableCol4.appendChild(para4);
-	tableRow4.appendChild(tableCol4);
-	tableCol4 = document.createElement("td");
-	para4 = document.createElement("P");
-	para4.setAttribute("id", "sauces" + orderItemNumber);
-	if(sauceCheck.length == 0)
-	{
-		ptext4 = document.createTextNode("No Sauce");
-	}
-	else
-	{
-		ptext4 = document.createTextNode(sauceCheck);
-	}
-	para4.appendChild(ptext4);
-	tableCol4.appendChild(para4);
-	tableRow4.appendChild(tableCol4)
-	itemTableBody.appendChild(tableRow4);
-	
-	//create table row for extras
-	var tableRow5 = document.createElement("tr");
-	var tableCol5 = document.createElement("td");
-	var para5 = document.createElement("P");
-	var ptext5 = document.createTextNode("Extras: ");
-	para5.appendChild(ptext5);
-	tableCol5.appendChild(para5);
-	tableRow5.appendChild(tableCol5);
-	tableCol5 = document.createElement("td");
-	para5 = document.createElement("P");
-	para5.setAttribute("id", "extras" + orderItemNumber);
-	if (extraCheck.length == 0)
-	{
-	    ptext5 = document.createTextNode("No extras");
-	}
-	else
-	{
-	    ptext5 = document.createTextNode(extraCheck);
-	}
-	para5.appendChild(ptext5);
-	tableCol5.appendChild(para5);
-	tableRow5.appendChild(tableCol5);
-	itemTableBody.appendChild(tableRow5);
 	
 	itemIndex = orderItemNumber;
     //create table row for remove item button
@@ -274,6 +379,7 @@ var pickupDate = document.getElementById("pickupDate");
 var tempMonth = currentMonth;
 var tempDay = currentDay;
 var tempYear = currentYear;
+var dayIterator = 0;
 
 for(var i = 0; i < 7; i++)
 {
@@ -314,17 +420,15 @@ for(var i = 0; i < 7; i++)
 	}
 	
 	var dateToAdd = document.createElement("option");
-	//Added this object after program was running fine
-	//Trying to use the object to get values from the pickup date field
-	/*var dateObjectToAdd = {
-		month: tempMonth,
-		day: tempDay,
-		year: tempYear
-	};*/
 	dateToAdd.textContent = monthList[tempMonth] + " " + tempDay + ", " + tempYear;
 	dateToAdd.value = tempDay;
+	if ((currentDate.getDay() + dayIterator)%6 == 0)
+	{
+	    dateToAdd.name = "sunday";
+	}
 	pickupDate.appendChild(dateToAdd);
 	tempDay++;
+	dayIterator++;
 }
 
 /************End creating list for dates**************/
@@ -341,82 +445,88 @@ pickupDate.onchange = function() {
 	while(pickupTime.firstChild) {
 		pickupTime.removeChild(pickupTime.firstChild);
 	}
-for(var i = 11; i < 21; i++)
-{
-	if( i < 11 ) { continue; } //Checks that the time is after the store is open 
-	if( currentDay == selectedDate && iChanged === 0)
-	{
-		i = currentHour - 1;
-		iChanged = 1;
-		if( i >= 21 )
-		{
-			timeToAdd.textContent = "Closed";
-			pickupTime.appendChild(timeToAdd);
-			break;
-		}
-		else
-		{
-			continue;
-		}
-	}
-	for(var j = 0; j <= 59; j++)
-	{
-		if( i == currentHour && j == 0 && currentDay == selectedDate) {
-			j = currentMinute;
-			continue;
-		}
-		if(j%15 === 0)
-		{
-			if( i > 11 )
-			{
-				timeToAdd = document.createElement("option");
-				if( j < 10 )
-				{
-					if( i === 12 )
-					{
-						timeToAdd.textContent = i + ":0" + j + " p.m.";
-						timeToAdd.value = i + ":0" + j + " p.m.";
-					}
-					else
-					{
-						timeToAdd.textContent = i%12 + ":0" + j + " p.m.";
-						timeToAdd.value = i%12 + ":0" + j + " p.m.";
-					}
-					pickupTime.appendChild(timeToAdd);
-				}
-				else
-				{
-					if( i === 12)
-					{
-						timeToAdd.textContent = i + ":" + j + " p.m.";
-						timeToAdd.value = i + ":" + j + " p.m.";
-					}
-					else
-					{
-						timeToAdd.textContent = i%12 + ":" + j + " p.m.";
-						timeToAdd.value = i%12 + ":" + j + " p.m.";
-					}
-					pickupTime.appendChild(timeToAdd);
-				}
-			}
-			else {
-				timeToAdd = document.createElement("option");
-				if( j < 10 )
-				{
-					timeToAdd.textContent = i + ":0" + j + " a.m.";
-					timeToAdd.value = i + ":0" + j + " a.m.";
-					pickupTime.appendChild(timeToAdd);
-				}
-				else
-				{
-					timeToAdd.textContent = i + ":" + j + " a.m.";
-					timeToAdd.value = i + ":" + j + " a.m.";
-					pickupTime.appendChild(timeToAdd);
-				}
-			}
-		}
-	}
-}
+    for(var i = 11; i < 21; i++)
+    {
+	    if( i < 11 ) { continue; } //Checks that the time is after the store is open 
+	    if( currentDay == selectedDate && iChanged === 0)
+	    {
+    		i = currentHour - 1;
+		    iChanged = 1;
+		    if( i >= 21 )
+		    {
+    			timeToAdd.textContent = "Closed";
+			    pickupTime.appendChild(timeToAdd);
+			    break;
+		    }
+		    else
+		    {
+			    continue;
+		    }
+	    }
+	    if (pickupDate.options[pickupDate.selectedIndex].name == "sunday")
+	    {
+	        timeToAdd.textContent = "Closed";
+	        pickupTime.appendChild(timeToAdd);
+	        break;
+	    }
+	    for(var j = 0; j <= 59; j++)
+	    {
+    		if( i == currentHour && j == 0 && currentDay == selectedDate) {
+			    j = currentMinute;
+			    continue;
+		    }
+		    if(j%15 === 0)
+		    {
+    			if( i > 11 )
+			    {
+    				timeToAdd = document.createElement("option");
+				    if( j < 10 )
+				    {
+    					if( i === 12 )
+					    {
+    						timeToAdd.textContent = i + ":0" + j + " p.m.";
+						    timeToAdd.value = i + ":0" + j + " p.m.";
+					    }
+					    else
+					    {
+    						timeToAdd.textContent = i%12 + ":0" + j + " p.m.";
+						    timeToAdd.value = i%12 + ":0" + j + " p.m.";
+					    }
+					    pickupTime.appendChild(timeToAdd);
+				    }
+				    else
+				    {
+    					if( i === 12)
+					    {
+    						timeToAdd.textContent = i + ":" + j + " p.m.";
+						    timeToAdd.value = i + ":" + j + " p.m.";
+					    }
+					    else
+					    {
+    						timeToAdd.textContent = i%12 + ":" + j + " p.m.";
+						    timeToAdd.value = i%12 + ":" + j + " p.m.";
+					    }
+					    pickupTime.appendChild(timeToAdd);
+				    }
+			    }
+			    else {
+    				timeToAdd = document.createElement("option");
+				    if( j < 10 )
+				    {
+    					timeToAdd.textContent = i + ":0" + j + " a.m.";
+					    timeToAdd.value = i + ":0" + j + " a.m.";
+					    pickupTime.appendChild(timeToAdd);
+				    }
+				    else
+				    {
+    					timeToAdd.textContent = i + ":" + j + " a.m.";
+					    timeToAdd.value = i + ":" + j + " a.m.";
+					    pickupTime.appendChild(timeToAdd);
+				    }
+			    }
+		    }
+	    }
+    }
 };
 
 /*************End creating list for time**************/
@@ -424,28 +534,28 @@ for(var i = 11; i < 21; i++)
 /***************Form Validation**********************/
 
 function validate(field, value)
-		{
-			var xmlhttp;
-			if(window.XMLHttpRequest) {
-				xmlhttp = new XMLHttpRequest();
-			}
-			else{
-				xmphttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			xmlhttp.onreadystatechange = function() {
-				if (xmlhttp.readyState != 4 && xmlhttp.status == 200) {
-					document.getElementById(field).innerHTML = "Validating..";
-				}
-				else if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					document.getElementById(field).innerHTML = xmlhttp.responseText;
-				}
-				else {
-					//document.getElementById(field).innerHTML = "Error Occurred. <a href='validation.php'>Reload Or Try Again</a> the page.";
-				}
-			}
-			xmlhttp.open("GET", "validation.php?field=" + field + "&value=" + value, false);
-			xmlhttp.send();
+{
+	var xmlhttp;
+	if(window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	}
+	else{
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState != 4 && xmlhttp.status == 200) {
+			document.getElementById(field).innerHTML = "Validating..";
 		}
+		else if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById(field).innerHTML = xmlhttp.responseText;
+		}
+		else {
+			//document.getElementById(field).innerHTML = "Error Occurred. <a href='validation.php'>Reload Or Try Again</a> the page.";
+		}
+	}
+	xmlhttp.open("GET", "validation.php?field=" + field + "&value=" + value, false);
+	xmlhttp.send();
+}
 
 /***************End Form Validation*******************/
 
