@@ -1,6 +1,10 @@
-/************Global Variables***************/
+/***ToDo
+	FIX THE SUBMIT FUNCTION SO THE DATABASE IS UPDATED IN ORDER
+	*****/
 
-var currentDate = new Date();
+/************Global Variables***************/
+var userID; //Retreive user ID if they are logged in
+var currentDate = new Date(); //Date object created when page is loaded
 var currentHour = currentDate.getHours();
 var currentMinute = currentDate.getMinutes();
 var currentMonth = currentDate.getMonth();
@@ -9,11 +13,13 @@ var currentYear = currentDate.getFullYear();
 var monthList = ["January", "February", "March", "April", "May", "June",
 				 "July", "August", "September", "October", "November", "December"];
 				 
-var itemToAdd;
-var itemIndex;
+var itemToAdd; //Used when editing an order item
 var orderItemNumber = 1;
-var selectedTable = 1;
-var totalItems = 0;
+var totalItems = 0; //Keeps track of the number of items in order list
+var tempPrice = 0;
+var totalPrice = 0;
+var tax = parseFloat(1.07);
+var orderNumber = 15;
 
 /**********End Global Variables*************/
 
@@ -22,22 +28,27 @@ var orderPopup = document.getElementById('orderPopup');
 var orderItemBtn = document.getElementById("addOrderItemButton");
 var span = document.getElementsByClassName("close")[0];
 var menuNumbers = document.getElementById("menuNumber");
+
 var menuItems = ["Doner Kebab Box","Doner Kebab Pita","Doner Kebab",
 				 "Doner Kebab Wrap","Doner Kebab plate with fries",
 				 "Doner Kebab plate with rice","Doner Kebab plate with white bread",
 				 "Doner Kebab plate with pita bread","Doner Kebab plate with flat bread",
 				 "Vegetarian plate", "Boba Tea"];
+				 
+var menuNames = ["kebabBox", "kebabPita", "donerKebab", "kebabWrap", 
+				 "kebabPlateFries", "kebabPlateRice", "kebabPlateWhiteBread", 
+				 "kebabPlatePitaBread", "kebabPlateFlatBread", "kebabVegetarian"];
 
 
 var bobaTeas = ["Taro", "Honeydew", "Mango", "Coconut", "Strawbery", "Mocha", "Green Tea", "Milk Tea"];
-var selectedItem;
+var bobaFlavors = ["taroBoba", "honeydewBoba", "mangoBoba", "coconutBoba", "strawberryBoba", "mochaBoba", "greenTeaBoba", "milkTeaBoba"];
 
 for (var i = 0; i < menuItems.length; i++)
 {
 		var currentItem = menuItems[i];
 		var ele = document.createElement("option");
-		ele.textContent = (i+1)+": "+currentItem;
-		ele.value = i+1;
+		ele.textContent = currentItem;
+		ele.value = menuNames[i];
 		menuNumbers.appendChild(ele);
 }
 
@@ -46,12 +57,23 @@ for (var i = 0; i < bobaTeas.length; i++)
 {
     var ele = document.createElement("option");
     ele.textContent = bobaTeas[i];
-    ele.value = i;
+    ele.value = bobaFlavors[i];
     bobaTeaFlavors.appendChild(ele);
 }
 bobaTeaFlavors.style.visibility = 'hidden';
 var bobaPearls = document.getElementById("bobaPearls");
 bobaPearls.hidden = true;
+
+function updateTotal()
+{
+	var totalCost = document.getElementById("totalCost");
+	while(totalCost.firstChild)
+	{
+		totalCost.removeChild(totalCost.firstChild);
+	}
+	var costNode = document.createTextNode("Total: $"+(parseFloat(totalPrice)*parseFloat(tax)).toFixed(2));
+	totalCost.appendChild(costNode);
+}
 	 
 function createItemList()
 {
@@ -111,14 +133,13 @@ span.onclick = function() {
 
 /***********Handle certain item combinations***********/
 
-menuNumbers.onchange = function() {
-	selectedItem = menuNumbers.options[menuNumber.selectedIndex].value;
+menuNumbers.onchange = function () {
 	var meatTable = document.getElementById("meatTable");
 	var sauceTable = document.getElementById("sauceTable");
 	var vegetableTable = document.getElementById("vegetableTable");
 	var extrasTable = document.getElementById("extrasTable");
 	var bobaTeaList = document.getElementById("bobaTeaFlavors");
- 	if(selectedItem == 10)
+ 	if(menuNumber.selectedIndex == 10)
 	{
  	    meatTable.hidden = true;
  	    sauceTable.hidden = false;
@@ -127,7 +148,7 @@ menuNumbers.onchange = function() {
  	    bobaTeaList.style.visibility = 'hidden';
  	    bobaPearls.hidden = true;
 	}
-	else if(selectedItem == 11)
+ 	else if (menuNumber.selectedIndex == 11)
 	{
 	    meatTable.hidden = true;
 	    sauceTable.hidden = true;
@@ -149,19 +170,24 @@ menuNumbers.onchange = function() {
 
 function addItemToList()
 {
+	//reset tempPrice
+	tempPrice = 0;
+	
 	//get menu number
 	var selectedMenuItem = document.getElementById("menuNumber");
 	var menuItemValue = selectedMenuItem.options[selectedMenuItem.selectedIndex].textContent;
 	var menuNumberText = document.getElementById("menuNumberText");
+	
 	if (selectedMenuItem.selectedIndex == 0)
 	{
 	    menuNumberText.innerHTML = "Please select a menu item.";
 	    return;
 	}
-	else
+	else if(selectedMenuItem.selectedIndex != 11)
 	{
+		priceCheck(selectedMenuItem.options[selectedMenuItem.selectedIndex].value, 1, "food");
 	    menuNumberText.innerHTML = "";
-	}
+	
 	
 	//get type of meat selected
 	var meatType = document.querySelector('input[name="meat"]:checked').value;
@@ -191,26 +217,58 @@ function addItemToList()
 	//Get extras
 	var extraList = document.getElementsByName("extras");
 	var extraCheck = [];
+	var friesQuantity = document.getElementById("friesQuantity");
+	var riceQuantity = document.getElementById("riceQuantity");
+	var drinkQuantity = document.getElementById("drinkQuantity");
+
 	for(var i = 0; i < extraList.length; i++)
 	{
 		if(extraList[i].checked)
 		{
-			extraCheck.push(" " + (extraList[i].value));
+		    if(extraList[i].value == "Fries")
+		    {
+		        priceCheck("fries", friesQuantity.value, "extras");
+		        extraCheck.push(" " + (extraList[i].value)+"("+friesQuantity.value+")");
+		    }
+		    else if (extraList[i].value == "Rice")
+		    {
+		        priceCheck("rice", riceQuantity.value, "extras");
+		        extraCheck.push(" " + (extraList[i].value) + "(" + riceQuantity.value + ")");
+		    }
+		    else if (extraList[i].value == "Drink")
+		    {
+		        priceCheck("drink", drunkQuantity.value, "extras");
+		        extraCheck.push(" " + (extraList[i].value) + "(" + drinkQuantity.value + ")");
+		    }
+		    else if(extraList[i].value == "Extra Meat")
+		    {
+		       priceCheck("extraMeat", 1, "extras");
+		        extraCheck.push(" " + (extraList[i].value));
+		    }
+		    else {
+		        priceCheck("feta", 1, "extras");
+		        extraCheck.push(" " + (extraList[i].value));
+		    }
 		}
 	}
 	
-    //Get boba flavor
+	}//end else if statement
+	
+	//Get boba flavor
 	var bobaFlavor = document.getElementById("bobaTeaFlavors");
 	var bobaFlavorValue = bobaFlavor.options[bobaFlavor.selectedIndex].textContent;
+	var bobaFlavorName = bobaFlavor.options[bobaFlavor.selectedIndex].value;
 
     //Print everything to order list
 	var currentItemDiv = document.getElementById("currentItemsDiv");
 
 	var itemTable = document.createElement("table");
 	itemTable.setAttribute("id", "orderItem" + orderItemNumber);
+	itemTable.setAttribute("value", tempPrice);
 	var itemTableBody = document.createElement("tbody");
 
 	var itemButton = document.createElement("input");
+	itemButton.setAttribute("name", "editButton");
 	itemButton.setAttribute("type", "button");
 	itemButton.setAttribute("value", "Order Item #"+orderItemNumber);
 	itemButton.setAttribute("id", "itemButton" + orderItemNumber);
@@ -334,6 +392,17 @@ function addItemToList()
 
 	if (selectedMenuItem.selectedIndex == 11)
 	{
+		//Get price for boba tea
+		priceCheck(bobaFlavorName, 1, "bobatea");
+		
+		//Get tapioca pearl value
+		var tPearls = document.querySelector('input[name="pearls"]:checked').value;
+		if(tPearls == "Yes")
+		{
+			priceCheck("tapiocaPearls", 1, "bobatea");
+		}
+		
+		//Create Row for boba tea flavor
 	    var bobaFlavorRow = document.createElement("tr");
 	    var bobaFlavorCol = document.createElement("td");
 	    var bobaFlavorPara = document.createElement("P");
@@ -348,9 +417,40 @@ function addItemToList()
 	    bobaFlavorCol.appendChild(bobaFlavorPara);
 	    bobaFlavorRow.appendChild(bobaFlavorCol);
 	    itemTableBody.appendChild(bobaFlavorRow);
+		
+		//Create Row for tapioca pearls
+		bobaFlavorRow = document.createElement("tr");
+	    bobaFlavorCol = document.createElement("td");
+	    bobaFlavorPara = document.createElement("P");
+	    bobaFlavorText = document.createTextNode("Tapioca Pearls: ");
+	    bobaFlavorPara.appendChild(bobaFlavorText);
+	    bobaFlavorCol.appendChild(bobaFlavorPara);
+	    bobaFlavorRow.appendChild(bobaFlavorCol);
+	    bobaFlavorCol = document.createElement("td");
+	    bobaFlavorPara = document.createElement("P");
+	    bobaFlavorText = document.createTextNode(tPearls);
+	    bobaFlavorPara.appendChild(bobaFlavorText);
+	    bobaFlavorCol.appendChild(bobaFlavorPara);
+	    bobaFlavorRow.appendChild(bobaFlavorCol);
+	    itemTableBody.appendChild(bobaFlavorRow);
 	}
-	
-	itemIndex = orderItemNumber;
+
+    //create table row for item price
+	var priceRow = document.createElement("tr");
+	var priceCol = document.createElement("td");
+	var pricePara = document.createElement("P");
+	var priceText = document.createTextNode("Price:");
+	pricePara.appendChild(priceText);
+	priceCol.appendChild(pricePara);
+	priceRow.appendChild(priceCol);
+	priceCol = document.createElement("td");
+	pricePara = document.createElement("P");
+	priceText = document.createTextNode(tempPrice);
+	pricePara.appendChild(priceText);
+	priceCol.appendChild(pricePara);
+	priceRow.appendChild(priceCol);
+	itemTableBody.appendChild(priceRow);
+
     //create table row for remove item button
 	var tableRow6 = document.createElement("tr");
 	var tableCol6 = document.createElement("td");
@@ -369,6 +469,8 @@ function addItemToList()
 	orderPopup.style.display = "none";
 	orderItemNumber++;
 	totalItems++;
+	totalPrice += tempPrice;
+	updateTotal();
 }
 
 /************End items combo handling******************/
@@ -553,18 +655,38 @@ function validate(field, value)
 			//document.getElementById(field).innerHTML = "Error Occurred. <a href='validation.php'>Reload Or Try Again</a> the page.";
 		}
 	}
-	xmlhttp.open("GET", "validation.php?field=" + field + "&value=" + value, false);
+	xmlhttp.open("GET", "validation.php?field=" + field + "&value=" + value, true);
 	xmlhttp.send();
 }
 
 /***************End Form Validation*******************/
 
-function alertTest()
+function priceCheck(item, quantity, place)
 {
-	window.alert("Add a real function to this!");
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState != 4 && xmlhttp.status == 200) {
+
+        }
+        else if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			tempPrice += parseFloat(xmlhttp.responseText);
+        }
+        else {
+            return ":/";
+        }
+    }
+    xmlhttp.open("GET", "priceCheck.php?item=" + item + "&quantity=" + quantity + "&place=" + place, false);
+	xmlhttp.send();
 }
 
-function editItem(itemInList) {
+function editItem(itemInList)
+{
 
     var tableCol = itemInList.parentNode;
     var tableRow = tableCol.parentNode;
@@ -581,11 +703,26 @@ function editItem(itemInList) {
     orderPopup.style.display = "block";
 }
 
-function finishEditingItem() {
-
+function finishEditingItem()
+{
+	//reset tempPrice
+	tempPrice = 0;
+	
     //get menu number
     var selectedMenuItem = document.getElementById("menuNumber");
     var menuItemValue = selectedMenuItem.options[selectedMenuItem.selectedIndex].textContent;
+	var menuNumberText = document.getElementById("menuNumberText");
+	
+	if (selectedMenuItem.selectedIndex == 0)
+	{
+	    menuNumberText.innerHTML = "Please select a menu item.";
+	    return;
+	}
+	else
+	{
+		priceCheck(selectedMenuItem.options[selectedMenuItem.selectedIndex].value, 1, "food");
+	    menuNumberText.innerHTML = "";
+	}
 
     //get type of meat selected
     var meatType = document.getElementsByName("meat");
@@ -620,14 +757,40 @@ function finishEditingItem() {
     //Get extras
     var extraList = document.getElementsByName("extras");
     var extraCheck = [];
-    for (var i = 0; i < extraList.length; i++) {
-        if (extraList[i].checked) {
-            extraCheck.push(" " + (extraList[i].value));
+    var friesQuantity = document.getElementById("friesQuantity");
+    var riceQuantity = document.getElementById("riceQuantity");
+    var drinkQuantity = document.getElementById("drinkQuantity");
+
+    for (var i = 0; i < extraList.length; i++)
+    {
+        if (extraList[i].checked)
+        {
+		    if(extraList[i].value == "Fries")
+		    {
+		        priceCheck("fries", friesQuantity.value, "extras");
+		        extraCheck.push(" " + (extraList[i].value)+"("+friesQuantity.value+")");
+		    }
+		    else if (extraList[i].value == "Rice")
+		    {
+		        priceCheck("rice", riceQuantity.value, "extras");
+		        extraCheck.push(" " + (extraList[i].value) + "(" + riceQuantity.value + ")");
+		    }
+		    else if (extraList[i].value == "Drink")
+		    {
+		        priceCheck("drink", drunkQuantity.value, "extras");
+		        extraCheck.push(" " + (extraList[i].value) + "(" + drinkQuantity.value + ")");
+		    }
+		    else if(extraList[i].value == "Extra Meat")
+		    {
+		       priceCheck("extraMeat", 1, "extras");
+		        extraCheck.push(" " + (extraList[i].value));
+		    }
+		    else {
+		        priceCheck("feta", 1, "extras");
+		        extraCheck.push(" " + (extraList[i].value));
+		    }
         }
     }
-
-    //Get Table
-    var selectedItem = document.getElementById("orderItem" + itemToAdd);
 
     var addNode = document.createTextNode(menuItemValue);
 
@@ -691,13 +854,119 @@ function finishEditingItem() {
 
 function deleteTable(source)
 {
+    var parentDiv = document.getElementById("currentItemsDiv");
+
     //Get the parent table to remove
     var tableCol = source.parentNode;
     var tableRow = tableCol.parentNode;
     var tableBody = tableRow.parentNode;
     var table = tableBody.parentNode;
 
-    var parentDiv = document.getElementById("currentItemsDiv");
     parentDiv.removeChild(table);
     totalItems--;
+    var cNodes = document.getElementById("currentItemsDiv").childNodes;
+    for(var i = 0; i < cNodes.length; i++)
+    {
+        table = cNodes[i];
+        var button = table.firstChild.firstChild.firstChild.firstChild; //Find the order item button.
+        button.setAttribute("value", "Order Item #" + (i + 1));
+    }
+    orderItemNumber = cNodes.length + 1;
+}
+
+function submitOrder()
+{
+    //Get the div where items are
+    var orderItemDiv = document.getElementById("currentItemsDiv");
+
+    //Get item list from div
+    var orderItems = orderItemDiv.childNodes; //This puts the tables with order items into an array, the first 3 are related to total price
+
+	//Get information from tables
+    for (var i = 3; i < orderItems.length; i++)
+    {
+        var numOfNodes = orderItems[i].firstChild.childNodes.length;
+        if (numOfNodes > 5)
+        {
+            var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild; //This is the "p" object in the table for the menu item
+			stringConverter(menuItem.innerHTML, addOrderItem, (i-2), "itemName");
+            
+			var meatType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild; //Meat type selected for the table
+			updateOrderItems(meatType.innerHTML, (i-2), "meat");
+            
+			var vegetables = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild; //Vegetables for the item
+			updateOrderItems(vegetables.innerHTML, (i-2), "vegetables");
+            
+			var sauces = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild; //Sauces for the item
+			updateOrderItems(sauces.innerHTML, (i-2), "sauce");
+            
+			var extras = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild; //extras for the item
+			updateOrderItems(extras.innerHTML, (i-2), "extras");
+			
+			var price = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild; //price for the item
+			updateOrderItems(parseFloat(price.innerHTML), (i-2), "price");
+        }
+        else
+        {
+			
+        }
+    }
+}
+
+function stringConverter(stringToConvert, callback, itemIndex, col)
+{
+	if(stringToConvert == "Nothing")
+	{
+		return;
+	}
+	var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			callback(xmlhttp.responseText, itemIndex, col);
+        }
+    }
+    xmlhttp.open("GET", "menuReader.php?text="+stringToConvert, true);
+	xmlhttp.send();
+}
+
+function addOrderItem(response, itemIndex, col)
+{
+	var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			
+        }
+    }
+    xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&request=add&orderNum="+orderNumber, true);
+	xmlhttp.send();
+}
+
+function updateOrderItems(response, itemIndex, col)
+{
+	var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			
+        }
+    }
+    xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&request=update&orderNum="+orderNumber, true);
+	xmlhttp.send();
 }

@@ -1,0 +1,43 @@
+<?php
+	$servername = "localhost";
+	$username = "root";
+	$pass = "";
+	$dbname = "test";
+	
+	//connect to DB
+	$conn = new mysqli($servername, $username, $pass, $dbname);
+	
+	//check for successful connection
+	if($conn->connect_error)
+	{
+		echo "Error has occured";
+		exit;
+	}
+	
+	$item = mysql_real_escape_string($_GET['item']);
+	$place = mysql_real_escape_string($_GET['place']);
+	$quantity = mysql_real_escape_string($_GET['quantity']);
+	
+	$sql = "SELECT price FROM " . $place . " WHERE itemName='" . $item . "'";
+	$result = $conn->query($sql);
+	
+	if($result->num_rows === 0)
+	{
+		echo "Couldn't find anything.";
+		exit;
+	}
+	
+	while($row = $result->fetch_assoc())
+	{
+		if($quantity > 1)
+		{
+			echo (float) $row["price"] * (float) $quantity;
+		}
+		else
+		{
+			echo (float) $row["price"];
+		}
+	}
+	exit;
+	
+?>

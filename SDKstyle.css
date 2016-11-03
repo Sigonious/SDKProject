@@ -1,6 +1,8 @@
 div.totalContainer {
 	width:100%;
 	height:100%;
+    max-height:100%;
+    max-width:100%;
 }
 
 div.container {
@@ -15,7 +17,6 @@ div.container {
 }
 
 div.headerContainer {
-	display: fixed;
 	position:fixed;
 	width: 100%;
 	color: green;
@@ -78,84 +79,8 @@ div.headerButton a {
 	white-space:nowrap;
 }
 
-div.reg {
-	display:block;
-	color:black;
-	background-color: white;
-	width:80%;
-	height:80%;
-	margin-right:10%;
-	margin-left:10%;
-	max-height:80%;
-	text-align: center;
-	background-color: white;
-}
-
-div.same {
-	display: inline-block;
-	margin: 100px 100px 100px 100px;
-	width: 500px;
-
-	text-align: right;
-	background-color: pink;
-}
-
-@media screen and (max-width: 1750px) {
-	div.headerContent {
-		width:57%;
-	}
-}
-
-@media screen and (max-width: 1550px) {
-	div.siteName img {
-		height: 117px;
-		width: 99px;
-	}
-	
-	div.siteName h1 {
-		font-size:20px;
-	}
-	
-	div.headerButton a {
-		width:75px;
-		height:15px;
-		font-size:14px;
-	}
-	
-	.headerContent {
-		width:62%;
-	}
-}
-
-@media screen and (max-width:1350px) {
-	
-	div.space {
-		margin-top:120px;
-	}
-	
-	div.headerContent {
-		width:67%;
-	}
-}
-
-@media screen and (max-width: 1000px) {
-	
-	div.siteName {
-		width:60%;
-	}
-	
-	div.siteName img {
-		height:52px;
-		width: 44px;
-	}
-	
-	div.space {
-		margin-top:100px;
-	}
-	
-	div.headerContent {
-		width:77%;
-	}
+div.articleContainer h1, p {
+	text-align:left;
 }
 
 div.articleContainer {
@@ -167,36 +92,16 @@ div.articleContainer {
 	margin-right:10%;
 	margin-left:10%;
 	max-height:80%;
+    max-width:100%;
 }
 
-div.articleContainer h1, p {
-	text-align:left;
-}
-
-@media screen and (max-width: 800px) {
-	div.headerButton a {
-		width:50px;
-		height:10px;
-		font-size:10px;
-	}
-	
-	div.articleContainer {
-		width:100%;
-		margin-right:0%;
-		margin-left:0%;
-	}
-	
-	div.headerContent {
-		width:100%;
-	}
-}
 
 .orderForm {
 	display:block;
 	margin-left:4%;
 	padding-top:2%;
 	margin-bottom:-2%;
-	max-height:100%;
+	max-height:70%;
 	width:80%;
 	max-width:50%;
 	float:left;
@@ -206,17 +111,31 @@ div.articleContainer h1, p {
 	text-align:left;
 }
 
+.orderForm form {
+    max-height:80%;
+}
+
 .currentItems {
-	height:100%;
+	height:95%;
 	display:block;
 	width:30%;
 	max-width:50%;
 	float:right;
 	text-align:left;
 	overflow-y:scroll;
+	padding-top:30px;
 }
 
-input[type=text],input[type=password], select {
+div.currentItems table {
+    border: 1px solid black;
+    width:100%;
+}
+
+div.currentItems th, td, tr {
+    border: 1px solid black;
+}
+
+input[type=text], select {
 	width: 40%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -280,6 +199,10 @@ input[type=submit]:hover, input[type=button]:hover {
 	width:50%;
 }
 
+.popupContent table, tr, td {
+    border: none;
+}
+
 .close {
 	color: #aaaaaa;
 	float:right;
@@ -291,4 +214,99 @@ input[type=submit]:hover, input[type=button]:hover {
 	color: #000;
 	text-decoration: none;
 	cursor:pointer;
+}
+
+
+@media screen and (max-width: 1750px) {
+	div.headerContent {
+		width:57%;
+	}
+}
+
+@media screen and (max-width: 1550px) {
+	div.siteName img {
+		height: 117px;
+		width: 99px;
+	}
+	
+	div.siteName h1 {
+		font-size:20px;
+	}
+
+    div.articleContainer h2 {
+        font-size: 20px;
+    }
+	
+	div.headerButton a {
+		width:75px;
+		height:15px;
+		font-size:14px;
+	}
+	
+	.headerContent {
+		width:62%;
+	}
+	
+	div.articleContainer {
+        height:100%;
+        max-height:100%;
+		width:90%;
+		margin-right:5%;
+		margin-left:5%;
+	}
+}
+
+@media screen and (max-width:1350px) {
+	
+	div.space {
+		margin-top:120px;
+	}
+	
+	div.headerContent {
+		width:67%;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	
+	div.siteName {
+		width:60%;
+	}
+
+    div.headerButton {
+        width:60%;
+    }
+	
+	div.siteName img {
+		height:52px;
+		width: 44px;
+	}
+	
+	div.space {
+		margin-top:100px;
+	}
+	
+	div.headerContent {
+		width:77%;
+	}
+
+    div.articleContainer h2 {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+	div.headerButton a {
+		width:50px;
+		height:10px;
+		font-size:10px;
+	}
+	
+	div.headerContent {
+		width:100%;
+	}
+
+    div.articleContainer h2, p {
+        font-size: 12px;
+    }
 }

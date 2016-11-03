@@ -8,5 +8,21 @@
 		{
 			echo "Please enter a name";
 		}
+    else
+    {
+      echo "✔";
+    }
 	}
+  
+  if($formfield == "menuItem")
+  {
+    if($value == 0)
+    {
+      echo "Select an item";
+    }
+    else
+    {
+      echo "✔";
+    }
+  }
 ?>
