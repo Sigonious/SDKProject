@@ -1,5 +1,5 @@
 /***ToDo
-	FIX THE SUBMIT FUNCTION SO THE DATABASE IS UPDATED IN ORDER
+	FIX THE SUBMIT FUNCTION --- remove commas before storing in database.
 	*****/
 
 /************Global Variables***************/
@@ -19,7 +19,7 @@ var totalItems = 0; //Keeps track of the number of items in order list
 var tempPrice = 0;
 var totalPrice = 0;
 var tax = parseFloat(1.07);
-var orderNumber = 15;
+var orderNumber = 20;
 
 /**********End Global Variables*************/
 
@@ -27,7 +27,48 @@ var orderNumber = 15;
 var orderPopup = document.getElementById('orderPopup');
 var orderItemBtn = document.getElementById("addOrderItemButton");
 var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+	orderPopup.style.display = "none";
+};
+
 var menuNumbers = document.getElementById("menuNumber");
+
+menuNumbers.onchange = function () {
+	var meatTable = document.getElementById("meatTable");
+	var sauceTable = document.getElementById("sauceTable");
+	var vegetableTable = document.getElementById("vegetableTable");
+	var extrasTable = document.getElementById("extrasTable");
+	var bobaTeaList = document.getElementById("bobaTeaFlavors");
+ 	if(menuNumber.selectedIndex == 10)
+	{
+ 	    meatTable.hidden = true;
+ 	    sauceTable.hidden = false;
+ 	    vegetableTable.hidden = false;
+ 	    extrasTable.hidden = false;
+ 	    bobaTeaList.style.visibility = 'hidden';
+ 	    bobaPearls.hidden = true;
+	}
+ 	else if (menuNumber.selectedIndex == 11)
+	{
+	    meatTable.hidden = true;
+	    sauceTable.hidden = true;
+	    vegetableTable.hidden = true;
+	    extrasTable.hidden = true;
+	    bobaTeaList.style.visibility = 'visible';
+	    bobaPearls.hidden = false;
+
+	}
+	else {
+	    meatTable.hidden = false;
+	    sauceTable.hidden = false;
+	    vegetableTable.hidden = false;
+	    extrasTable.hidden = false;
+	    bobaTeaList.style.visibility = 'hidden';
+	    bobaPearls.hidden = true;
+	}
+};
+
 
 var menuItems = ["Doner Kebab Box","Doner Kebab Pita","Doner Kebab",
 				 "Doner Kebab Wrap","Doner Kebab plate with fries",
@@ -53,6 +94,7 @@ for (var i = 0; i < menuItems.length; i++)
 }
 
 var bobaTeaFlavors = document.getElementById("bobaTeaFlavors");
+
 for (var i = 0; i < bobaTeas.length; i++)
 {
     var ele = document.createElement("option");
@@ -125,48 +167,10 @@ function resetItemList()
     requests.value = "";
 }
 
-span.onclick = function() {
-	orderPopup.style.display = "none";
-};
-
 /****************End add item page*****************/
 
 /***********Handle certain item combinations***********/
 
-menuNumbers.onchange = function () {
-	var meatTable = document.getElementById("meatTable");
-	var sauceTable = document.getElementById("sauceTable");
-	var vegetableTable = document.getElementById("vegetableTable");
-	var extrasTable = document.getElementById("extrasTable");
-	var bobaTeaList = document.getElementById("bobaTeaFlavors");
- 	if(menuNumber.selectedIndex == 10)
-	{
- 	    meatTable.hidden = true;
- 	    sauceTable.hidden = false;
- 	    vegetableTable.hidden = false;
- 	    extrasTable.hidden = false;
- 	    bobaTeaList.style.visibility = 'hidden';
- 	    bobaPearls.hidden = true;
-	}
- 	else if (menuNumber.selectedIndex == 11)
-	{
-	    meatTable.hidden = true;
-	    sauceTable.hidden = true;
-	    vegetableTable.hidden = true;
-	    extrasTable.hidden = true;
-	    bobaTeaList.style.visibility = 'visible';
-	    bobaPearls.hidden = false;
-
-	}
-	else {
-	    meatTable.hidden = false;
-	    sauceTable.hidden = false;
-	    vegetableTable.hidden = false;
-	    extrasTable.hidden = false;
-	    bobaTeaList.style.visibility = 'hidden';
-	    bobaPearls.hidden = true;
-	}
-};
 
 function addItemToList()
 {
@@ -292,7 +296,7 @@ function addItemToList()
 	tableRow1.appendChild(tableCol1);
 	tableCol1 = document.createElement("td");
 	para1 = document.createElement("P");
-	para1.setAttribute("value", selectedMenuItem.selectedIndex);
+	para1.setAttribute("title", selectedMenuItem.options[selectedMenuItem.selectedIndex].value);
 	para1.setAttribute("id", "menuItem" + orderItemNumber);
 	ptext1 = document.createTextNode(menuItemValue);
 	para1.appendChild(ptext1);
@@ -445,6 +449,7 @@ function addItemToList()
 	priceRow.appendChild(priceCol);
 	priceCol = document.createElement("td");
 	pricePara = document.createElement("P");
+	pricePara.setAttribute("id", "price"+orderItemNumber);
 	priceText = document.createTextNode(tempPrice);
 	pricePara.appendChild(priceText);
 	priceCol.appendChild(pricePara);
@@ -848,7 +853,17 @@ function finishEditingItem()
         addNode = document.createTextNode(extraCheck);
     }
     updateExtras.appendChild(addNode);
+	
+	//Price
+	var updatePrice = document.getElementById("price"+itemToAdd);
+	var currentPrice = updatePrice.innerHTML;
+	updatePrice.removeChild(updatePrice.childNodes[0]);
+	addNode = document.createTextNode(tempPrice);
+	updatePrice.appendChild(addNode);
 
+	totalPrice -= currentPrice;
+	totalPrice += tempPrice;
+	updateTotal();
     orderPopup.style.display = "none";
 }
 
@@ -862,6 +877,21 @@ function deleteTable(source)
     var tableBody = tableRow.parentNode;
     var table = tableBody.parentNode;
 
+	//If item is food and not a boba tea
+	if(tableBody.childNodes.length > 7)
+	{
+		var removePrice = tableBody.childNodes[6].childNodes[1].firstChild.innerHTML;
+		totalPrice -= parseFloat(removePrice);
+		updateTotal();
+	}
+	//if item is a boba tea
+	else
+	{
+		var removePrice = tableBody.childNodes[4].childNodes[1].firstChild.innerHTML;
+		totalPrice -= parseFloat(removePrice);
+		updateTotal();
+	}
+	
     parentDiv.removeChild(table);
     totalItems--;
     var cNodes = document.getElementById("currentItemsDiv").childNodes;
@@ -886,10 +916,10 @@ function submitOrder()
     for (var i = 3; i < orderItems.length; i++)
     {
         var numOfNodes = orderItems[i].firstChild.childNodes.length;
-        if (numOfNodes > 5)
+        if (numOfNodes > 7)
         {
             var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild; //This is the "p" object in the table for the menu item
-			stringConverter(menuItem.innerHTML, addOrderItem, (i-2), "itemName");
+			addOrderItem(menuItem.title, (i-2), "itemName");
             
 			var meatType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild; //Meat type selected for the table
 			updateOrderItems(meatType.innerHTML, (i-2), "meat");
@@ -908,7 +938,17 @@ function submitOrder()
         }
         else
         {
+			var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild.innerHTML;
+			addOrderItem("bobaTea", (i-2), "itemName");
 			
+			var bobaFlavorType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild.innerHTML;
+			updateOrderItems(bobaFlavorType, (i-2), "flavor");
+			
+			var tapiocaPearlsValue = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild.innerHTML;
+			updateOrderItems(tapiocaPearlsValue, (i-2), "tapioca");
+			
+			var price = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild.innerHTML;
+			updateOrderItems(parseFloat(price), (i-2), "price");
         }
     }
 }
