@@ -127,21 +127,25 @@
 							</table>
                             <br/>
 							<b>Additional Requests:</b><br>
-							<textarea id="requests"></textarea><br>
+							<textarea id="requests" maxlength="50" placeholder="Enter any special requests for this item here. (Max 50 characters)"></textarea><br>
 							<input type="button" value="Add to Order" onclick="addItemToList()" id="addToOrderBtn"/>
                             <input type="button" value="Done Editing" onclick="finishEditingItem()" id="finishEditBtn"/>
 						</form>
 					</div>
 				</div>
 				<div class="orderForm">
-				<form method="post" onsubmit="submitOrder()">
+				<form method="post" id="submitForm">
                     <h2><label for="customerName">Name</label></h2><p></p>
 					<input type="text" id="customerName" name="custName" onblur="validate('name', this.value)">
 					<b id="name"></b>
-					<p></p>
-                    <h2><label for="lname">When will you pick up your order?</label></h2><p></p>
+					<br></br>
+					<h2><label for="customerEmail">Email (optional)</label></h2>
+					<input type="text" id="customerEmail" name="custEmail" onblur="validate('email', this.value)">
+					<b id="email"></b>
+					<br></br>
+                    <h2><label for="pickupDate">When will you pick up your order?</label></h2><p></p>
 					<p>Date</p>
-					<select id="pickupDate" name="orderPickupDate" min="2016-10-17" max="2016-10-24">
+					<select id="pickupDate" name="orderPickupDate">
 						<option>Select Date for order</option>
 					</select>
 					<p>Time</p>
@@ -149,7 +153,7 @@
 						<option>Select Pickup Time</option>
 					</select><p></p>
 					<input type="button" id="addOrderItemButton" value="Add item to order" onclick="createItemList()"><p></p>
-					<input type="submit" value="Submit">
+					<input type="button" value="Submit" onclick="startSubmitOrder()">
 				</form>
 				</div>
 				<div class="currentItems" id="currentItemsDiv">

@@ -1,22 +1,11 @@
 <?php
-	$servername = "localhost";
-	$username = "root";
-	$pass = "";
-	$dbname = "test";
+
+	include("config.php");
+	session_start();
 	
-	//connect to DB
-	$conn = new mysqli($servername, $username, $pass, $dbname);
-	
-	//check for successful connection
-	if($conn->connect_error)
-	{
-		echo "Error has occured";
-		exit;
-	}
-	
-	$item = mysql_real_escape_string($_GET['item']);
-	$place = mysql_real_escape_string($_GET['place']);
-	$quantity = mysql_real_escape_string($_GET['quantity']);
+	$item = $conn->real_escape_string($_GET['item']);
+	$place = $conn->real_escape_string($_GET['place']);
+	$quantity = $conn->real_escape_string($_GET['quantity']);
 	
 	$sql = "SELECT price FROM " . $place . " WHERE itemName='" . $item . "'";
 	$result = $conn->query($sql);

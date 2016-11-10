@@ -1,28 +1,109 @@
 <?php
-	$servername = "localhost";
-	$username = "root";
-	$pass = "";
-	$dbname = "test";
 	
-	//connect to DB
-	$conn = new mysqli($servername, $username, $pass, $dbname);
+	include("config.php");
 	
-	//check for successful connection
-	if($conn->connect_error)
+	$col =  $conn->real_escape_string($_GET['col']);
+	$orderNumber =  $conn->real_escape_string($_GET['orderNum']);
+	$response =  $conn->real_escape_string($_GET['response']);
+	
+	if($col == "itemName")
 	{
-		echo "Error has occured";
-		exit;
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		$requests = $conn->real_escape_string($_GET['requests']);
+		
+		$sql = "INSERT INTO orderitem (orderID, orderIndex, itemName, requests)
+		VALUES ($orderNumber, $itemIndex, '$response', '$requests')";
+		
+		if($conn->query($sql) === TRUE)
+		{
+			echo "Success";
+		}
+		else{
+			echo "Failure for $col";
+		}
 	}
-	
-	$request = mysql_real_escape_string($_GET['request']);
-	$itemIndex = mysql_real_escape_string($_GET['itemIndex']);
-	$col = mysql_real_escape_string($_GET['col']);
-	$orderNumber = mysql_real_escape_string($_GET['orderNum']);
-	$response = mysql_real_escape_string($_GET['response']);
-	
-	if($request == "add")
+	else if($col == "meat")
 	{
-		$sql = "INSERT INTO orderitems (orderNumber, orderIndex, itemName)
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		
+		$sql = "INSERT INTO orderitemmeat (orderID, orderIndex, meat)
+		VALUES ($orderNumber, $itemIndex, '$response')";
+		
+		if($conn->query($sql) === TRUE)
+		{
+			echo "Success";
+		}
+		else{
+			echo "Failure for $col";
+		}
+	}
+	else if($col == "vegetables")
+	{
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		
+		$sql = "INSERT INTO orderitemvegetables (orderID, orderIndex, vegetable)
+		VALUES ($orderNumber, $itemIndex, '$response')";
+		
+		if($conn->query($sql) === TRUE)
+		{
+			echo "Success";
+		}
+		else{
+			echo "Failure for $col";
+		}
+	}
+	else if($col == "sauce")
+	{
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		
+		$sql = "INSERT INTO orderitemsauce (orderID, orderIndex, sauce)
+		VALUES ($orderNumber, $itemIndex, '$response')";
+		
+		if($conn->query($sql) === TRUE)
+		{
+			echo "Success";
+		}
+		else{
+			echo "Failure for $col";
+		}
+	}
+	else if($col == "extras")
+	{
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		
+		$quantity =  $conn->real_escape_string($_GET['quantity']);
+		
+		$sql = "INSERT INTO orderitemextras (orderID, orderIndex, extra, quantity)
+		VALUES ($orderNumber, $itemIndex, '$response', $quantity)";
+		
+		if($conn->query($sql) === TRUE)
+		{
+			echo "Success";
+		}
+		else{
+			echo "Failure for $col";
+		}
+	}
+	else if($col == "price")
+	{
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		
+		$sql = "INSERT INTO orderitemprice (orderID, orderIndex, price)
+		VALUES ($orderNumber, $itemIndex, $response)";
+		
+		if($conn->query($sql) === TRUE)
+		{
+			echo "Success";
+		}
+		else{
+			echo "Failure for $col";
+		}
+	}
+	else if($col == "flavor")
+	{
+		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
+		
+		$sql = "INSERT INTO orderitemboba (orderID, orderIndex, flavor)
 		VALUES ($orderNumber, $itemIndex, '$response')";
 		
 		if($conn->query($sql) === TRUE)
@@ -33,28 +114,23 @@
 			echo "Failure";
 		}
 	}
-	else if($request == "update" && $col != "price")
+	else if($col == "orders")
 	{
-		$sql = "UPDATE orderitems SET $col='$response' WHERE orderNumber=$orderNumber AND orderIndex=$itemIndex";
+		$email = $conn->real_escape_string($_GET['email']);
+		$pickupDate = $conn->real_escape_string($_GET['pickupDate']);
+		$pickupTime = $conn->real_escape_string($_GET['pickupTime']);
+		$total = $conn->real_escape_string($_GET['total']);
+		$orderDate = date("Y-m-d");
+		
+		$sql = "INSERT INTO orders (orderID, customerName, customerEmail, orderDatePlaced, orderPickupDate, orderPickupTime, total)
+		VALUES ($orderNumber, '$response', '$email', '$orderDate', '$pickupDate', '$pickupTime', $total)";
 		
 		if($conn->query($sql) === TRUE)
 		{
 			echo "Success";
 		}
 		else{
-			echo "Failure";
-		}
-	}
-	else if($col == "price")
-	{
-		$sql = "UPDATE orderitems SET $col = $response WHERE orderNumber=$orderNumber AND orderIndex=$itemIndex";
-		
-		if($conn->query($sql) === TRUE)
-		{
-			echo "Success";
-		}
-		else{
-			echo "Failure";
+			echo "Failure in orders";
 		}
 	}
 	else{

@@ -79,20 +79,21 @@ div.headerButton a {
 	white-space:nowrap;
 }
 
-div.articleContainer h1, p {
-	text-align:left;
-}
-
 div.articleContainer {
 	display:block;
 	color:black;
 	background-color: white;
-	width:80%;
+	width:100%;
 	height:80%;
-	margin-right:10%;
-	margin-left:10%;
+	/*margin-right:10%;
+	margin-left:10%;*/
 	max-height:80%;
     max-width:100%;
+	overflow:auto;
+}
+
+div.articleContainer h1, p {
+	text-align:left;
 }
 
 
@@ -102,7 +103,7 @@ div.articleContainer {
 	padding-top:2%;
 	margin-bottom:-2%;
 	max-height:70%;
-	width:80%;
+	width:50%;
 	max-width:50%;
 	float:left;
 }
@@ -118,12 +119,12 @@ div.articleContainer {
 .currentItems {
 	height:95%;
 	display:block;
-	width:30%;
-	max-width:50%;
+	width:45%;
+	max-width:45%;
 	float:right;
 	text-align:left;
-	overflow-y:scroll;
 	padding-top:30px;
+	overflow:auto;
 }
 
 div.currentItems table {
@@ -136,7 +137,7 @@ div.currentItems th, td, tr {
 }
 
 input[type=text], select {
-	width: 40%;
+	width: 60%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -146,7 +147,7 @@ input[type=text], select {
 }
 
 input[type=date], input[type=time], select {
-	width: 40%;
+	width: 60%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -156,7 +157,7 @@ input[type=date], input[type=time], select {
 }
 
 input[type=submit], input[type=button] {
-    width: 40%;
+    width: 60%;
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -191,7 +192,7 @@ input[type=submit]:hover, input[type=button]:hover {
     border: 1px solid #888;
     width: 80%;
 	height:80%;
-	overflow-y:scroll;
+	overflow-y:auto;
 }
 
 .popupContent textarea {
@@ -250,9 +251,9 @@ input[type=submit]:hover, input[type=button]:hover {
 	div.articleContainer {
         height:100%;
         max-height:100%;
-		width:90%;
-		margin-right:5%;
-		margin-left:5%;
+		width:100%;
+		/*margin-right:5%;
+		margin-left:5%;*/
 	}
 }
 

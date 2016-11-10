@@ -1,5 +1,5 @@
 /***ToDo
-	FIX THE SUBMIT FUNCTION --- remove commas before storing in database.
+	Finish input validation
 	*****/
 
 /************Global Variables***************/
@@ -15,11 +15,12 @@ var monthList = ["January", "February", "March", "April", "May", "June",
 				 
 var itemToAdd; //Used when editing an order item
 var orderItemNumber = 1;
+var orderItemNumber2 = 1;
 var totalItems = 0; //Keeps track of the number of items in order list
 var tempPrice = 0;
 var totalPrice = 0;
 var tax = parseFloat(1.07);
-var orderNumber = 20;
+var orderNumber;
 
 /**********End Global Variables*************/
 
@@ -78,7 +79,8 @@ var menuItems = ["Doner Kebab Box","Doner Kebab Pita","Doner Kebab",
 				 
 var menuNames = ["kebabBox", "kebabPita", "donerKebab", "kebabWrap", 
 				 "kebabPlateFries", "kebabPlateRice", "kebabPlateWhiteBread", 
-				 "kebabPlatePitaBread", "kebabPlateFlatBread", "kebabVegetarian"];
+				 "kebabPlatePitaBread", "kebabPlateFlatBread", "kebabVegetarian",
+				 "bobaTea"];
 
 
 var bobaTeas = ["Taro", "Honeydew", "Mango", "Coconut", "Strawbery", "Mocha", "Green Tea", "Milk Tea"];
@@ -86,11 +88,11 @@ var bobaFlavors = ["taroBoba", "honeydewBoba", "mangoBoba", "coconutBoba", "stra
 
 for (var i = 0; i < menuItems.length; i++)
 {
-		var currentItem = menuItems[i];
-		var ele = document.createElement("option");
-		ele.textContent = currentItem;
-		ele.value = menuNames[i];
-		menuNumbers.appendChild(ele);
+	var currentItem = menuItems[i];
+	var ele = document.createElement("option");
+	ele.textContent = currentItem;
+	ele.value = menuNames[i];
+	menuNumbers.appendChild(ele);
 }
 
 var bobaTeaFlavors = document.getElementById("bobaTeaFlavors");
@@ -106,14 +108,44 @@ bobaTeaFlavors.style.visibility = 'hidden';
 var bobaPearls = document.getElementById("bobaPearls");
 bobaPearls.hidden = true;
 
-function updateTotal()
+function updateTotal(priceIndex, amount)
 {
-	var totalCost = document.getElementById("totalCost");
-	while(totalCost.firstChild)
+	var exists = document.getElementById("price"+priceIndex);
+	if(exists)
 	{
+		exists.removeChild(exists.childNodes[0]);
+		var tempText = document.createTextNode(tempPrice.toFixed(2));
+		exists.appendChild(tempText);
+	}
+	var totalCost = document.getElementById("totalCost");
+	var oldItemPrice;
+	totalPrice = tempPrice;
+	
+	var costNode;
+	if(totalCost.firstChild)
+	{
+		
+		oldItemPrice = parseFloat(totalCost.innerHTML.replace("Total: $",""));
+		oldItemPrice = oldItemPrice/tax;
+		if(amount.includes("-"))
+		{
+			var newAmount = amount.replace("-", "");
+			oldItemPrice -= (parseFloat(newAmount));
+			costNode = document.createTextNode("Total: $"+(parseFloat(oldItemPrice)*parseFloat(tax)).toFixed(2));
+		}
+		else
+		{
+			var newAmount = parseFloat(amount);
+			oldItemPrice += newAmount;
+			costNode = document.createTextNode("Total: $"+(parseFloat(oldItemPrice)*parseFloat(tax)).toFixed(2));
+		}
 		totalCost.removeChild(totalCost.firstChild);
 	}
-	var costNode = document.createTextNode("Total: $"+(parseFloat(totalPrice)*parseFloat(tax)).toFixed(2));
+	else
+	{
+		costNode = document.createTextNode("Total: $"+(parseFloat(totalPrice)*parseFloat(tax)).toFixed(2));
+	}
+	
 	totalCost.appendChild(costNode);
 }
 	 
@@ -162,7 +194,14 @@ function resetItemList()
             extras[i].checked = false;
         }
     }
-
+	
+	var friesQuantity = document.getElementById("friesQuantity");
+	friesQuantity.value = 0;
+	var drinkQuantity = document.getElementById("drinkQuantity");
+	drinkQuantity.value = 0;
+	var riceQuantity = document.getElementById("riceQuantity");
+	riceQuantity.value = 0;
+	
     var requests = document.getElementById("requests");
     requests.value = "";
 }
@@ -189,85 +228,116 @@ function addItemToList()
 	}
 	else if(selectedMenuItem.selectedIndex != 11)
 	{
-		priceCheck(selectedMenuItem.options[selectedMenuItem.selectedIndex].value, 1, "food");
+		priceCheck(orderItemNumber2, selectedMenuItem.options[selectedMenuItem.selectedIndex].value, 1, "food");
 	    menuNumberText.innerHTML = "";
 	
 	
-	//get type of meat selected
-	var meatType = document.querySelector('input[name="meat"]:checked').value;
-	
-	//get list of vegetables
-	var vegeCheck = document.getElementsByName("vegetables");
-	var checkedVeggies = [];
-	for(var i = 0; i < vegeCheck.length; i++)
-	{
-		if(vegeCheck[i].checked)
+		//get type of meat selected
+		var meatType = document.querySelector('input[name="meat"]:checked').value;
+		
+		//get list of vegetables
+		var vegeCheck = document.getElementsByName("vegetables");
+		var checkedVeggies = [];
+		for(var i = 0; i < vegeCheck.length; i++)
 		{
-			checkedVeggies.push(" " + (vegeCheck[i].value));
+			if(vegeCheck[i].checked)
+			{
+				checkedVeggies.push(" " + (vegeCheck[i].value));
+			}
 		}
-	}
-	
-	//Get sauces
-	var sauceList = document.getElementsByName("sauce");
-	var sauceCheck = [];
-	for(var i = 0; i < sauceList.length; i++)
-	{
-		if(sauceList[i].checked)
+		
+		//Get sauces
+		var sauceList = document.getElementsByName("sauce");
+		var sauceCheck = [];
+		for(var i = 0; i < sauceList.length; i++)
 		{
-			sauceCheck.push(" " + (sauceList[i].value));
+			if(sauceList[i].checked)
+			{
+				sauceCheck.push(" " + (sauceList[i].value));
+			}
 		}
-	}
-	
-	//Get extras
-	var extraList = document.getElementsByName("extras");
-	var extraCheck = [];
-	var friesQuantity = document.getElementById("friesQuantity");
-	var riceQuantity = document.getElementById("riceQuantity");
-	var drinkQuantity = document.getElementById("drinkQuantity");
+		
+		//Get extras
+		var extraList = document.getElementsByName("extras");
+		var extraCheck = [];
+		var friesQuantity = document.getElementById("friesQuantity");
+		var riceQuantity = document.getElementById("riceQuantity");
+		var drinkQuantity = document.getElementById("drinkQuantity");
 
-	for(var i = 0; i < extraList.length; i++)
-	{
-		if(extraList[i].checked)
+		for(var i = 0; i < extraList.length; i++)
 		{
-		    if(extraList[i].value == "Fries")
-		    {
-		        priceCheck("fries", friesQuantity.value, "extras");
-		        extraCheck.push(" " + (extraList[i].value)+"("+friesQuantity.value+")");
-		    }
-		    else if (extraList[i].value == "Rice")
-		    {
-		        priceCheck("rice", riceQuantity.value, "extras");
-		        extraCheck.push(" " + (extraList[i].value) + "(" + riceQuantity.value + ")");
-		    }
-		    else if (extraList[i].value == "Drink")
-		    {
-		        priceCheck("drink", drunkQuantity.value, "extras");
-		        extraCheck.push(" " + (extraList[i].value) + "(" + drinkQuantity.value + ")");
-		    }
-		    else if(extraList[i].value == "Extra Meat")
-		    {
-		       priceCheck("extraMeat", 1, "extras");
-		        extraCheck.push(" " + (extraList[i].value));
-		    }
-		    else {
-		        priceCheck("feta", 1, "extras");
-		        extraCheck.push(" " + (extraList[i].value));
-		    }
+			if(extraList[i].checked)
+			{
+				if(extraList[i].value == "Fries")
+				{
+					if(friesQuantity.value > 4)
+					{
+						friesQuantity.value = 4;
+					}
+					priceCheck(orderItemNumber2, "fries", friesQuantity.value, "extras");
+					extraCheck.push(" " + (extraList[i].value)+"("+friesQuantity.value+")");
+				}
+				else if (extraList[i].value == "Rice")
+				{
+					if(riceQuantity.value > 4)
+					{
+						riceQuantity.value = 4;
+					}
+					priceCheck(orderItemNumber2, "rice", riceQuantity.value, "extras");
+					extraCheck.push(" " + (extraList[i].value) + "(" + riceQuantity.value + ")");
+				}
+				else if (extraList[i].value == "Drink")
+				{
+					if(drinkQuantity.value > 4)
+					{
+						drinkQuantity.value = 4;
+					}
+					priceCheck(orderItemNumber2, "drink", drinkQuantity.value, "extras");
+					extraCheck.push(" " + (extraList[i].value) + "(" + drinkQuantity.value + ")");
+				}
+				else if(extraList[i].value == "Extra Meat")
+				{
+				   priceCheck(orderItemNumber2, "extraMeat", 1, "extras");
+					extraCheck.push(" " + (extraList[i].value));
+				}
+				else
+				{
+					priceCheck(orderItemNumber2, "feta", 1, "extras");
+					extraCheck.push(" " + (extraList[i].value));
+				}
+			}
 		}
+	}//end else if statement
+	else if(selectedMenuItem.selectedIndex == 11)
+	{
+		//Get boba flavor
+		var bobaFlavor = document.getElementById("bobaTeaFlavors");
+		var bobaFlavorValue = bobaFlavor.options[bobaFlavor.selectedIndex].textContent;
+		var bobaFlavorName = bobaFlavor.options[bobaFlavor.selectedIndex].value;
+		
+		//Get tapioca pearl value
+		var tPearls = document.querySelector('input[name="pearls"]:checked').value;
+		if(tPearls == "Yes")
+		{
+			priceCheck(orderItemNumber2, "tapiocaPearls", 1, "bobatea");
+		}
+		
+		//Get price for boba tea
+		priceCheck(orderItemNumber2, bobaFlavorName, 1, "bobatea");
+		
+	}
+	else
+	{
+		menuNumberText.innerHTML = "Unknown menu item.";
+	    return;
 	}
 	
-	}//end else if statement
-	
-	//Get boba flavor
-	var bobaFlavor = document.getElementById("bobaTeaFlavors");
-	var bobaFlavorValue = bobaFlavor.options[bobaFlavor.selectedIndex].textContent;
-	var bobaFlavorName = bobaFlavor.options[bobaFlavor.selectedIndex].value;
 
     //Print everything to order list
 	var currentItemDiv = document.getElementById("currentItemsDiv");
 
 	var itemTable = document.createElement("table");
-	itemTable.setAttribute("id", "orderItem" + orderItemNumber);
+	itemTable.setAttribute("id", "orderItem" + orderItemNumber2);
 	itemTable.setAttribute("value", tempPrice);
 	var itemTableBody = document.createElement("tbody");
 
@@ -275,7 +345,7 @@ function addItemToList()
 	itemButton.setAttribute("name", "editButton");
 	itemButton.setAttribute("type", "button");
 	itemButton.setAttribute("value", "Order Item #"+orderItemNumber);
-	itemButton.setAttribute("id", "itemButton" + orderItemNumber);
+	itemButton.setAttribute("id", "itemButton" + orderItemNumber2);
     itemButton.setAttribute("style", "width:100%")
 	itemButton.setAttribute("onclick", "editItem(this)");
 	var tableRow0 = document.createElement("tr");
@@ -297,7 +367,7 @@ function addItemToList()
 	tableCol1 = document.createElement("td");
 	para1 = document.createElement("P");
 	para1.setAttribute("title", selectedMenuItem.options[selectedMenuItem.selectedIndex].value);
-	para1.setAttribute("id", "menuItem" + orderItemNumber);
+	para1.setAttribute("id", "menuItem" + orderItemNumber2);
 	ptext1 = document.createTextNode(menuItemValue);
 	para1.appendChild(ptext1);
 	tableCol1.appendChild(para1);
@@ -315,7 +385,7 @@ function addItemToList()
 	    tableRow2.appendChild(tableCol2);
 	    tableCol2 = document.createElement("td");
 	    para2 = document.createElement("P");
-	    para2.setAttribute("id", "meat" + orderItemNumber);
+	    para2.setAttribute("id", "meat" + orderItemNumber2);
 	    ptext2 = document.createTextNode(meatType);
 	    para2.appendChild(ptext2);
 	    tableCol2.appendChild(para2);
@@ -334,7 +404,7 @@ function addItemToList()
 	    tableRow3.appendChild(tableCol3);
 	    tableCol3 = document.createElement("td");
 	    para3 = document.createElement("P");
-	    para3.setAttribute("id", "vegetables" + orderItemNumber);
+	    para3.setAttribute("id", "vegetables" + orderItemNumber2);
 	    if (checkedVeggies.length == 6) {
 	        ptext3 = document.createTextNode("All Vegetables");
 	    }
@@ -359,7 +429,7 @@ function addItemToList()
 	    tableRow4.appendChild(tableCol4);
 	    tableCol4 = document.createElement("td");
 	    para4 = document.createElement("P");
-	    para4.setAttribute("id", "sauces" + orderItemNumber);
+	    para4.setAttribute("id", "sauces" + orderItemNumber2);
 	    if (sauceCheck.length == 0) {
 	        ptext4 = document.createTextNode("No Sauce");
 	    }
@@ -381,7 +451,7 @@ function addItemToList()
 	    tableRow5.appendChild(tableCol5);
 	    tableCol5 = document.createElement("td");
 	    para5 = document.createElement("P");
-	    para5.setAttribute("id", "extras" + orderItemNumber);
+	    para5.setAttribute("id", "extras" + orderItemNumber2);
 	    if (extraCheck.length == 0) {
 	        ptext5 = document.createTextNode("No extras");
 	    }
@@ -396,16 +466,6 @@ function addItemToList()
 
 	if (selectedMenuItem.selectedIndex == 11)
 	{
-		//Get price for boba tea
-		priceCheck(bobaFlavorName, 1, "bobatea");
-		
-		//Get tapioca pearl value
-		var tPearls = document.querySelector('input[name="pearls"]:checked').value;
-		if(tPearls == "Yes")
-		{
-			priceCheck("tapiocaPearls", 1, "bobatea");
-		}
-		
 		//Create Row for boba tea flavor
 	    var bobaFlavorRow = document.createElement("tr");
 	    var bobaFlavorCol = document.createElement("td");
@@ -449,12 +509,30 @@ function addItemToList()
 	priceRow.appendChild(priceCol);
 	priceCol = document.createElement("td");
 	pricePara = document.createElement("P");
-	pricePara.setAttribute("id", "price"+orderItemNumber);
+	pricePara.setAttribute("id", "price"+orderItemNumber2);
 	priceText = document.createTextNode(tempPrice);
 	pricePara.appendChild(priceText);
 	priceCol.appendChild(pricePara);
 	priceRow.appendChild(priceCol);
 	itemTableBody.appendChild(priceRow);
+	
+	//create table row for requests
+	var tempReq = document.getElementById("requests");
+	var reqRow = document.createElement("tr");
+	var reqCol = document.createElement("td");
+	var reqPara = document.createElement("P");
+	var reqText = document.createTextNode("Requests: ");
+	reqPara.appendChild(reqText);
+	reqCol.appendChild(reqPara);
+	reqRow.appendChild(reqCol);
+	reqCol = document.createElement("td");
+	reqPara = document.createElement("P");
+	reqPara.setAttribute("id", "request"+orderItemNumber2);
+	reqText = document.createTextNode(tempReq.value);
+	reqPara.appendChild(reqText);
+	reqCol.appendChild(reqPara);
+	reqRow.appendChild(reqCol);
+	itemTableBody.appendChild(reqRow);
 
     //create table row for remove item button
 	var tableRow6 = document.createElement("tr");
@@ -472,10 +550,10 @@ function addItemToList()
 	itemTable.appendChild(itemTableBody);
 	currentItemDiv.appendChild(itemTable);
 	orderPopup.style.display = "none";
+	orderItemNumber2++;
 	orderItemNumber++;
 	totalItems++;
-	totalPrice += tempPrice;
-	updateTotal();
+	updateTotal(orderItemNumber2, "0");
 }
 
 /************End items combo handling******************/
@@ -529,7 +607,7 @@ for(var i = 0; i < 7; i++)
 	var dateToAdd = document.createElement("option");
 	dateToAdd.textContent = monthList[tempMonth] + " " + tempDay + ", " + tempYear;
 	dateToAdd.value = tempDay;
-	if ((currentDate.getDay() + dayIterator)%6 == 0)
+	if ((currentDate.getDay() + dayIterator)%7 == 0)
 	{
 	    dateToAdd.name = "sunday";
 	}
@@ -666,7 +744,7 @@ function validate(field, value)
 
 /***************End Form Validation*******************/
 
-function priceCheck(item, quantity, place)
+function priceCheck(passedIndex, item, quantity, place)
 {
     var xmlhttp;
     if (window.XMLHttpRequest) {
@@ -681,15 +759,16 @@ function priceCheck(item, quantity, place)
         }
         else if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			tempPrice += parseFloat(xmlhttp.responseText);
+			updateTotal(passedIndex, xmlhttp.responseText);
         }
         else {
             return ":/";
         }
     }
-    xmlhttp.open("GET", "priceCheck.php?item=" + item + "&quantity=" + quantity + "&place=" + place, false);
+    xmlhttp.open("GET", "priceCheck.php?item=" + item + "&quantity=" + quantity + "&place=" + place, true);
 	xmlhttp.send();
 }
-
+var previousItem;
 function editItem(itemInList)
 {
 
@@ -699,7 +778,8 @@ function editItem(itemInList)
     var table = tableBody.parentNode;
     var tableID = table.getAttribute("id").toString();
     itemToAdd = tableID.substring(tableID.length - 1, tableID.length);
-
+	console.log("itemToAdd = "+itemToAdd);
+	previousItem = document.getElementById("menuItem"+itemToAdd).title;
     var editButton = document.getElementById("finishEditBtn");
     var addButton = document.getElementById("addToOrderBtn");
     editButton.style.display = "block";
@@ -710,8 +790,19 @@ function editItem(itemInList)
 
 function finishEditingItem()
 {
+	var editTable = document.getElementById("orderItem"+itemToAdd);
+	var numberOfRows = editTable.firstChild.childNodes.length - 5;
+	console.log(editTable.firstChild.childNodes.length);
+	for(var i = 0; i < numberOfRows; i++)
+	{
+		console.log(i);
+		editTable.deleteRow(2);
+	}
+	
 	//reset tempPrice
 	tempPrice = 0;
+	var priceToRemove = document.getElementById("price"+itemToAdd).innerHTML;
+	updateTotal(0, "-"+priceToRemove);
 	
     //get menu number
     var selectedMenuItem = document.getElementById("menuNumber");
@@ -723,14 +814,18 @@ function finishEditingItem()
 	    menuNumberText.innerHTML = "Please select a menu item.";
 	    return;
 	}
-	else
+	else if(selectedMenuItem.selectedIndex != 11)
 	{
-		priceCheck(selectedMenuItem.options[selectedMenuItem.selectedIndex].value, 1, "food");
+		priceCheck(itemToAdd, selectedMenuItem.options[selectedMenuItem.selectedIndex].value, 1, "food");
 	    menuNumberText.innerHTML = "";
 	}
 
-    //get type of meat selected
-    var meatType = document.getElementsByName("meat");
+	var meatType;
+	if(document.getElementsByName("meat"))
+	{
+		//get type of meat selected
+		meatType = document.getElementsByName("meat");
+	}
     var checkedMeatType;
 
     for (var i = 0; i < meatType.length; i++)
@@ -766,93 +861,222 @@ function finishEditingItem()
     var riceQuantity = document.getElementById("riceQuantity");
     var drinkQuantity = document.getElementById("drinkQuantity");
 
-    for (var i = 0; i < extraList.length; i++)
-    {
-        if (extraList[i].checked)
-        {
-		    if(extraList[i].value == "Fries")
-		    {
-		        priceCheck("fries", friesQuantity.value, "extras");
-		        extraCheck.push(" " + (extraList[i].value)+"("+friesQuantity.value+")");
-		    }
-		    else if (extraList[i].value == "Rice")
-		    {
-		        priceCheck("rice", riceQuantity.value, "extras");
-		        extraCheck.push(" " + (extraList[i].value) + "(" + riceQuantity.value + ")");
-		    }
-		    else if (extraList[i].value == "Drink")
-		    {
-		        priceCheck("drink", drunkQuantity.value, "extras");
-		        extraCheck.push(" " + (extraList[i].value) + "(" + drinkQuantity.value + ")");
-		    }
-		    else if(extraList[i].value == "Extra Meat")
-		    {
-		       priceCheck("extraMeat", 1, "extras");
-		        extraCheck.push(" " + (extraList[i].value));
-		    }
-		    else {
-		        priceCheck("feta", 1, "extras");
-		        extraCheck.push(" " + (extraList[i].value));
-		    }
-        }
-    }
+	if(selectedMenuItem.selectedIndex != 11)
+	{
+		for (var i = 0; i < extraList.length; i++)
+		{
+			if (extraList[i].checked)
+			{
+				if(extraList[i].value == "Fries")
+				{
+					priceCheck(itemToAdd, "fries", friesQuantity.value, "extras");
+					extraCheck.push(" " + (extraList[i].value)+"("+friesQuantity.value+")");
+				}
+				else if (extraList[i].value == "Rice")
+				{
+					priceCheck(itemToAdd, "rice", riceQuantity.value, "extras");
+					extraCheck.push(" " + (extraList[i].value) + "(" + riceQuantity.value + ")");
+				}
+				else if (extraList[i].value == "Drink")
+				{
+					priceCheck(itemToAdd, "drink", drinkQuantity.value, "extras");
+					extraCheck.push(" " + (extraList[i].value) + "(" + drinkQuantity.value + ")");
+				}
+				else if(extraList[i].value == "Extra Meat")
+				{
+				   priceCheck(itemToAdd, "extraMeat", 1, "extras");
+					extraCheck.push(" " + (extraList[i].value));
+				}
+				else {
+					priceCheck(itemToAdd, "feta", 1, "extras");
+					extraCheck.push(" " + (extraList[i].value));
+				}
+			}
+		}
+	}
+	
+	if(selectedMenuItem.selectedIndex == 11)
+	{
+		//Get boba flavor
+		var bobaFlavor = document.getElementById("bobaTeaFlavors");
+		var bobaFlavorValue = bobaFlavor.options[bobaFlavor.selectedIndex].textContent;
+		var bobaFlavorName = bobaFlavor.options[bobaFlavor.selectedIndex].value;
+		
+		//Get tapioca pearl value
+		var tPearls = document.querySelector('input[name="pearls"]:checked').value;
+		if(tPearls == "Yes")
+		{
+			priceCheck(itemToAdd, "tapiocaPearls", 1, "bobatea");
+		}
+		
+		//Get price for boba tea
+		priceCheck(itemToAdd, bobaFlavorName, 1, "bobatea");
+		
+	}
 
     var addNode = document.createTextNode(menuItemValue);
+	var editedRow = document.createElement("tr");
+	var editedCol = document.createElement("td");
+	var editedPara = document.createElement("P");
 
     //Update Table
     //Menu item
     var updateMenuItem = document.getElementById("menuItem" + itemToAdd);
     updateMenuItem.removeChild(updateMenuItem.childNodes[0]);
     updateMenuItem.appendChild(addNode);
+	
+	if(selectedMenuItem.selectedIndex != 11)
+	{
+		if(selectedMenuItem.selectedIndex != 10)
+		{
+			//Meat
+			addNode = document.createTextNode("Meat: ");
+			editedPara.appendChild(addNode);
+			editedCol.appendChild(editedPara);
+			editedRow.appendChild(editedCol);
+			editedPara = document.createElement("P");
+			editedPara.setAttribute("id", "meat"+itemToAdd);
+			editedCol = document.createElement("td");
+			addNode = document.createTextNode(checkedMeatType);
+			editedPara.appendChild(addNode);
+			editedCol.appendChild(addNode);
+			editedRow.appendChild(editedCol);
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[2]);
+		}
 
-    //Meat
-    var updateMeat = document.getElementById("meat" + itemToAdd);
-    updateMeat.removeChild(updateMeat.childNodes[0]);
-    addNode = document.createTextNode(checkedMeatType);
-    updateMeat.appendChild(addNode);
+		//Vegetables
+		editedRow = document.createElement("tr");
+		editedCol = document.createElement("td");
+		editedPara = document.createElement("P");
+		addNode = document.createTextNode("Vegetables: ");
+		editedPara.appendChild(addNode);
+		editedCol.appendChild(editedPara);
+		editedRow.appendChild(editedCol);
+		editedPara = document.createElement("P");
+		editedPara.setAttribute("id", "vegetables"+itemToAdd);
+		editedCol = document.createElement("td");
+		if (checkedVeggies.length == 0)
+		{
+			addNode = document.createTextNode("No vegetables");
+		}
+		else if (checkedVeggies.length == 6)
+		{
+			addNode = document.createTextNode("All vegetables");
+		}
+		else
+		{
+			addNode = document.createTextNode(checkedVeggies);
+		}
+		editedPara.appendChild(addNode);
+		editedCol.appendChild(addNode);
+		editedRow.appendChild(editedCol);
+		if(selectedMenuItem.selectedIndex == 10)
+		{
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[2]);
+		}
+		else
+		{
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[3]);
+		}
 
-    //Vegetables
-    var updateVegetables = document.getElementById("vegetables" + itemToAdd);
-    updateVegetables.removeChild(updateVegetables.childNodes[0]);
-    if (checkedVeggies.length == 0)
-    {
-        addNode = document.createTextNode("No vegetables");
-    }
-    else if (checkedVeggies.length == 6)
-    {
-        addNode = document.createTextNode("All vegetables");
-    }
-    else
-    {
-        addNode = document.createTextNode(checkedVeggies);
-    }
-    updateVegetables.appendChild(addNode);
+		//Sauces
+		editedRow = document.createElement("tr");
+		editedCol = document.createElement("td");
+		editedPara = document.createElement("P");
+		addNode = document.createTextNode("Sauces: ");
+		editedPara.appendChild(addNode);
+		editedCol.appendChild(editedPara);
+		editedRow.appendChild(editedCol);
+		editedPara = document.createElement("P");
+		editedPara.setAttribute("id", "sauces"+itemToAdd);
+		editedCol = document.createElement("td");
+		if (sauceCheck.length == 0)
+		{
+			addNode = document.createTextNode("No sauce");
+		}
+		else
+		{
+			addNode = document.createTextNode(sauceCheck);
+		}
+		editedPara.appendChild(addNode);
+		editedCol.appendChild(addNode);
+		editedRow.appendChild(editedCol);
+		if(selectedMenuItem.selectedIndex == 10)
+		{
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[3]);
+		}
+		else
+		{
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[4]);
+		}
 
-    //Sauces
-    var updateSauces = document.getElementById("sauces" + itemToAdd);
-    updateSauces.removeChild(updateSauces.childNodes[0]);
-    if (sauceCheck.length == 0)
-    {
-        addNode = document.createTextNode("No sauce");
-    }
-    else
-    {
-        addNode = document.createTextNode(sauceCheck);
-    }
-    updateSauces.appendChild(addNode);
-
-    //Extras
-    var updateExtras = document.getElementById("extras" + itemToAdd);
-    updateExtras.removeChild(updateExtras.childNodes[0]);
-    if (extraCheck.length == 0)
-    {
-        addNode = document.createTextNode("No Extras");
-    }
-    else
-    {
-        addNode = document.createTextNode(extraCheck);
-    }
-    updateExtras.appendChild(addNode);
+		//Extras
+		editedRow = document.createElement("tr");
+		editedCol = document.createElement("td");
+		editedPara = document.createElement("P");
+		addNode = document.createTextNode("Extras: ");
+		editedPara.appendChild(addNode);
+		editedCol.appendChild(editedPara);
+		editedRow.appendChild(editedCol);
+		editedPara = document.createElement("P");
+		editedPara.setAttribute("id", "extras"+itemToAdd);
+		editedCol = document.createElement("td");
+		if (extraCheck.length == 0)
+		{
+			addNode = document.createTextNode("No Extras");
+		}
+		else
+		{
+			addNode = document.createTextNode(extraCheck);
+		}
+		editedPara.appendChild(addNode);
+		editedCol.appendChild(addNode);
+		editedRow.appendChild(editedCol);
+		if(selectedMenuItem.selectedIndex == 10)
+		{
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[4]);
+		}
+		else
+		{
+			editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[5]);
+		}
+	}
+	else if(selectedMenuItem.selectedIndex == 11)
+	{
+		//boba tea flavor
+		editedRow = document.createElement("tr");
+		editedCol = document.createElement("td");
+		editedPara = document.createElement("P");
+	    addNode = document.createTextNode("Flavor: ");
+	    editedPara.appendChild(addNode);
+	    editedCol.appendChild(editedPara);
+	    editedRow.appendChild(editedCol);
+		editedCol = document.createElement("td");
+		editedPara = document.createElement("P");
+		editedPara.setAttribute("id", "flavor"+itemToAdd);
+	    addNode = document.createTextNode(bobaFlavorValue);
+	    editedPara.appendChild(addNode);
+	    editedCol.appendChild(editedPara);
+	    editedRow.appendChild(editedCol);
+	    editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[2]);
+		
+		//tapioca pearls
+		editedRow = document.createElement("tr");
+		editedCol = document.createElement("td");
+		editedPara = document.createElement("P");
+	    addNode = document.createTextNode("Tapioca Pearls: ");
+	    editedPara.appendChild(addNode);
+	    editedCol.appendChild(editedPara);
+	    editedRow.appendChild(editedCol);
+	    editedCol = document.createElement("td");
+	    editedPara = document.createElement("P");
+		editedPara.setAttribute("id", "tapioca"+itemToAdd);
+	    addNode = document.createTextNode(tPearls);
+	    editedPara.appendChild(addNode);
+		editedCol.appendChild(editedPara);
+	    editedRow.appendChild(editedCol);
+	    editTable.firstChild.insertBefore(editedRow, editTable.firstChild.childNodes[3]);
+	}
 	
 	//Price
 	var updatePrice = document.getElementById("price"+itemToAdd);
@@ -862,8 +1086,7 @@ function finishEditingItem()
 	updatePrice.appendChild(addNode);
 
 	totalPrice -= currentPrice;
-	totalPrice += tempPrice;
-	updateTotal();
+	updateTotal(itemToAdd, "0");
     orderPopup.style.display = "none";
 }
 
@@ -882,100 +1105,241 @@ function deleteTable(source)
 	{
 		var removePrice = tableBody.childNodes[6].childNodes[1].firstChild.innerHTML;
 		totalPrice -= parseFloat(removePrice);
-		updateTotal();
+		updateTotal(0, "-"+removePrice);
 	}
 	//if item is a boba tea
 	else
 	{
 		var removePrice = tableBody.childNodes[4].childNodes[1].firstChild.innerHTML;
 		totalPrice -= parseFloat(removePrice);
-		updateTotal();
+		updateTotal(0, "-"+removePrice);
 	}
 	
     parentDiv.removeChild(table);
     totalItems--;
     var cNodes = document.getElementById("currentItemsDiv").childNodes;
-    for(var i = 0; i < cNodes.length; i++)
-    {
-        table = cNodes[i];
-        var button = table.firstChild.firstChild.firstChild.firstChild; //Find the order item button.
-        button.setAttribute("value", "Order Item #" + (i + 1));
-    }
-    orderItemNumber = cNodes.length + 1;
+	if(cNodes.length > 3)
+	{
+		for(var i = 3; i < cNodes.length; i++)
+		{
+			table = cNodes[i];
+			var button = table.firstChild.firstChild.firstChild.firstChild; //Find the order item button.
+			button.setAttribute("value", "Order Item #" + (i - 2));
+		}	
+	}
+    orderItemNumber--;
+}
+
+function startSubmitOrder()
+{
+	console.log("Starting order submission!");
+	//Get the orderNumber
+	findOrderNumber();
+	console.log("Finished order submission!");
 }
 
 function submitOrder()
 {
+	console.log("Check 1");
     //Get the div where items are
     var orderItemDiv = document.getElementById("currentItemsDiv");
+	console.log("Check 2");
 
     //Get item list from div
     var orderItems = orderItemDiv.childNodes; //This puts the tables with order items into an array, the first 3 are related to total price
+	console.log("Check 3");
 
+	var getLastTotal = document.getElementById("totalCost").innerHTML;
+	console.log("Check 4");
+	var lastTotal = parseFloat(getLastTotal.replace("Total: $", ""));
+	console.log("Check 5");
+	
+	var custName = document.getElementById("customerName").value;
+	console.log("Check 6");
+	var custEmail = document.getElementById("customerEmail").value;
+	console.log("Check 7");
+	var pickupDateDom = document.getElementById("pickupDate");
+	console.log("Check 8");
+	var pickupDate = pickupDateDom.options[pickupDateDom.selectedIndex].text;
+	console.log("Check 9");
+	var pickupTimeDom = document.getElementById("pickupTime");
+	console.log("Check 10");
+	var pickupTime = pickupTimeDom.options[pickupTimeDom.selectedIndex].text;
+	console.log("Adding order");
+	addOrder("orders", custName, custEmail, pickupDate, pickupTime, lastTotal);
+	console.log("DONE!");
+	
 	//Get information from tables
     for (var i = 3; i < orderItems.length; i++)
     {
         var numOfNodes = orderItems[i].firstChild.childNodes.length;
         if (numOfNodes > 7)
         {
+			
+			var requests = orderItems[i].firstChild.childNodes[7].childNodes[1].firstChild.innerHTML;
+			
             var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild; //This is the "p" object in the table for the menu item
-			addOrderItem(menuItem.title, (i-2), "itemName");
-            
+			console.log("Adding order item");
+			addOrderItem(menuItem.title, (i-2), "itemName", 1, requests);
+			console.log("DONE!");
+			
 			var meatType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild; //Meat type selected for the table
-			updateOrderItems(meatType.innerHTML, (i-2), "meat");
+			console.log("Adding meat type!");
+			addOrderItem(meatType.innerHTML, (i-2), "meat", 1, "");
+			console.log("DONE!");
             
+			console.log("Adding vegetables!");
 			var vegetables = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild; //Vegetables for the item
-			updateOrderItems(vegetables.innerHTML, (i-2), "vegetables");
+			if(vegetables.innerHTML.includes(","))
+			{
+				var vegetableArray = vegetables.innerHTML.split(", ");
+				for(var j = 0; j < vegetableArray.length; j++)
+				{
+					addOrderItem(vegetableArray[j], (i-2), "vegetables", 1, "");
+				}
+			}
+			else
+			{
+				addOrderItem(vegetables.innerHTML, (i-2), "vegetables", 1, "");
+			}
+			console.log("DONE!");
             
+			console.log("Adding sauces!");
 			var sauces = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild; //Sauces for the item
-			updateOrderItems(sauces.innerHTML, (i-2), "sauce");
+			if(sauces.innerHTML.includes(","))
+			{
+				var saucesAsArray = sauces.innerHTML.split(", "); //splits sauces into an array delimited by commas
+				
+				//for loop to add all sauces to DB
+				for(var j = 0; j < saucesAsArray.length; j++)
+				{
+					addOrderItem(saucesAsArray[j], (i-2), "sauce", 1, "");
+				}
+			}
+			else
+			{
+				addOrderItem(sauces.innerHTML, (i-2), "sauce", 1, "");
+			}
+			console.log("DONE!");
             
 			var extras = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild; //extras for the item
-			updateOrderItems(extras.innerHTML, (i-2), "extras");
 			
+			console.log("Adding extras!");
+			if(extras.innerHTML.includes(","))
+			{
+				var extrasAsArray = extras.innerHTML.split(", "); //Splits extra items into an array delimited by commas
+			
+				//For loop to iterate through extra items
+				for(var j = 0; j < extrasAsArray.length; j++)
+				{
+					var extraQuantity = 0;
+					var extraSubstring = extrasAsArray[j];
+					if(extraSubstring.includes("("))
+					{
+						//for loop to iterate through each extra item and check for quantity
+						for(var k = 0; k < extrasAsArray[j].length; k++)
+						{
+							if(extrasAsArray[j].substr(k,1) == "(")
+							{
+								extraQuantity = extrasAsArray[j].substr(k+1, 1);
+								extraSubstring = extrasAsArray[j].substr(0,k);
+							}
+						}
+					}
+					addOrderItem(extraSubstring, (i-2), "extras", extraQuantity, "");
+				}
+			}
+			else
+			{
+				if(extras.innerHTML.includes("("))
+				{
+					var extrasQuantity = 0;
+					var extrasSubstring = extras.innerHTML;
+					console.log(extrasSubstring+" has a length of: "+extrasSubstring.length);
+					for(var j = 0; j < extras.innerHTML.length; j++)
+					{
+						if(extras.innerHTML.substr(j,1) == "(")
+						{
+							extrasQuantity = extras.innerHTML.substr(j+1,1);
+							extrasSubstring = extras.innerHTML.substr(0,j);
+						}
+					}
+					addOrderItem(extrasSubstring, (i-2), "extras", extrasQuantity, "");
+				}
+				else
+				{
+					addOrderItem(extras.innerHTML, (i-2), "extras", 1, "");
+				}
+			}
+			console.log("DONE!");
+			
+			console.log("Adding price!");
 			var price = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild; //price for the item
-			updateOrderItems(parseFloat(price.innerHTML), (i-2), "price");
+			console.log("The price is... "+price.innerHTML);
+			addOrderItem(parseFloat(price.innerHTML), (i-2), "price", 1, "");
+			
         }
         else
         {
 			var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild.innerHTML;
-			addOrderItem("bobaTea", (i-2), "itemName");
+			addOrderItem("bobaTea", (i-2), "itemName", 1, "");
 			
 			var bobaFlavorType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild.innerHTML;
-			updateOrderItems(bobaFlavorType, (i-2), "flavor");
+			addOrderItem(bobaFlavorType, (i-2), "flavor", 1, "");
 			
 			var tapiocaPearlsValue = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild.innerHTML;
-			updateOrderItems(tapiocaPearlsValue, (i-2), "tapioca");
+			addOrderItem(tapiocaPearlsValue, (i-2), "extra", 1, "");
 			
 			var price = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild.innerHTML;
-			updateOrderItems(parseFloat(price), (i-2), "price");
+			addOrderItem(parseFloat(price), (i-2), "price", 1, "");
         }
     }
+	document.getElementById("submitForm").submit();
 }
 
-function stringConverter(stringToConvert, callback, itemIndex, col)
+function addOrderItem(response, itemIndex, col, quantity, requests)
 {
-	if(stringToConvert == "Nothing")
+	var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        }
+    }
+	if(col == "itemName")
 	{
-		return;
+		xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&orderNum="+orderNumber+"&requests="+requests, true);
 	}
-	var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    }
-    else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			callback(xmlhttp.responseText, itemIndex, col);
-        }
-    }
-    xmlhttp.open("GET", "menuReader.php?text="+stringToConvert, true);
+	else{
+		xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&orderNum="+orderNumber+"&quantity="+quantity, true);
+	}
 	xmlhttp.send();
 }
 
-function addOrderItem(response, itemIndex, col)
+function addOrder(col, name, email, pickupDate, pickupTime, lastTotal)
+{
+	var xmlhttp;
+	if(window.XMLHttpRequest)
+	{
+		xmlhttp = new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		}
+	}
+	xmlhttp.open("GET", "addToDB.php?response="+name+"&col="+col+"&orderNum="+orderNumber+"&email="+email+"&pickupDate="+pickupDate+"&pickupTime="+pickupTime+"&total="+lastTotal, true);
+	xmlhttp.send();
+}
+
+function findOrderNumber()
 {
 	var xmlhttp;
     if (window.XMLHttpRequest) {
@@ -986,27 +1350,11 @@ function addOrderItem(response, itemIndex, col)
     }
     xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			
+			console.log("Response for order number was: "+xmlhttp.responseText);
+			orderNumber = parseInt(xmlhttp.responseText);
+			submitOrder();
         }
     }
-    xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&request=add&orderNum="+orderNumber, true);
-	xmlhttp.send();
-}
-
-function updateOrderItems(response, itemIndex, col)
-{
-	var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    }
-    else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			
-        }
-    }
-    xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&request=update&orderNum="+orderNumber, true);
+    xmlhttp.open("GET", "findOrderNumbers.php", true);
 	xmlhttp.send();
 }
