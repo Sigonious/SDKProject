@@ -17,7 +17,7 @@ div.container {
 }
 
 div.headerContainer {
-	position:fixed;
+	position:relative;
 	width: 100%;
 	color: green;
 	padding-bottom: 15px;
@@ -58,7 +58,7 @@ div.siteName h1, img {
 }
 
 div.headerButton {
-	width:50%;
+	width:100%;
 	margin: auto;
 	font-size: 100%;
 	max-height:100%;
@@ -74,7 +74,7 @@ div.headerButton a {
 	width: 100px;
 	height:20px;
 	text-align: center;
-	margin-top:5px;
+
 	border: 2px solid black;
 	white-space:nowrap;
 }
@@ -94,6 +94,47 @@ div.articleContainer {
 
 div.articleContainer h1, p {
 	text-align:left;
+}
+
+
+.container2 {
+	float: left;
+	height: 100%;
+	color: black;
+	background-color: pink;
+	width: 100%;
+	text-align: center;
+	margin: 0 auto;
+
+}
+
+div.leftColumn {
+	float: left;
+	width: 20%;
+	height: 100%;
+	min-height:600px;
+	background-color:black;
+	color:#D29494;
+
+}
+div{
+	display: block;
+}
+div.info{
+	color: #ffffff;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+
+div.rightSection {
+	float: left;
+    margin-right: 20px;
+    padding-bottom: 30px;
+	padding-left: 20px;
+	padding-top: 50px;
+    width: 700px;
+	
 }
 
 
@@ -310,4 +351,12 @@ input[type=submit]:hover, input[type=button]:hover {
     div.articleContainer h2, p {
         font-size: 12px;
     }
+}
+
+
+body{
+	background-color: #f1f1f1;
+	margin: 0 auto;
+	width: 50%;
+
 }
