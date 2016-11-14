@@ -9,17 +9,7 @@ div.container {
 	width: 100%;
 	height: 100%;
 	color: green;
-	/*background-color: #37D651;*/
-	position:absolute;
-	top:0;
-	left:0;
-}
-
-div.container3 {
-	width: 100%;
-	height: 100%;
-	color: green;
-	/*background-color: #37D651;*/
+	background-color: #37D651;
 	position:absolute;
 	top:0;
 	left:0;
@@ -27,23 +17,22 @@ div.container3 {
 }
 
 div.headerContainer {
-	position:fixed;
+	position:relative;
 	width: 100%;
 	color: green;
 	padding-bottom: 15px;
 	background-color:#37D651;
-	border-bottom:1px solid black;
+	max-height:181px;
 }
 
 .headerContent {
 	display:block;
 	width:50%;
 	margin:auto;
-	max-height:100%;
 }
 
 .space {
-	height:10%;
+	margin-top:181px;
 }
 
 div.siteName {
@@ -51,12 +40,11 @@ div.siteName {
 	margin-right:auto;
 	width:50%;
 	max-width:100%;
-	height:50%;
 }
 
 div.siteName img {
-	height: 25%;
-	width: 19%;
+	height: 130px;
+	width: 110px;
 }
 
 div.siteName h1, img {
@@ -70,11 +58,10 @@ div.siteName h1, img {
 }
 
 div.headerButton {
-	width:50%;
+	width:100%;
 	margin: auto;
 	font-size: 100%;
 	max-height:100%;
-	height:50%;
 }
 
 div.headerButton a {
@@ -84,10 +71,10 @@ div.headerButton a {
              #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px;
 	text-decoration: none;
 	background-color: #A0522D;
-	width: 20%;
-	height:3%;
+	width: 100px;
+	height:20px;
 	text-align: center;
-	margin-top:5px;
+
 	border: 2px solid black;
 	white-space:nowrap;
 }
@@ -110,15 +97,57 @@ div.articleContainer h1, p {
 }
 
 
-div.orderForm {
+.container2 {
+	float: left;
+	height: 100%;
+	max-height:100%;
+	color: black;
+	background-color: pink;
+	width: 100%;
+	text-align: center;
+	margin: 0 auto;
+
+}
+
+div.leftColumn {
+	float: left;
+	width: 20%;
+	height: 100%;
+	min-height:600px;
+	background-color:black;
+	color:#D29494;
+
+}
+div{
+	display: block;
+}
+div.info{
+	color: #ffffff;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+
+div.rightSection {
+	float: left;
+    margin-right: 20px;
+    padding-bottom: 30px;
+	padding-left: 20px;
+	padding-top: 50px;
+    width: 700px;
+	
+}
+
+
+.orderForm {
 	display:block;
 	margin-left:4%;
-	padding-top:4%;
-	height:100%;
+	padding-top:2%;
+	margin-bottom:-2%;
+	max-height:70%;
 	width:50%;
 	max-width:50%;
 	float:left;
-	overflow:auto;
 }
 
 .orderForm p, h1 {
@@ -136,7 +165,8 @@ div.orderForm {
 	max-width:45%;
 	float:right;
 	text-align:left;
-	padding-top:4%;
+	padding-top:30px;
+	overflow:auto;
 }
 
 div.currentItems table {
@@ -229,104 +259,6 @@ input[type=submit]:hover, input[type=button]:hover {
 	cursor:pointer;
 }
 
-.menuContainer {
-	display:block;
-	color:black;
-	width:100%;
-	height:80%;
-    max-width:100%;
-	overflow:auto;
-	margin-bottom:10%;
-	background: #37D651; /* Old browsers */
-	background: -moz-linear-gradient(top,  #37D651 20%, #ffffff 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  #37D651 20%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  #37D651 20%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37D651', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-}
-
-.menuContainer img {
-	outline: 2px solid black;
-	height:60%;
-	width:80%;
-}
-
-.leftItems {
-	height:95%;
-	display:block;
-	width:45%;
-	max-width:45%;
-	float:left;
-	text-align:left;
-	padding-top:30px;
-	margin-left:5%;
-}
-
-.rightItems {
-	height:95%;
-	display:block;
-	width:45%;
-	max-width:45%;
-	float:right;
-	text-align:left;
-	padding-top:30px;
-}
-
-body {
-	overflow:hidden;
-}
-
-div.contactHeader {
-	padding-top:60px;
-	margin:auto;
-}
-div.contactHeader h1{
-	text-align:center;
-	font-size:50px;
-}
-
-.contactContainer {
-	height:100%;
-	width:100%;
-	color:black;
-}
-
-.leftContact {
-	display:block;
-	width:45%;
-	float:left;
-	text-align:left;
-	margin:auto;
-}
-
-.innerLeft {
-	width:60%;
-	margin:auto;
-}
-
-.rightContact {
-	display:block;
-	width:45%;
-	float:left;
-	text-align:left;
-	margin:auto;
-	font-size:15px;
-}
-
-.innerRight {
-	width:80%;
-	float:left;
-}
-
-.innerRight form {
-	display:inline-block;
-	width:100%;
-	height:100%;
-}
-
-.rightContact textarea {
-    width: 647px;
-    height: 312px;
-}
 
 @media screen and (max-width: 1750px) {
 	div.headerContent {
@@ -335,6 +267,10 @@ div.contactHeader h1{
 }
 
 @media screen and (max-width: 1550px) {
+	div.siteName img {
+		height: 117px;
+		width: 99px;
+	}
 	
 	div.siteName h1 {
 		font-size:20px;
@@ -345,6 +281,8 @@ div.contactHeader h1{
     }
 	
 	div.headerButton a {
+		width:75px;
+		height:15px;
 		font-size:14px;
 	}
 	
@@ -353,11 +291,10 @@ div.contactHeader h1{
 	}
 	
 	div.articleContainer {
-		padding-bottom:20%;
-        /*height:100%;
+        height:100%;
         max-height:100%;
 		width:100%;
-		margin-right:5%;
+		/*margin-right:5%;
 		margin-left:5%;*/
 	}
 }
@@ -365,7 +302,7 @@ div.contactHeader h1{
 @media screen and (max-width:1350px) {
 	
 	div.space {
-		height:170px;
+		margin-top:120px;
 	}
 	
 	div.headerContent {
@@ -376,135 +313,52 @@ div.contactHeader h1{
 @media screen and (max-width: 1000px) {
 	
 	div.siteName {
-		width:90%;
+		width:60%;
 	}
 
     div.headerButton {
-        width:90%;
+        width:60%;
     }
 	
-	div.headerContainer {
-		max-height:100px;
+	div.siteName img {
+		height:52px;
+		width: 44px;
 	}
 	
 	div.space {
-		height:115px;
+		margin-top:100px;
 	}
 	
 	div.headerContent {
-		width:40%;
-	}
-	
-	div.articleContainer {
-		width:100%;
-		overflow:none;
+		width:77%;
 	}
 
     div.articleContainer h2 {
         font-size: 15px;
     }
-	
-	
-	div.leftContact {
-		float:none;
-		width:90%;
-		font-size:300%;
-	}
-	
-	div.rightContact {
-		float:none;
-		width:80%;
-		text-align: center;
-	}
-	
-	div.innerRight p{
-		text-align:center;
-		font-size:300%;
-	}
-	
-	div.innerRight h2 {
-		font-size:300%;
-	}
-	
-	div.currentItems {
-		float:none;
-		margin:auto;
-		width:80%;
-		height:initial;
-	}
-	div.orderForm {
-		float:none;
-		margin:auto;
-		height:initial;
-	}
-	
-	div.orderForm input[type=text], select, input[type=button] {
-		width:100%;
-	}
-	
-}
-
-@media screen and (max-width: 930px) {
-	div.headerContent {
-		width:50%;
-	}
-	
-	div.leftContact {
-		float:none;
-		width:80%;
-	}
-	
-	div.rightContact {
-		float:none;
-		width:80%;
-		text-align: center;
-	}
-	
-	div.innerRight p{
-		text-align:center;
-	}
-	
-	div.siteName img {
-		height: 20%;
-		width:15%;
-	}
 }
 
 @media screen and (max-width: 800px) {
 	div.headerButton a {
+		width:50px;
+		height:10px;
 		font-size:10px;
 	}
 	
 	div.headerContent {
-		width:60%;
+		width:100%;
 	}
 
     div.articleContainer h2, p {
         font-size: 12px;
     }
-	
-	div.leftContact {
-		float:none;
-		width:80%;
-	}
-	
-	div.rightContact {
-		float:none;
-		width:80%;
-		text-align: center;
-	}
 }
 
-@media screen and (max-width: 450px) {
-	
-	div.headerContent {
-		width:80%;
-	}
-}
 
-@media screen and (max-width: 320px) {
-	
-	div.headerContent {
-		width:100%;
-	}
+body{
+	background-color: #f1f1f1;
+	margin: 0 auto;
+	width: 100%;
+	height:100%;
+	max-height:100%;
 }
