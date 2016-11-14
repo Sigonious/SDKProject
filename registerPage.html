@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<!--
+//Not compatible with main database in this version, only test database
+
+!-->
+<html>
+	<head>
+		<title>Register</title>
+			<meta charset="utf-8">
+			<link rel = "stylesheet" type = "text/css" href = "regStyle.css">
+	</head>	
+	<body>	
+	
+	
+	
+		<div class="container">
+			<div class="headerContainer">
+				<div class ="headerContent">
+					<div class="siteName">
+						<img src="SDKlogo.jpg" alt="Logo"/>
+						<h1>Son's Doner Kebab</h1>
+					</div>
+						<div class="headerButton">
+							<a href="">Home</a>
+							<a href="">Menu</a>
+							<a href="">Order</a>
+							<a href="">Contact Us</a>
+						</div>
+				</div>
+			</div>
+			<div class="space"></div>
+				<div class = "reg">
+
+					<form class="register" method="post" action="./php/registerPage.php">
+						
+						<h1>Register</h1>
+
+						<input type='hidden' name='submitted' id='submitted' value='1'/>
+						<input type "text" id="firstName" placeholder="*First Name"/><?php echo $firstNameErr;?>
+						<input type "text" id="lastName" placeholder="*Last Name"/><?php echo $lastNameErr;?>
+						<input type "text" id = "email" placeholder="*Email"/><?php echo $emailErr;?>
+						<input type="text" id='checkEmail' maxlength ="50" placeholder="*Confirm Email"/><?php echo $checkEmailErr;?>
+						<input type='password' id='pwd1' maxlength ="20" placeholder="*Password"/><?php echo $pwd1Err;?>
+						<input type='password' id='pwd2' maxlength ="20" placeholder="*Confirm Password"/><?php echo $pwd2Err;?>
+						
+						<button type='submit'>Register</button>
+						<p class="message">Already registered? <a href="loginPage.html">Log In</a></p>
+					</form>
+
+				</div>
+		</div>		
+	<body>
+<html>

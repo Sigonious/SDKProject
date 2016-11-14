@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-
-<!--
-//Not compatible with main database in this version, only test database
-
-!-->
-<html>
-	<head>
-		<title>Register</title>
-			<meta charset="utf-8">
-			<link rel = "stylesheet" type = "text/css" href = "SDKstyle.css">
-	</head>	
-	<body>	
-	
-	<?php
+<?php
 	
 	$user = 'root';
 	$pass = '';
@@ -124,49 +110,3 @@
 	mysqli_close($db);
 	
 	?>
-	
-		<div class="container">
-			<div class="headerContainer">
-				<div class ="headerContent">
-					<div class="siteName">
-						<img src="SDKlogo.jpg" alt="Logo"/>
-						<h1>Son's Doner Kebab</h1>
-					</div>
-						<div class="headerButton">
-							<a href="">Home</a>
-							<a href="">Menu</a>
-							<a href="">Order</a>
-							<a href="">Contact Us</a>
-						</div>
-				</div>
-			</div>
-			<div class="space"></div>
-			<form id="register" method="post" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
-				<div class = "reg">
-				<h1 style="text-align:center; font-family:arial;">Register</h1>
-					<div class = "same">
-					
-						<input type='hidden' name='submitted' id='submitted' value='1'/>
-						<label for='firstName'>*First Name: </label>
-						<input type='text' name='firstName' id='firstName' maxlength ="20"/><?php echo $firstNameErr;?><br>
-						<label for='lastName'>*Last Name: </label>
-						<input type='text' name='lastName' id='lastName' maxlength ="20"/><?php echo $lastNameErr;?><br>
-						<label for='email'>*Email Address: </label>
-						<input type='text' name='email' id='email' maxlength ="50" /><?php echo $emailErr;?><br>
-						<label for='checkEmail'>*Confirm Email Address: </label>
-						<input type='text' name='checkEmail' id='checkEmail' maxlength ="50"/><?php echo $checkEmailErr;?><br>
-						<label for='pwd1'>*Password: </label>
-						<input type='password' name='pwd1' id='pwd1' maxlength ="20"/><?php echo $pwd1Err;?><br>
-						<label for='pwd2'>*Confirm Password: </label>
-						<input type='password' name='pwd2' id='pwd2' maxlength ="20"/><?php echo $pwd2Err;?><br>
-						
-						<input type='submit' name='submit' value='Create'/>
-						
-				</div>
-				</div>
-			</form>
-
-
-		</div>
-	<body>
-<html>
