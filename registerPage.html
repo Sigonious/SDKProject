@@ -41,9 +41,9 @@
 						<h1>Register</h1>
 
 						<input type='hidden' name='submitted' id='submitted' value='1'/>
-						<input type "text" id="firstName" placeholder="*First Name"/><?php echo $firstNameErr;?>
-						<input type "text" id="lastName" placeholder="*Last Name"/><?php echo $lastNameErr;?>
-						<input type "text" id = "email" placeholder="*Email"/><?php echo $emailErr;?>
+						<input type "text" id="firstName" maxlength="20" placeholder="*First Name"/><?php echo $firstNameErr;?>
+						<input type "text" id="lastName" maxlength="20" placeholder="*Last Name"/><?php echo $lastNameErr;?>
+						<input type "text" id = "email" maxlength="50" placeholder="*Email"/><?php echo $emailErr;?>
 						<input type="text" id='checkEmail' maxlength ="50" placeholder="*Confirm Email"/><?php echo $checkEmailErr;?>
 						<input type='password' id='pwd1' maxlength ="20" placeholder="*Password"/><?php echo $pwd1Err;?>
 						<input type='password' id='pwd2' maxlength ="20" placeholder="*Confirm Password"/><?php echo $pwd2Err;?>

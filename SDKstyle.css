@@ -13,7 +13,6 @@ div.container {
 	position:absolute;
 	top:0;
 	left:0;
-	overflow:auto;
 }
 
 div.container3 {
@@ -24,7 +23,6 @@ div.container3 {
 	position:absolute;
 	top:0;
 	left:0;
-	overflow:auto;
 }
 
 div.headerContainer {
@@ -49,7 +47,8 @@ div.headerContainer {
 }
 
 .space {
-	height:25%;
+	height:15%;
+	background-color: #37D651;
 }
 
 div.siteName {
@@ -398,7 +397,7 @@ div.contactHeader h1{
     }
 	
 	div.space {
-		height:10%;
+		height:25%;
 	}
 	
 	div.leftContact {
