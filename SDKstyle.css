@@ -13,6 +13,7 @@ div.container {
 	position:absolute;
 	top:0;
 	left:0;
+	overflow:auto;
 }
 
 div.container3 {
@@ -35,6 +36,11 @@ div.headerContainer {
 	border-bottom:1px solid black;
 }
 
+.logReg {
+	float: right;
+	padding-right: 10px;
+}
+
 .headerContent {
 	display:block;
 	width:50%;
@@ -42,13 +48,8 @@ div.headerContainer {
 	max-height:100%;
 }
 
-.logReg {
-	float: right;
-	padding-right: 10px;
-}
-
 .space {
-	height:20%;
+	height:25%;
 }
 
 div.siteName {
@@ -107,7 +108,6 @@ div.articleContainer {
 	margin-left:10%;*/
 	max-height:80%;
     max-width:100%;
-	overflow:auto;
 }
 
 div.articleContainer h1, p {
@@ -118,7 +118,6 @@ div.articleContainer h1, p {
 div.orderForm {
 	display:block;
 	margin-left:4%;
-	padding-top:4%;
 	height:100%;
 	width:50%;
 	max-width:50%;
@@ -141,7 +140,6 @@ div.orderForm {
 	max-width:45%;
 	float:right;
 	text-align:left;
-	padding-top:4%;
 }
 
 div.currentItems table {
@@ -240,7 +238,6 @@ input[type=submit]:hover, input[type=button]:hover {
 	width:100%;
 	height:80%;
     max-width:100%;
-	overflow:auto;
 	margin-bottom:10%;
 	background: #37D651; /* Old browsers */
 	background: -moz-linear-gradient(top,  #37D651 20%, #ffffff 100%); /* FF3.6-15 */
@@ -277,7 +274,7 @@ input[type=submit]:hover, input[type=button]:hover {
 }
 
 body {
-	overflow:hidden;
+	overflow:auto;
 }
 
 div.contactHeader {
@@ -369,10 +366,6 @@ div.contactHeader h1{
 
 @media screen and (max-width:1350px) {
 	
-	div.space {
-		height:170px;
-	}
-	
 	div.headerContent {
 		width:67%;
 	}
@@ -391,11 +384,6 @@ div.contactHeader h1{
 	div.headerContainer {
 		max-height:100px;
 	}
-	
-	div.space {
-		height:115px;
-	}
-	
 	div.headerContent {
 		width:40%;
 	}
@@ -409,6 +397,9 @@ div.contactHeader h1{
         font-size: 15px;
     }
 	
+	div.space {
+		height:10%;
+	}
 	
 	div.leftContact {
 		float:none;
@@ -416,10 +407,24 @@ div.contactHeader h1{
 		font-size:300%;
 	}
 	
+	div.innerLeft {
+		text-align:center;
+		width:100%;
+	}
+	
+	div.innerLeft h1 {
+		text-align:center;
+	}
+	
 	div.rightContact {
 		float:none;
 		width:80%;
 		text-align: center;
+	}
+	
+	div.innerRight {
+		width:100%;
+		float: none;
 	}
 	
 	div.innerRight p{
@@ -445,6 +450,26 @@ div.contactHeader h1{
 	
 	div.orderForm input[type=text], select, input[type=button] {
 		width:100%;
+	}
+	
+	div.menuContainer {
+		margin-top: -7%;
+		height: 100%;
+	}
+	
+	div.leftItems {
+		width:100%;
+		max-width:100%;
+		float:none;
+		height:initial;
+	}
+	
+	div.rightItems {
+		width:100%;
+		max-width:100%;
+		float:none;
+		height:initial;
+		margin-left:5%;
 	}
 	
 }

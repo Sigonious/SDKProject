@@ -1,7 +1,7 @@
 <?php
 	define('dbserver','localhost');
 	define('dbusername','root');
-	define('dbpassword','');
+	define('dbpassword','root');
 	define('dbdatabase','test');
 	
 	//connect to DB

@@ -150,3 +150,14 @@ div.headerButton a {
 	border: 2px solid black;
 	white-space:nowrap;
 }
+
+@media screen and (max-width: 1000px)
+{
+	div.siteName{
+		width: initial;
+	}
+	
+	div.headerButton {
+		width: initial;
+	}
+}

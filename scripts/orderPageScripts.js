@@ -734,11 +734,8 @@ function validate(field, value)
 		else if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			document.getElementById(field).innerHTML = xmlhttp.responseText;
 		}
-		else {
-			//document.getElementById(field).innerHTML = "Error Occurred. <a href='validation.php'>Reload Or Try Again</a> the page.";
-		}
 	}
-	xmlhttp.open("GET", "validation.php?field=" + field + "&value=" + value, true);
+	xmlhttp.open("GET", "./php/validation.php?field=" + field + "&value=" + value, true);
 	xmlhttp.send();
 }
 
@@ -765,7 +762,7 @@ function priceCheck(passedIndex, item, quantity, place)
             return ":/";
         }
     }
-    xmlhttp.open("GET", "priceCheck.php?item=" + item + "&quantity=" + quantity + "&place=" + place, true);
+    xmlhttp.open("GET", "./php/priceCheck.php?item=" + item + "&quantity=" + quantity + "&place=" + place, true);
 	xmlhttp.send();
 }
 var previousItem;
@@ -1232,7 +1229,7 @@ function submitOrder()
 				//For loop to iterate through extra items
 				for(var j = 0; j < extrasAsArray.length; j++)
 				{
-					var extraQuantity = 0;
+					var extraQuantity = 1;
 					var extraSubstring = extrasAsArray[j];
 					if(extraSubstring.includes("("))
 					{
@@ -1253,7 +1250,7 @@ function submitOrder()
 			{
 				if(extras.innerHTML.includes("("))
 				{
-					var extrasQuantity = 0;
+					var extrasQuantity = 1;
 					var extrasSubstring = extras.innerHTML;
 					console.log(extrasSubstring+" has a length of: "+extrasSubstring.length);
 					for(var j = 0; j < extras.innerHTML.length; j++)
@@ -1312,10 +1309,10 @@ function addOrderItem(response, itemIndex, col, quantity, requests)
     }
 	if(col == "itemName")
 	{
-		xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&orderNum="+orderNumber+"&requests="+requests, true);
+		xmlhttp.open("GET", "./php/addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&orderNum="+orderNumber+"&requests="+requests, true);
 	}
 	else{
-		xmlhttp.open("GET", "addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&orderNum="+orderNumber+"&quantity="+quantity, true);
+		xmlhttp.open("GET", "./php/addToDB.php?response="+response+"&itemIndex="+itemIndex+"&col="+col+"&orderNum="+orderNumber+"&quantity="+quantity, true);
 	}
 	xmlhttp.send();
 }
@@ -1335,7 +1332,7 @@ function addOrder(col, name, email, pickupDate, pickupTime, lastTotal)
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 		}
 	}
-	xmlhttp.open("GET", "addToDB.php?response="+name+"&col="+col+"&orderNum="+orderNumber+"&email="+email+"&pickupDate="+pickupDate+"&pickupTime="+pickupTime+"&total="+lastTotal, true);
+	xmlhttp.open("GET", "./php/addToDB.php?response="+name+"&col="+col+"&orderNum="+orderNumber+"&email="+email+"&pickupDate="+pickupDate+"&pickupTime="+pickupTime+"&total="+lastTotal, true);
 	xmlhttp.send();
 }
 
@@ -1355,6 +1352,6 @@ function findOrderNumber()
 			submitOrder();
         }
     }
-    xmlhttp.open("GET", "findOrderNumbers.php", true);
+    xmlhttp.open("GET", "./php/findOrderNumbers.php", true);
 	xmlhttp.send();
 }
