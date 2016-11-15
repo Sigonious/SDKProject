@@ -27,6 +27,7 @@
 			echo (float) $row["price"];
 		}
 	}
+	$conn->close();
 	exit;
 	
 ?>

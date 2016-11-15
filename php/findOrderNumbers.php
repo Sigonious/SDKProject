@@ -13,4 +13,5 @@
 	{
 		echo "Failure";
 	}
+	$conn->close();
 ?>

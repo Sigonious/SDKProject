@@ -4,14 +4,14 @@
 	<head>
 		<title>Menu</title>
 		<meta charset="utf-8">
-		<link rel = "stylesheet" type = "text/css" href = "SDKstyle.css">
+		<link rel = "stylesheet" type = "text/css" href = "menuStyle.css">
 	</head>
 	<body>
 		<div class="container">
 			<div class="headerContainer">
 				<div class="logReg">
-					<p><a href="loginPage.html">Login</a> | 
-					<a href="registerPage.html">Register</a></p>
+					<p><a href="loginPage.html" id="toLoginPage">Login</a> | 
+					<a href="registerPage.html" id="toRegisterPage">Register</a></p>
 				</div>
 				<div class ="headerContent">
 					<div class="siteName">
@@ -38,15 +38,16 @@
 					</div>
 				</div>
 				<div class="rightItems">
-					<div class="menuItem2">
-						<img src="menuItem2.jpg">
-					</div>
-					<br>
 					<div class="menuItem4">
 						<img src="menuItem4.jpg">
+					</div>
+					<br>
+					<div class="menuItem2">
+						<img src="menuItem2.jpg">
 					</div>
 				</div>
 			</div>
 		</div>
+		<script src="scripts/checkLogin.js"></script>
 	</body>
 </html>

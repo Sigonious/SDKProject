@@ -2,7 +2,6 @@
 	
 	include("config.php");
 	session_start();
-
 	
 	//Checks if forms are empty and meets requirements
 	
@@ -64,10 +63,8 @@
 		if(empty($_POST["pwd1"])){
 			$pwd1Err = "Password is required";
 			$Err = true;
-		} elseif (!preg_match('/^(?=[a-z])[a-zA-Z]{8,}$/', $pwd1)){
-			$pwd1Err = "Password must be 8 characters and contain a letter"
-			$Err = true;
-		} else {
+		}
+		else {
 			$pwd1 = test_input($_POST["pwd1"]);
 		}
 	
@@ -83,17 +80,17 @@
 		}
 	
 	}
-	$firstName = mysql_real_escape_string($firstName);
-	$lastName = mysql_real_escape_string($lastName);
-	$email = mysql_real_escape_string($email);
-	$pwd1 = mysql_real_escape_string($pwd1);
+	$firstName = $conn->real_escape_string($firstName);
+	$lastName = $conn->real_escape_string($lastName);
+	$email = $conn->real_escape_string($email);
+	$pwd1 = $conn->real_escape_string($pwd1);
 	
 	//Inserts values from form into database if there are no errors; Err=true
-	if($Err != true){
+	if(isset($Err) && $Err != true){
 	$sql = "INSERT INTO users (firstName, lastName, email, password)
 	VALUES('$firstName','$lastName','$email','$pwd1' )";
 
-	$db->query($sql);
+	$conn->query($sql);
 	}
 	
 	function test_input($data){
@@ -104,6 +101,6 @@
 	
 	}
 	
-	mysqli_close($db);
+	$conn->close();
 	
 	?>

@@ -10,8 +10,8 @@
 		<div class="container3">
 			<div class="headerContainer">
 				<div class="logReg">
-					<p><a href="loginPage.html">Login</a> | 
-					<a href="registerPage.html">Register</a></p>
+					<p><a href="loginPage.html" id="toLoginPage">Login</a> | 
+					<a href="registerPage.html" id="toRegisterPage">Register</a></p>
 				</div>
 				<div class ="headerContent">
 					<div class="siteName">
@@ -43,7 +43,7 @@
 				<div class="rightContact">
 					<div class="innerRight">
 						<h2>Fill out the following and we will get back to you as soon as possible!</h2><br>
-						<form>
+						<form method="post" action="./php/contactPage.php">
 							<p>Name:</p>
 							<input type="text" name="name"/>
 							<br>
@@ -59,5 +59,6 @@
 				</div>
 			</div>
 		</div>
+		<script src="scripts/checkLogin.js"></script>
 	</body>
 </html>

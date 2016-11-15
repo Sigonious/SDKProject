@@ -36,15 +36,15 @@
 			</div>
 			<div class="space"></div>
 				<div class = "reg">
-
-					<form id="login" method="post">
+					<b id="phpError"></b>
+					<form id="login" method="post" action="./php/login.php">
 						
 						<h1>Log In</h1>
 						
-						<input type="text" placeholder="Email"/>
-						<input type="password" placeholder="Password"/>
+						<input type="text" placeholder="Email" name="loginEmail" id="loginEmail"/>
+						<input type="password" placeholder="Password" name="loginPassword" id="loginPassword"/>
 						
-						<button type="submit">Log In</button>
+						<button type="submit" id="brnSubmit">Log In</button>
 						<p class="message">Not registered? <a href="registerPage.html">Register Now</a></p>
 
 					</form>

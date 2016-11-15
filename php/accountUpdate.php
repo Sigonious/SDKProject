@@ -2,9 +2,9 @@
 	
 	include("config.php");
 
-	$oldEmail = $database->real_escape_string($_POST['email']);
-	$newEmail = $database->real_escape_string($_POST['newEmail']);
-	$checkNewEmail = $database->real_escape_string($_POST['checkNewEmail']);
+	$oldEmail = $conn->real_escape_string($_POST['email']);
+	$newEmail = $conn->real_escape_string($_POST['newEmail']);
+	$checkNewEmail = $conn->real_escape_string($_POST['checkNewEmail']);
 
 	
 	
@@ -51,7 +51,7 @@
 		
 	if($newEmail == $checkNewEmail){
 		if($Err != true){
-			$sql = "UPDATE users SET email='$newEmail' WHERE email='oldEmail'";
+			$sql = "UPDATE users SET email='$newEmail' WHERE email='$oldEmail'";
 		}
 	} else {
 		echo "Emails do not match";

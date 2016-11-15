@@ -24,71 +24,6 @@ div.container3 {
 	top:0;
 	left:0;
 }
-div.container4{
-	background: #37D651; /* Old browsers */
-	background: -moz-linear-gradient(top,  #37D651 20%, #ffffff 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  #37D651 20%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  #37D651 20%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37D651', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-	width: 100%;
-	height: 100%;
-	color: green;
-	/*background-color: #37D651;*/
-	position:absolute;
-	top:0;
-	left:0;
-}
-
-div.accountContainer{
-	width: 50%;
-	height: 100%;
-	margin: auto;
-	border: solid black 2px;
-	background-color: white;
-	color: black;
-}
-
-.welcomeForm h1{
-	text-align: center;
-}
-
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    padding-top: 200px; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto;
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
-}
-
-/* Modal Content */
-.modalContent {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
 
 div.headerContainer {
 	position:fixed;
@@ -112,8 +47,7 @@ div.headerContainer {
 }
 
 .space {
-	height:15%;
-	background-color: #37D651;
+	height:25%;
 }
 
 div.siteName {
@@ -186,7 +120,6 @@ div.orderForm {
 	width:50%;
 	max-width:50%;
 	float:left;
-	overflow:auto;
 }
 
 .orderForm p, h1 {
@@ -462,7 +395,7 @@ div.contactHeader h1{
     }
 	
 	div.space {
-		height:25%;
+		height:10%;
 	}
 	
 	div.leftContact {
