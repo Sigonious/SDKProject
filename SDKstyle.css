@@ -42,8 +42,13 @@ div.headerContainer {
 	max-height:100%;
 }
 
+.logReg {
+	float: right;
+	padding-right: 10px;
+}
+
 .space {
-	height:10%;
+	height:20%;
 }
 
 div.siteName {
