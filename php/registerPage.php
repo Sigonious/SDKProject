@@ -1,10 +1,7 @@
 <?php
 	
-	$user = 'root';
-	$pass = '';
-	$db = 'testdb';
-
-	$db = new mysqli('localhost',$user,$pass,$db) or die("Unable to connect");
+	include("config.php");
+	session_start();
 
 	
 	//Checks if forms are empty and meets requirements
