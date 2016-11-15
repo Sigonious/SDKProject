@@ -3,10 +3,10 @@
 	<head>
 		<title>Account Page</title>
 		<meta charset="utf-8">
-		<link rel="stylesheet" type="text/css" href="SDKstyle.css">
+		<link rel="stylesheet" type="text/css" href="SDKaccStyle.css">
 	</head>
 	<body>
-		<div class="container">
+		<div class="container4">
 			<div class="headerContainer">
 				<div class="logReg">
 					<p><a href="loginPage.html">Login</a> | 
@@ -26,16 +26,52 @@
 				</div>
 			</div>
 			
-			<div class="welcomeFrom" style = "padding-top: 200px; padding-left: 30px;">
-				<h1>Welcome <?php echo $fName?></h1>
-				<p>What would you like to do?</p>
-			</div>
-			<div = "viewProfile" style="padding-top: 50px; padding-left: 30px;">
-				<h2>Your Information</h2>
-				<p>Name: <?php echo $fName?> <?php echo $lName?></p>
-				<p>Email: <?php echo $email?></p>
-				<p class = "editProf"><a href="#">Edit Profile</a></p>
+			<div class="accountContainer">
+				<div class="welcomeForm" style = "padding-top: 200px; padding-left: 30px;">
+					<h1>Welcome <?php echo $fName?></h1>
+				</div>
+				<div = "viewProfile" style="padding-top: 50px; padding-left: 30px;">
+					<h2>Your Information</h2>
+					
+					<p>Name: <?php echo $fName?> <?php echo $lName?></p>
+					<p>Email: <?php echo $email?></p>
+					
+					<button id = "editProf">Edit Profile</button>
+					
+					<div id="modal" class="modal">
+						<form class="modalContent" method = "post" action="./php/accountUpdate.php">
+							<span class="close">x</span>
+							<p>Current Email: </p>
+							<input type="text" name="email" id="email" maxlength="50"/>
+							<p>New Email: </p>
+							<input type="text" name="newEmail" id="newEmail" maxlength="50"/>
+							<p>Confirm Email: </p>
+							<input type="text" name="checkNewEmail" id="checkNewEmail" maxlength="50"/><br><br>
+							
+							<button type='submit'>Confirm</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+		
+		<script>
+		var modal = document.getElementById('modal');
+		
+		var btn = document.getElementById('editProf');
+		
+		btn.onclick=function(){
+			modal.style.display="block";
+		}
+		
+		span.onclick=function(){
+			modal.style.display="none";
+		}
+		window.onclick=function(event){
+			if(event.target == modal){
+				modal.style.display="none";
+				}
+		}
+		</script>
 	</body>
 </html>
