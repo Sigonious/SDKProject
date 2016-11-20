@@ -21,6 +21,8 @@ var tempPrice = 0;
 var totalPrice = 0;
 var tax = parseFloat(1.07);
 var orderNumber;
+var orderItemsProcessed = 3;
+var totalOrderItems = 0;
 
 /**********End Global Variables*************/
 
@@ -41,8 +43,10 @@ menuNumbers.onchange = function () {
 	var vegetableTable = document.getElementById("vegetableTable");
 	var extrasTable = document.getElementById("extrasTable");
 	var bobaTeaList = document.getElementById("bobaTeaFlavors");
+	var boxSides = document.getElementById("boxSides");
  	if(menuNumber.selectedIndex == 10)
 	{
+		boxSides.style.visibility = 'hidden';
  	    meatTable.hidden = true;
  	    sauceTable.hidden = false;
  	    vegetableTable.hidden = false;
@@ -52,6 +56,7 @@ menuNumbers.onchange = function () {
 	}
  	else if (menuNumber.selectedIndex == 11)
 	{
+		boxSides.style.visibility = 'hidden';
 	    meatTable.hidden = true;
 	    sauceTable.hidden = true;
 	    vegetableTable.hidden = true;
@@ -60,7 +65,19 @@ menuNumbers.onchange = function () {
 	    bobaPearls.hidden = false;
 
 	}
-	else {
+	else if(menuNumber.selectedIndex == 1)
+	{
+		boxSides.style.visibility = 'visible';
+	    meatTable.hidden = false;
+	    sauceTable.hidden = false;
+	    vegetableTable.hidden = false;
+	    extrasTable.hidden = false;
+	    bobaTeaList.style.visibility = 'hidden';
+	    bobaPearls.hidden = true;
+	}
+	else
+	{
+		boxSides.style.visibility = 'hidden';
 	    meatTable.hidden = false;
 	    sauceTable.hidden = false;
 	    vegetableTable.hidden = false;
@@ -107,6 +124,9 @@ for (var i = 0; i < bobaTeas.length; i++)
 bobaTeaFlavors.style.visibility = 'hidden';
 var bobaPearls = document.getElementById("bobaPearls");
 bobaPearls.hidden = true;
+
+var boxSides = document.getElementById("boxSides");
+boxSides.style.visibility = 'hidden';
 
 function updateTotal(priceIndex, amount)
 {
@@ -215,11 +235,25 @@ function addItemToList()
 {
 	//reset tempPrice
 	tempPrice = 0;
+	document.getElementById("boxSidesText").innerHTML = "";
 	
 	//get menu number
 	var selectedMenuItem = document.getElementById("menuNumber");
 	var menuItemValue = selectedMenuItem.options[selectedMenuItem.selectedIndex].textContent;
 	var menuNumberText = document.getElementById("menuNumberText");
+	
+	if(selectedMenuItem.selectedIndex == 1)
+	{
+		if(boxSides.selectedIndex == 0)
+		{
+			document.getElementById("boxSidesText").innerHTML = "Please select a valid side.";
+			return;
+		}
+		else
+		{
+			menuItemValue += " w/ " + boxSides.options[boxSides.selectedIndex].innerHTML;
+		}
+	}
 	
 	if (selectedMenuItem.selectedIndex == 0)
 	{
@@ -310,6 +344,7 @@ function addItemToList()
 	}//end else if statement
 	else if(selectedMenuItem.selectedIndex == 11)
 	{
+	    menuNumberText.innerHTML = "";
 		//Get boba flavor
 		var bobaFlavor = document.getElementById("bobaTeaFlavors");
 		var bobaFlavorValue = bobaFlavor.options[bobaFlavor.selectedIndex].textContent;
@@ -366,7 +401,6 @@ function addItemToList()
 	tableRow1.appendChild(tableCol1);
 	tableCol1 = document.createElement("td");
 	para1 = document.createElement("P");
-	para1.setAttribute("title", selectedMenuItem.options[selectedMenuItem.selectedIndex].value);
 	para1.setAttribute("id", "menuItem" + orderItemNumber2);
 	ptext1 = document.createTextNode(menuItemValue);
 	para1.appendChild(ptext1);
@@ -765,7 +799,6 @@ function priceCheck(passedIndex, item, quantity, place)
     xmlhttp.open("GET", "./php/priceCheck.php?item=" + item + "&quantity=" + quantity + "&place=" + place, true);
 	xmlhttp.send();
 }
-var previousItem;
 function editItem(itemInList)
 {
 
@@ -775,8 +808,6 @@ function editItem(itemInList)
     var table = tableBody.parentNode;
     var tableID = table.getAttribute("id").toString();
     itemToAdd = tableID.substring(tableID.length - 1, tableID.length);
-	console.log("itemToAdd = "+itemToAdd);
-	previousItem = document.getElementById("menuItem"+itemToAdd).title;
     var editButton = document.getElementById("finishEditBtn");
     var addButton = document.getElementById("addToOrderBtn");
     editButton.style.display = "block";
@@ -789,10 +820,8 @@ function finishEditingItem()
 {
 	var editTable = document.getElementById("orderItem"+itemToAdd);
 	var numberOfRows = editTable.firstChild.childNodes.length - 5;
-	console.log(editTable.firstChild.childNodes.length);
 	for(var i = 0; i < numberOfRows; i++)
 	{
-		console.log(i);
 		editTable.deleteRow(2);
 	}
 	
@@ -800,11 +829,25 @@ function finishEditingItem()
 	tempPrice = 0;
 	var priceToRemove = document.getElementById("price"+itemToAdd).innerHTML;
 	updateTotal(0, "-"+priceToRemove);
+	document.getElementById("boxSidesText").innerHTML = "";
 	
     //get menu number
     var selectedMenuItem = document.getElementById("menuNumber");
     var menuItemValue = selectedMenuItem.options[selectedMenuItem.selectedIndex].textContent;
 	var menuNumberText = document.getElementById("menuNumberText");
+	
+	if(selectedMenuItem.selectedIndex == 1)
+	{
+		if(boxSides.selectedIndex == 0)
+		{
+			document.getElementById("boxSidesText").innerHTML = "Please select a valid side.";
+			return;
+		}
+		else
+		{
+			menuItemValue += " w/ " + boxSides.options[boxSides.selectedIndex].innerHTML;
+		}
+	}
 	
 	if (selectedMenuItem.selectedIndex == 0)
 	{
@@ -1129,64 +1172,49 @@ function deleteTable(source)
 
 function startSubmitOrder()
 {
-	console.log("Starting order submission!");
 	//Get the orderNumber
 	findOrderNumber();
-	console.log("Finished order submission!");
 }
 
 function submitOrder()
 {
-	console.log("Check 1");
     //Get the div where items are
     var orderItemDiv = document.getElementById("currentItemsDiv");
-	console.log("Check 2");
 
     //Get item list from div
     var orderItems = orderItemDiv.childNodes; //This puts the tables with order items into an array, the first 3 are related to total price
-	console.log("Check 3");
 
 	var getLastTotal = document.getElementById("totalCost").innerHTML;
-	console.log("Check 4");
 	var lastTotal = parseFloat(getLastTotal.replace("Total: $", ""));
-	console.log("Check 5");
 	
 	var custName = document.getElementById("customerName").value;
-	console.log("Check 6");
 	var custEmail = document.getElementById("customerEmail").value;
-	console.log("Check 7");
 	var pickupDateDom = document.getElementById("pickupDate");
-	console.log("Check 8");
 	var pickupDate = pickupDateDom.options[pickupDateDom.selectedIndex].text;
-	console.log("Check 9");
 	var pickupTimeDom = document.getElementById("pickupTime");
-	console.log("Check 10");
 	var pickupTime = pickupTimeDom.options[pickupTimeDom.selectedIndex].text;
-	console.log("Adding order");
 	addOrder("orders", custName, custEmail, pickupDate, pickupTime, lastTotal);
-	console.log("DONE!");
 	
 	//Get information from tables
     for (var i = 3; i < orderItems.length; i++)
     {
+		totalOrderItems = i;
         var numOfNodes = orderItems[i].firstChild.childNodes.length;
-        if (numOfNodes > 7)
+        if (numOfNodes > 8)
         {
 			
 			var requests = orderItems[i].firstChild.childNodes[7].childNodes[1].firstChild.innerHTML;
-			
             var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild; //This is the "p" object in the table for the menu item
-			console.log("Adding order item");
-			addOrderItem(menuItem.title, (i-2), "itemName", 1, requests);
-			console.log("DONE!");
-			
 			var meatType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild; //Meat type selected for the table
-			console.log("Adding meat type!");
-			addOrderItem(meatType.innerHTML, (i-2), "meat", 1, "");
-			console.log("DONE!");
-            
-			console.log("Adding vegetables!");
 			var vegetables = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild; //Vegetables for the item
+			var sauces = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild; //Sauces for the item
+			var extras = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild; //extras for the item
+			var price = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild; //price for the item
+			
+			addOrderItem(menuItem.innerHTML, (i-2), "itemName", 1, requests);
+			
+			addOrderItem(meatType.innerHTML, (i-2), "meat", 1, "");
+            
 			if(vegetables.innerHTML.includes(","))
 			{
 				var vegetableArray = vegetables.innerHTML.split(", ");
@@ -1199,10 +1227,7 @@ function submitOrder()
 			{
 				addOrderItem(vegetables.innerHTML, (i-2), "vegetables", 1, "");
 			}
-			console.log("DONE!");
-            
-			console.log("Adding sauces!");
-			var sauces = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild; //Sauces for the item
+			
 			if(sauces.innerHTML.includes(","))
 			{
 				var saucesAsArray = sauces.innerHTML.split(", "); //splits sauces into an array delimited by commas
@@ -1217,11 +1242,7 @@ function submitOrder()
 			{
 				addOrderItem(sauces.innerHTML, (i-2), "sauce", 1, "");
 			}
-			console.log("DONE!");
             
-			var extras = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild; //extras for the item
-			
-			console.log("Adding extras!");
 			if(extras.innerHTML.includes(","))
 			{
 				var extrasAsArray = extras.innerHTML.split(", "); //Splits extra items into an array delimited by commas
@@ -1252,7 +1273,6 @@ function submitOrder()
 				{
 					var extrasQuantity = 1;
 					var extrasSubstring = extras.innerHTML;
-					console.log(extrasSubstring+" has a length of: "+extrasSubstring.length);
 					for(var j = 0; j < extras.innerHTML.length; j++)
 					{
 						if(extras.innerHTML.substr(j,1) == "(")
@@ -1268,14 +1288,97 @@ function submitOrder()
 					addOrderItem(extras.innerHTML, (i-2), "extras", 1, "");
 				}
 			}
-			console.log("DONE!");
 			
-			console.log("Adding price!");
-			var price = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild; //price for the item
-			console.log("The price is... "+price.innerHTML);
 			addOrderItem(parseFloat(price.innerHTML), (i-2), "price", 1, "");
-			
         }
+		else if(numOfNodes > 7)
+		{
+			
+            var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild; //This is the "p" object in the table for the menu item
+			var vegetables = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild; //Vegetables for the item
+			var sauces = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild; //Sauces for the item
+			var extras = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild; //extras for the item
+			var price = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild; //price for the item
+			var requests = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild.innerHTML;
+			
+			addOrderItem(menuItem.innerHTML, (i-2), "itemName", 1, requests);
+            
+			if(vegetables.innerHTML.includes(","))
+			{
+				var vegetableArray = vegetables.innerHTML.split(", ");
+				for(var j = 0; j < vegetableArray.length; j++)
+				{
+					addOrderItem(vegetableArray[j], (i-2), "vegetables", 1, "");
+				}
+			}
+			else
+			{
+				addOrderItem(vegetables.innerHTML, (i-2), "vegetables", 1, "");
+			}
+			
+			if(sauces.innerHTML.includes(","))
+			{
+				var saucesAsArray = sauces.innerHTML.split(", "); //splits sauces into an array delimited by commas
+				
+				//for loop to add all sauces to DB
+				for(var j = 0; j < saucesAsArray.length; j++)
+				{
+					addOrderItem(saucesAsArray[j], (i-2), "sauce", 1, "");
+				}
+			}
+			else
+			{
+				addOrderItem(sauces.innerHTML, (i-2), "sauce", 1, "");
+			}
+            
+			if(extras.innerHTML.includes(","))
+			{
+				var extrasAsArray = extras.innerHTML.split(", "); //Splits extra items into an array delimited by commas
+			
+				//For loop to iterate through extra items
+				for(var j = 0; j < extrasAsArray.length; j++)
+				{
+					var extraQuantity = 1;
+					var extraSubstring = extrasAsArray[j];
+					if(extraSubstring.includes("("))
+					{
+						//for loop to iterate through each extra item and check for quantity
+						for(var k = 0; k < extrasAsArray[j].length; k++)
+						{
+							if(extrasAsArray[j].substr(k,1) == "(")
+							{
+								extraQuantity = extrasAsArray[j].substr(k+1, 1);
+								extraSubstring = extrasAsArray[j].substr(0,k);
+							}
+						}
+					}
+					addOrderItem(extraSubstring, (i-2), "extras", extraQuantity, "");
+				}
+			}
+			else
+			{
+				if(extras.innerHTML.includes("("))
+				{
+					var extrasQuantity = 1;
+					var extrasSubstring = extras.innerHTML;
+					for(var j = 0; j < extras.innerHTML.length; j++)
+					{
+						if(extras.innerHTML.substr(j,1) == "(")
+						{
+							extrasQuantity = extras.innerHTML.substr(j+1,1);
+							extrasSubstring = extras.innerHTML.substr(0,j);
+						}
+					}
+					addOrderItem(extrasSubstring, (i-2), "extras", extrasQuantity, "");
+				}
+				else
+				{
+					addOrderItem(extras.innerHTML, (i-2), "extras", 1, "");
+				}
+			}
+			
+			addOrderItem(parseFloat(price.innerHTML), (i-2), "price", 1, "");
+		}
         else
         {
 			var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild.innerHTML;
@@ -1291,11 +1394,12 @@ function submitOrder()
 			addOrderItem(parseFloat(price), (i-2), "price", 1, "");
         }
     }
-	document.getElementById("submitForm").submit();
+	
 }
 
 function addOrderItem(response, itemIndex, col, quantity, requests)
 {
+	if(col == "price"){ orderItemsProcessed++; }
 	var xmlhttp;
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -1305,6 +1409,7 @@ function addOrderItem(response, itemIndex, col, quantity, requests)
     }
     xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			if(orderItemsProcessed = totalOrderItems && col == "price") { orderConfirmation(document.getElementById("customerName").value, document.getElementById("customerEmail").value); }
         }
     }
 	if(col == "itemName")
@@ -1347,11 +1452,28 @@ function findOrderNumber()
     }
     xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			console.log("Response for order number was: "+xmlhttp.responseText);
 			orderNumber = parseInt(xmlhttp.responseText);
 			submitOrder();
         }
     }
     xmlhttp.open("GET", "./php/findOrderNumbers.php", true);
+	xmlhttp.send();
+}
+
+function orderConfirmation(name, email)
+{
+	var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById("submitForm").submit();
+        }
+    }
+    xmlhttp.open("GET", "./php/orderConfirmation.php?name="+name+"&email="+email, true);
 	xmlhttp.send();
 }

@@ -289,6 +289,10 @@ div.contactHeader h1{
 	color:black;
 }
 
+div.contactContainer h1 {
+	text-align: center;
+}
+
 .leftContact {
 	display:block;
 	width:45%;

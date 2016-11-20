@@ -6,7 +6,7 @@
 	$email = $conn->real_escape_string($_POST['loginEmail']);
 	$pass = $conn->real_escape_string($_POST['loginPassword']);
 	
-	//$pass = hash('sha256',$pass);
+	$pass = hash('sha256',$pass);
 	
 	$sql = "SELECT * FROM users WHERE email='$email'";
 	
@@ -24,9 +24,8 @@
 		$_SESSION['lName'] = $row['lastName'];
 		header("Location: ../homePage.html");
 	}
-	
 	else
 	{
-		echo "Incorrect credentials.";
+		echo "Incorrect credentials.   ";
 	}
 ?>

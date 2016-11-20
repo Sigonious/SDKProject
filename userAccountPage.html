@@ -33,14 +33,14 @@
 				<div = "viewProfile" style="padding-top: 50px; padding-left: 30px;">
 					<h2>Your Information</h2>
 					
-					<p>Name: <?php echo $fName?> <?php echo $lName?></p>
-					<p>Email: <?php echo $email?></p>
+					<p id="usersName">Name: </p>
+					<p id="usersEmail">Email: </p>
 					
 					<button id = "editProf">Edit Profile</button>
 					
 					<div id="modal" class="modal">
 						<form class="modalContent" method = "post" action="./php/accountUpdate.php">
-							<span class="close">x</span>
+							<span class="close" id="close">x</span>
 							<p>Current Email: </p>
 							<input type="text" name="email" id="email" maxlength="50"/>
 							<p>New Email: </p>
@@ -57,7 +57,7 @@
 		
 		<script>
 		var modal = document.getElementById('modal');
-		
+		var span = document.getElementById("close");
 		var btn = document.getElementById('editProf');
 		
 		btn.onclick=function(){
@@ -73,6 +73,6 @@
 				}
 		}
 		</script>
-		<script src="scripts/checkLogin.js"></script>
+		<script src="scripts/accountScripts.js"></script>
 	</body>
 </html>
