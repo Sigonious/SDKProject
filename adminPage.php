@@ -33,10 +33,11 @@
 				<div class="viewProfile" style="padding-top: 50px; padding-left: 30px;">
 					<h2>Your Information</h2>
 					
-					<p id="usersName">Name: </p>
+					<p id="usersName">Name: <text id="fName"></text><text id="lName"></text></p>
 					<p id="usersEmail">Email: </p>
-					
-					<button id = "editProf">Edit Profile</button>
+					<button id = "editProf">Change Email</button> 
+					<button id="editPass">Change Password</button><br><br>
+					<a href="orderList.php">View all Orders</a>
 					
 					<div id="modal" class="modal">
 						<form class="modalContent" method = "post" action="./php/accountUpdate.php">
@@ -49,86 +50,56 @@
 							<input type="text" name="checkNewEmail" id="checkNewEmail" maxlength="50"/><br><br>
 							
 							<button type='submit'>Confirm</button>
+						</form>
+					</div>
+					<div id="modal2" class="modal2">
+						<form class="modalContent" method = "post" action="./php/accountPasswordUpdate.php">
+							<span class="close" id="close2">x</span>
+							<p>Email Address: </p>
+							<input type="text" name="email2" id="email2" maxlength="50"/>
+							<p>Current Password: </p>
+							<input type="password" name="password" id="password" maxlength="50"/>
+							<p>New Password: </p>
+							<input type="password" name="newPassword" id="newPassword" maxlength="50"/>
+							<p>Confirm Password: </p>
+							<input type="password" name="checkNewPassword" id="checkNewPassword" maxlength="50"/><br><br>
+							
+							<button type='submit'>Confirm</button>
+						</form>
 					</div>
 				</div>
-			<div class="allOrders">
-				<table>
-					<tr>
-						<td>
-							<p>Order Number</p>
-						</td>
-						<td>
-							<p>Customer Name</p>
-						</td>
-						<td>
-							<p>Customer Email</p>
-						</td>
-						<td>
-							<p>Date</p>
-						</td>
-						<td>
-							<p>Pickup Date</p>
-						</td>
-						<td>
-							<p>Pickup Time</p>
-						</td>
-						<td>
-							<p>Total</p>
-						</td>
-						<?php
-							include 'php/config.php';
-							
-							$allorders = 'SELECT * FROM orders';
-							$allordersresult = mysqli_query($conn, $allorders);
-							$orderrow = mysqli_fetch_all($allordersresult, MYSQLI_ASSOC);
-							
-							foreach($orderrow as $order)
-							{?>
-								<tr>
-									<td>
-										<?php echo $order['orderID']; ?>
-									</td>
-									<td>
-										<?php echo $order['customerName']; ?>
-									</td>
-									<td>
-										<?php echo $order['customerEmail']; ?>
-									</td>
-									<td>
-										<?php echo $order['orderDatePlaced']; ?>
-									</td>
-									<td>
-										<?php echo $order['orderPickupDate']; ?>
-									</td>
-									<td>
-										<?php echo $order['orderPickupTime']; ?>
-									</td>
-									<td>
-										<?php echo $order['total']; ?>
-									</td>
-								</tr>
-							<?php } ?>
-				</table>
 			</div>
 		</div>
 		
 		<script>
-		var modal = document.getElementById('modal');
-		var span = document.getElementById("close");
-		var btn = document.getElementById('editProf');
-		
-		btn.onclick=function(){
-			modal.style.display="block";
-		}
-		
-		span.onclick=function(){
-			modal.style.display="none";
-		}
-		window.onclick=function(event){
-			if(event.target == modal){
+			var modal = document.getElementById('modal');
+			var modal2 = document.getElementById('modal2');
+			var span = document.getElementById("close");
+			var span2 = document.getElementById("close2");
+			var btn = document.getElementById('editProf');
+			var passBtn = document.getElementById("editPass");
+			
+			btn.onclick=function(){
+				modal.style.display="block";
+			}
+			
+			passBtn.onclick = function(){
+				modal2.style.display="block";
+			}
+			
+			span.onclick=function(){
 				modal.style.display="none";
-				}
-		}
+			}
+			
+			span2.onclick=function(){
+				modal2.style.display="none";
+			}
+			
+			window.onclick=function(event){
+				if(event.target == modal){
+					modal.style.display="none";
+					}
+			}
 		</script>
 		<script src="scripts/adminScripts.js"></script>
 	</body>

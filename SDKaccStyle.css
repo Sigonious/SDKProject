@@ -40,12 +40,10 @@ div.container4{
 }
 
 div.accountContainer{
-	width: 50%;
-	height: 100%;
 	margin: auto;
-	border: solid black 2px;
 	background-color: white;
 	color: black;
+	min-height: 80%;
 }
 
 .welcomeForm h1{
@@ -64,6 +62,29 @@ div.accountContainer{
     overflow: auto;
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4); 
+}
+
+
+div.modal2 {
+    display: none; 
+    position: fixed; 
+    z-index: 2; 
+    padding-top: 200px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modalContent2 {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 }
 
 /* Modal Content */
@@ -215,7 +236,7 @@ div.currentItems th, td, tr {
     border: 1px solid black;
 }
 
-input[type=text], select {
+input[type=text], input[type=password], select {
 	width: 60%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -394,6 +415,34 @@ div.contactHeader h1{
     height: 312px;
 }
 
+div.allOrders table {
+	margin:auto;
+}
+	
+div.allOrders table td{
+	border: 1px solid black;
+}
+
+div.links {
+	text-align:center;
+	font-size:24px;
+}
+
+div.viewProfile {
+	 padding-top: 50px;
+	 padding-left:30px;
+	 text-align: center;
+}
+
+div.viewProfile p {
+	text-align:center;
+}
+
+div.viewProfile a {
+	text-align:center;
+	font-size: 24px;
+}
+
 @media screen and (max-width: 1750px) {
 	div.headerContent {
 		width:57%;
@@ -445,9 +494,6 @@ div.contactHeader h1{
         width:90%;
     }
 	
-	div.headerContainer {
-		max-height:100px;
-	}
 	div.headerContent {
 		width:40%;
 	}
@@ -534,6 +580,11 @@ div.contactHeader h1{
 		float:none;
 		height:initial;
 		margin-left:5%;
+	}
+	
+	div.allOrders table{
+		font-size: 26px;
+		width:100%;
 	}
 	
 }

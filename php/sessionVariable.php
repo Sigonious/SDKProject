@@ -43,10 +43,7 @@
 			$adminStatusResult = $conn->query($adminStatus);
 			$adminrows = $adminStatusResult->fetch_array(MYSQLI_ASSOC);
 			$acctype = $adminrows['type'];
-			if($acctype == "admin")
-			{
-				header("Location: ../adminPage.html");
-			}
+			echo "$acctype";
 		}
 		else
 		{

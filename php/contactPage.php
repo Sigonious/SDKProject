@@ -4,6 +4,7 @@
 	$name = test_input($_POST['name']);
 	$email = test_input($_POST['email']);
 	$message = test_input($_POST['message']);
+	$message .= "<br><br>Name: " . $name . "<br>Email: " . $email;
 	
 	$mail = new PHPMailer();
 	

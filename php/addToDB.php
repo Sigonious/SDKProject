@@ -122,8 +122,8 @@
 		$total = $conn->real_escape_string($_GET['total']);
 		$orderDate = date("Y-m-d");
 		
-		$sql = "INSERT INTO orders (orderID, customerName, customerEmail, orderDatePlaced, orderPickupDate, orderPickupTime, total)
-		VALUES ($orderNumber, '$response', '$email', '$orderDate', '$pickupDate', '$pickupTime', $total)";
+		$sql = "INSERT INTO orders (orderID, customerName, customerEmail, orderDatePlaced, orderPickupDate, orderPickupTime, total, status)
+		VALUES ($orderNumber, '$response', '$email', '$orderDate', '$pickupDate', '$pickupTime', $total, 'incomplete')";
 		
 		if($conn->query($sql) === TRUE)
 		{

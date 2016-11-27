@@ -47,7 +47,7 @@ div.headerContainer {
 }
 
 .space {
-	height:25%;
+	height:200px;
 	background-color:#37D651;
 }
 
@@ -395,10 +395,6 @@ div.contactHeader h1{
     div.articleContainer h2 {
         font-size: 15px;
     }
-	
-	div.space {
-		height:10%;
-	}
 	
 	div.leftContact {
 		float:none;

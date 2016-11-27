@@ -53,11 +53,11 @@ function session(find)
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			if(find == "fName")
 			{
-				usersName.innerHTML += xmlhttp.responseText;
+				document.getElementById("fName").innerHTML += xmlhttp.responseText;
 			}
 			else if(find == "lName")
 			{
-				usersName.innerHTML += " "+xmlhttp.responseText;
+				document.getElementById("lName").innerHTML += " " + xmlhttp.responseText;
 			}
 			else if(find == "email")
 			{

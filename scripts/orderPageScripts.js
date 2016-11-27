@@ -187,6 +187,7 @@ function createItemList()
 function resetItemList()
 {
     menuNumber.selectedIndex = 0;
+	document.getElementById("boxSides").style.visibility = "hidden";
     
     var veggies = document.getElementsByName("vegetables");
     for( var i = 0; i < veggies.length; i++)
@@ -1172,6 +1173,33 @@ function deleteTable(source)
 
 function startSubmitOrder()
 {
+	if(document.getElementById("name").innerHTML != "✔")
+	{
+		document.getElementById("name").innerHTML = "Enter a valid name.";
+		return;
+	}
+	else if(pickupDate.selectedIndex == 0)
+	{
+		document.getElementById("name").innerHTML = "";
+		document.getElementById("dateErr").innerHTML = "Please select a valid date";
+		return;
+	}
+	else if(pickupTime.options[pickupTime.selectedIndex].innerHTML == "Closed")
+	{
+		document.getElementById("name").innerHTML = "";
+		document.getElementById("dateErr").innerHTML = "";
+		document.getElementById("timeErr").innerHTML = "Please select a valid time.";
+		return;
+	}
+	else if(document.getElementById("currentItemsDiv").childNodes.length < 4)
+	{
+		document.getElementById("itemErr").innerHTML = "Please add items to order.";
+		return;
+	}
+	document.getElementById("name").innerHTML = "";
+	document.getElementById("dateErr").innerHTML = "";
+	document.getElementById("timeErr").innerHTML = "";
+	document.getElementById("itemErr").innerHTML = "";
 	document.getElementById("submitButton").setAttribute("style", "display:none");
 	//Get the orderNumber
 	findOrderNumber();

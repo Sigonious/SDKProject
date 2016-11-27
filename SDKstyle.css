@@ -47,7 +47,7 @@ div.headerContainer {
 }
 
 .space {
-	height:25%;
+	height:200px;
 }
 
 div.siteName {
@@ -399,7 +399,7 @@ div.contactContainer h1 {
     }
 	
 	div.space {
-		height:10%;
+		height:150px;
 	}
 	
 	div.leftContact {

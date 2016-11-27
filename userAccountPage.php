@@ -28,18 +28,15 @@
 			
 			<div class="accountContainer">
 				<div class="welcomeForm" style = "padding-top: 200px; padding-left: 30px;">
-					<h1>Welcome</h1>
+					<h1>Welcome <?php echo $fName?></h1>
 				</div>
-				<div class="viewProfile">
+				<div = "viewProfile" style="padding-top: 50px; padding-left: 30px;">
 					<h2>Your Information</h2>
 					
-					<p id="usersName">Name: <text id="fName"></text><text id="lName"></text></p>
+					<p id="usersName">Name: </p>
 					<p id="usersEmail">Email: </p>
 					
-					<button id = "editProf">Edit Email</button> 
-					<button id="editPass">Change Password</button><br><br>
-					<a href="userOrderList.php">View your orders</a>
-					
+					<button id = "editProf">Edit Profile</button>
 					
 					<div id="modal" class="modal">
 						<form class="modalContent" method = "post" action="./php/accountUpdate.php">
@@ -52,56 +49,29 @@
 							<input type="text" name="checkNewEmail" id="checkNewEmail" maxlength="50"/><br><br>
 							
 							<button type='submit'>Confirm</button>
-							</form>
-					</div>
-					<div id="modal2" class="modal2">
-						<form class="modalContent" method = "post" action="./php/accountPasswordUpdate.php">
-							<span class="close" id="close2">x</span>
-							<p>Email Address: </p>
-							<input type="text" name="email2" id="email2" maxlength="50"/>
-							<p>Current Password: </p>
-							<input type="text" name="password" id="password" maxlength="50"/>
-							<p>New Password: </p>
-							<input type="text" name="newPassword" id="newPassword" maxlength="50"/>
-							<p>Confirm Password: </p>
-							<input type="text" name="checkNewPassword" id="checkNewPassword" maxlength="50"/><br><br>
-							
-							<button type='submit'>Confirm</button>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		
 		<script>
-			var modal = document.getElementById('modal');
-			var modal2 = document.getElementById('modal2');
-			var span = document.getElementById("close");
-			var span2 = document.getElementById("close2");
-			var btn = document.getElementById('editProf');
-			var passBtn = document.getElementById("editPass");
-			
-			btn.onclick=function(){
-				modal.style.display="block";
-			}
-			
-			passBtn.onclick = function(){
-				modal2.style.display="block";
-			}
-			
-			span.onclick=function(){
+		var modal = document.getElementById('modal');
+		var span = document.getElementById("close");
+		var btn = document.getElementById('editProf');
+		
+		btn.onclick=function(){
+			modal.style.display="block";
+		}
+		
+		span.onclick=function(){
+			modal.style.display="none";
+		}
+		window.onclick=function(event){
+			if(event.target == modal){
 				modal.style.display="none";
-			}
-			
-			span2.onclick=function(){
-				modal2.style.display="none";
-			}
-			
-			window.onclick=function(event){
-				if(event.target == modal){
-					modal.style.display="none";
-					}
-			}
+				}
+		}
 		</script>
 		<script src="scripts/accountScripts.js"></script>
 	</body>

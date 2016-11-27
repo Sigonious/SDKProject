@@ -161,12 +161,16 @@
 					<select id="pickupDate" name="orderPickupDate">
 						<option>Select Date for order</option>
 					</select>
+					<b id="dateErr"></b>
 					<p>Time</p>
 					<select id="pickupTime" name="orderPickupTime">
 						<option>Select Pickup Time</option>
-					</select><p></p>
+					</select>
+					<b id="timeErr"></b>
+					<br>
 					<input type="button" id="addOrderItemButton" value="Add item to order" onclick="createItemList()"><p></p>
-					<input type="button" value="Submit" onclick="startSubmitOrder()" id="submitButton">
+					<input type="button" value="Submit" onclick="startSubmitOrder()" id="submitButton"><br>
+					<b id="itemErr" style="font-size:20px;"></b>
 				</form>
 				</div>
 				<div class="currentItems" id="currentItemsDiv">

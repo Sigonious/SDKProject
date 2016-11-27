@@ -28,30 +28,9 @@
 			
 			<div class="accountContainer">
 				<div class="welcomeForm" style = "padding-top: 200px; padding-left: 30px;">
-					<h1>Welcome</h1>
-				</div>
-				<div class="viewProfile" style="padding-top: 50px; padding-left: 30px;">
-					<h2>Your Information</h2>
-					
-					<p id="usersName">Name: </p>
-					<p id="usersEmail">Email: </p>
-					
-					<button id = "editProf">Edit Profile</button>
-					
-					<div id="modal" class="modal">
-						<form class="modalContent" method = "post" action="./php/accountUpdate.php">
-							<span class="close" id="close">x</span>
-							<p>Current Email: </p>
-							<input type="text" name="email" id="email" maxlength="50"/>
-							<p>New Email: </p>
-							<input type="text" name="newEmail" id="newEmail" maxlength="50"/>
-							<p>Confirm Email: </p>
-							<input type="text" name="checkNewEmail" id="checkNewEmail" maxlength="50"/><br><br>
-							
-							<button type='submit'>Confirm</button>
-					</div>
 				</div>
 			<div class="allOrders">
+				<h1 style="text-align:center;">All Orders</h1>
 				<table>
 					<tr>
 						<td>
@@ -105,6 +84,12 @@
 									</td>
 									<td>
 										<?php echo $order['total']; ?>
+									</td>
+									<td>
+										<?php echo $order['status']; ?>
+									</td>
+									<td>
+										<a href="orderDetails.php?id=<?php echo $order['orderID']; ?>">View Details</a>
 									</td>
 								</tr>
 							<?php } ?>

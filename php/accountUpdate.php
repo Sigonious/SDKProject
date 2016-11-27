@@ -1,5 +1,10 @@
 <?php
-	
+	session_start();
+	if(!isset($_SESSION['email']))
+	{
+		header("Location: ../index.php");
+		exit;
+	}
 	include("config.php");
 
 	$oldEmail = $conn->real_escape_string($_POST['email']);
