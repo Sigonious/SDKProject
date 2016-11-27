@@ -45,7 +45,7 @@
 			$acctype = $adminrows['type'];
 			if($acctype == "admin")
 			{
-				header("Location: ../adminPage.html");
+				echo "admin";
 			}
 		}
 		else

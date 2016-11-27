@@ -57,13 +57,25 @@
 		if(empty($_POST["checkEmail"])){
 			$checkEmailErr = "Email confirmation is required";
 			$Err = true;
-			} elseif($_POST["email"] == $_POST["checkEmail"]) {
-				$checkEmail = test_input($_POST["checkEmail"]);
-			} else {
-				$checkEmailErr = "Email does not match";
-				echo "$checkEmailErr";
-				$Err = true;
-			}
+		} elseif($_POST["email"] == $_POST["checkEmail"]) {
+			$checkEmail = test_input($_POST["checkEmail"]);
+		} else {
+			$checkEmailErr = "Email does not match";
+			echo "$checkEmailErr";
+			$Err = true;
+		}
+		
+		//Check if email is already in database
+		$usersEmail = $conn->real_escape_string($_POST["email"]);
+		$emailCheck = "SELECT * FROM users WHERE email='$usersEmail'";
+		$emailCheckResult = $conn->query($emailCheck);
+		$emailrows = $emailCheckResult->num_rows;
+		if($emailrows > 0)
+		{
+			$emailErr = "Email is already in use.";
+			echo "$emailErr";
+			$Err = true;
+		}
 	
 		//Password
 		//at least 8 characters and contains a letter
@@ -97,10 +109,10 @@
 		//Inserts values from form into database if there are no errors; Err=true
 		if(isset($Err) && $Err != true){
 			
-		$pwd1 = hash('sha256',$pwd1);
+			$pwd1 = hash('sha256',$pwd1);
 		
-		$sql = "INSERT INTO users (firstName, lastName, email, password)
-		VALUES('$firstName','$lastName','$email','$pwd1' )";
+			$sql = "INSERT INTO users (firstName, lastName, email, password, type)
+			VALUES('$firstName','$lastName','$email','$pwd1', 'user')";
 
 			if($conn->query($sql)){
 				echo "Success";
@@ -122,14 +134,13 @@
 		header("Location: ../registerPage.html");
 	}
 	
-	function test_input($data){
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
-	return $data;
-	
-	}
-	
 	$conn->close();
 	
-	?>
+	function test_input($data){
+		$data = trim($data);
+		$data = stripslashes($data);
+		$data = htmlspecialchars($data);
+		return $data;
+	}
+	
+?>

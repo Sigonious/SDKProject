@@ -63,9 +63,16 @@ function session(find)
 			{
 				usersEmail.innerHTML += xmlhttp.responseText;
 			}
+			else if(find == "type")
+			{
+				if(xmlhttp.responseText != "admin")
+				{
+					document.location.href = "index.php";
+				}
+			}
 		}
 	}
-	xmlhttp.open("GET", "./php/sessionVariable.php?find="+find, true);
+	xmlhttp.open("GET", "./php/adminSessionVariable.php?find="+find, true);
 	xmlhttp.send();
 }
 

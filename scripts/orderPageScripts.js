@@ -1172,6 +1172,7 @@ function deleteTable(source)
 
 function startSubmitOrder()
 {
+	document.getElementById("submitButton").setAttribute("style", "display:none");
 	//Get the orderNumber
 	findOrderNumber();
 }
