@@ -1195,10 +1195,11 @@ function submitOrder()
 	var pickupTime = pickupTimeDom.options[pickupTimeDom.selectedIndex].text;
 	addOrder("orders", custName, custEmail, pickupDate, pickupTime, lastTotal);
 	
+	totalOrderItems = orderItems.length;
+	
 	//Get information from tables
     for (var i = 3; i < orderItems.length; i++)
     {
-		totalOrderItems = i;
         var numOfNodes = orderItems[i].firstChild.childNodes.length;
         if (numOfNodes > 8)
         {
@@ -1299,7 +1300,7 @@ function submitOrder()
 			var sauces = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild; //Sauces for the item
 			var extras = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild; //extras for the item
 			var price = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild; //price for the item
-			var requests = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild.innerHTML;
+			var requests = orderItems[i].firstChild.childNodes[6].childNodes[1].firstChild.innerHTML; //Requests for the item
 			
 			addOrderItem(menuItem.innerHTML, (i-2), "itemName", 1, requests);
             
@@ -1382,13 +1383,14 @@ function submitOrder()
         else
         {
 			var menuItem = orderItems[i].firstChild.childNodes[1].childNodes[1].firstChild.innerHTML;
-			addOrderItem("bobaTea", (i-2), "itemName", 1, "");
+			var requests = orderItems[i].firstChild.childNodes[5].childNodes[1].firstChild.innerHTML;
+			addOrderItem(menuItem, (i-2), "itemName", 1, requests);
 			
 			var bobaFlavorType = orderItems[i].firstChild.childNodes[2].childNodes[1].firstChild.innerHTML;
 			addOrderItem(bobaFlavorType, (i-2), "flavor", 1, "");
 			
 			var tapiocaPearlsValue = orderItems[i].firstChild.childNodes[3].childNodes[1].firstChild.innerHTML;
-			addOrderItem(tapiocaPearlsValue, (i-2), "extra", 1, "");
+			addOrderItem(tapiocaPearlsValue, (i-2), "extras", 1, "");
 			
 			var price = orderItems[i].firstChild.childNodes[4].childNodes[1].firstChild.innerHTML;
 			addOrderItem(parseFloat(price), (i-2), "price", 1, "");
@@ -1409,7 +1411,9 @@ function addOrderItem(response, itemIndex, col, quantity, requests)
     }
     xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			if(orderItemsProcessed = totalOrderItems && col == "price") { orderConfirmation(document.getElementById("customerName").value, document.getElementById("customerEmail").value); }
+			if(orderItemsProcessed = totalOrderItems && col == "price") {
+				orderConfirmation(document.getElementById("customerName").value, document.getElementById("customerEmail").value);
+			}
         }
     }
 	if(col == "itemName")
