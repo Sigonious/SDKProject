@@ -151,8 +151,23 @@ div.headerButton a {
 	white-space:nowrap;
 }
 
+div.confMsg {
+	margin: 20% 25% 0% 25%;
+	padding-top: 60px;
+	text-align: center;
+	height: 30%;
+	width: 50%;
+	background: white;
+	color: black;
+	border: 2px solid black;
+}
+
+
 @media screen and (max-width: 1000px)
 {
+	div.confMsg{
+		margin-top: 30%;
+	}
 	div.siteName{
 		width: initial;
 	}

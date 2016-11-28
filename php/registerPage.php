@@ -116,7 +116,7 @@
 
 			if($conn->query($sql)){
 				echo "Success";
-				header("Location: ../homePage.html");
+				header("Location: ../refConf.html");
 			}
 			else{
 				echo "Couldn't submit.";
