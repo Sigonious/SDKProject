@@ -26,7 +26,6 @@ div.container3 {
 }
 
 div.headerContainer {
-	position:fixed;
 	width: 100%;
 	color: green;
 	padding-bottom: 15px;
@@ -44,11 +43,6 @@ div.headerContainer {
 	width:50%;
 	margin:auto;
 	max-height:100%;
-}
-
-.space {
-	height:200px;
-	background-color:#37D651;
 }
 
 div.siteName {
@@ -372,6 +366,11 @@ div.contactHeader h1{
 
 @media screen and (max-width: 1000px) {
 	
+	div.space {
+		height:200px;
+		background-color:#37D651;
+}
+	
 	div.siteName {
 		width:90%;
 	}
@@ -470,6 +469,10 @@ div.contactHeader h1{
 }
 
 @media screen and (max-width: 930px) {
+	
+	
+
+
 	div.headerContent {
 		width:50%;
 	}

@@ -24,7 +24,6 @@ div.container {
 
 
 div.headerContainer {
-	position:fixed;
 	width: 100%;
 	color: green;
 	padding-bottom: 15px;
@@ -132,7 +131,7 @@ div.leftColumn {
 	min-height:600px;
 	background-color:black;
 	color:#D29494;
-	padding-top: 10%;
+	padding-top: 30px;
 	border: 2px solid #A0522D;
 	text-align: center;
 
@@ -150,18 +149,32 @@ div.info{
 	padding-right: 20px;
 }
 
+.rightSection img{
+	height: 60%;
+	width: 60%;
+	border: 2px solid black;
+}
+
+.rightSection p, h3{
+	padding-left: 8%;
+	padding-right: 8%;
+	font-size: 24px;
+	text-align: center;
+}
+
 
 div.rightSection {
 	float: left;
-    margin-right: 20px;
+    margin-right: 2%;
+	margin-left: 2%;
     padding-bottom: 30px;
-	padding-left: 20px;
-	padding-top: 15%;
-    width: 700px;
+	padding-top: 5%;
+    width: 80%;
 	text-align: center;
 	color: black;
 
 }
+
 
 
 .orderForm {

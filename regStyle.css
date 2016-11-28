@@ -9,7 +9,7 @@ body {
 
 .reg button {
 	float: left;
-	color: white;
+	color: #37D651;
 	display: inline-block;
 	padding: 9px 14px;
 	font-size: 16px;
@@ -79,8 +79,22 @@ div.container {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37D651', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
+div.container2 {
+	width: 100%;
+	color: white;
+	position:absolute;
+	top:0;
+	left:0;
+	overflow:auto;
+	
+	background: #37D651; /* Old browsers */
+	background: -moz-linear-gradient(top,  #37D651 20%, #ffffff 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  #37D651 20%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  #37D651 20%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37D651', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
 div.headerContainer {
-	position:fixed;
 	width: 100%;
 	color: green;
 	padding-bottom: 15px;
@@ -118,7 +132,30 @@ div.siteName img {
 	width: 19%;
 }
 
+div.siteName2 {
+	margin-left:auto;
+	margin-right:auto;
+	width:50%;
+	max-width:100%;
+	height:50%;
+}
+
+div.siteName2 img {
+	height: 100px;
+	width: 88px;
+}
+
 div.siteName h1, img {
+	display:inline;
+	text-align: left;
+	overflow:hidden;
+	white-space:nowrap;
+	color: white;
+	text-shadow: #000 0px 0px 3px,   #000 0px 0px 3px,   #000 0px 0px 3px,
+             #000 0px 0px 3px,   #000 0px 0px 3px,   #000 0px 0px 3px;
+}
+
+div.siteName2 h1, img {
 	display:inline;
 	text-align: left;
 	overflow:hidden;
@@ -152,8 +189,9 @@ div.headerButton a {
 }
 
 div.confMsg {
-	margin: 20% 25% 0% 25%;
-	padding-top: 60px;
+	margin: 10% 25% 10% 25%;
+	padding-top: 50px;
+	padding-bottom: 60px;
 	text-align: center;
 	height: 30%;
 	width: 50%;

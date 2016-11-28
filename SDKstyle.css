@@ -26,7 +26,6 @@ div.container3 {
 }
 
 div.headerContainer {
-	position:fixed;
 	width: 100%;
 	color: green;
 	padding-bottom: 15px;
@@ -47,7 +46,7 @@ div.headerContainer {
 }
 
 .space {
-	height:200px;
+	height:5%;
 }
 
 div.siteName {
@@ -399,7 +398,7 @@ div.contactContainer h1 {
     }
 	
 	div.space {
-		height:150px;
+		height:10%;
 	}
 	
 	div.leftContact {
