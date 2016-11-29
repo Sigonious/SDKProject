@@ -3,14 +3,14 @@
 	
 	$type = test_input($_GET['request']);
 	
-	if($type = "n")
+	if($type == "n")
 	{
 		if(isset($_SESSION['fName']) && isset($_SESSION['lName']))
 		{
 			echo $_SESSION['fName'] . " " . $_SESSION['lName'];
 		}
 	}
-	else if($type = "e")
+	else if($type == "e")
 	{
 		echo $_SESSION['email'];
 	}

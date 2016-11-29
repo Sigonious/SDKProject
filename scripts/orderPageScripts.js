@@ -1540,12 +1540,12 @@ function session(request)
 			{
 				if(request == "n")
 				{
-					document.getElementById("customerName").text = xmlhttp.responseText;
+					document.getElementById("customerName").value = xmlhttp.responseText;
 					session("e");
 				}
 				else if(request == "e")
 				{
-					document.getElementById("customerEmail").text = xmlhttp.responseText;
+					document.getElementById("customerEmail").value = xmlhttp.responseText;
 				}
 			}
         }
