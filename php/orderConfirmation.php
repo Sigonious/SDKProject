@@ -117,7 +117,32 @@
 		echo "Success";
 	}
 	
-		
+	$message2 = "A new order has been placed.";
+	
+	$mail2 = new PHPMailer();
+	
+	$mail2->IsSMTP();
+	$mail2->Host = "smtp.gmail.com";
+	$mail2->SMTPAuth = true;
+	$mail2->Username = "webmaster.sonsdonerkebab@gmail.com";
+	$mail2->Password = "Sons*Doner*Kebab";
+	$mail2->SMTPSecure = "tls";
+	$mail2->Port = "587";
+	
+	$mail2->setFrom("webmaster.sonsdonerkebab@gmail.com", "New Online Order");
+	$mail2->AddAddress("4783971021@txt.att.net", "Adam");
+	$mail2->isHTML(true);
+	
+	$mail2->Subject = "Order #" . $orderID;
+	$mail2->Body = $message2;
+	
+	if(!$mail2->Send()){
+		echo "There was a problem sending this message, please try again later.";
+	}
+	else {
+		echo "Success";
+	}
+	
 	function test_input($data){
 		$data = trim($data);
 		$data = stripslashes($data);
