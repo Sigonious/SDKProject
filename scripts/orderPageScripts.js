@@ -1,7 +1,3 @@
-/***ToDo
-	Finish input validation
-	*****/
-
 /************Global Variables***************/
 var userID; //Retreive user ID if they are logged in
 var currentDate = new Date(); //Date object created when page is loaded
@@ -228,6 +224,23 @@ function resetItemList()
 }
 
 /****************End add item page*****************/
+
+function checkQuantity()
+{
+	if(parseInt(document.getElementById("friesQuantity").value) < 1 && document.getElementById("fries").checked == true)
+	{
+		document.getElementById("friesQuantity").value = 1;
+	}
+	if(parseInt(document.getElementById("riceQuantity").value) < 1 && document.getElementById("rice").checked == true)
+	{
+		document.getElementById("riceQuantity").value = 1;
+	}
+	if(parseInt(document.getElementById("drinkQuantity").value) < 1 && document.getElementById("drink").checked == true)
+	{
+		document.getElementById("drinkQuantity").value = 1;
+	}
+	
+}
 
 /***********Handle certain item combinations***********/
 
@@ -1201,7 +1214,8 @@ function startSubmitOrder()
 	document.getElementById("timeErr").innerHTML = "";
 	document.getElementById("itemErr").innerHTML = "";
 	document.getElementById("submitButton").setAttribute("style", "display:none");
-	//Get the orderNumber
+	
+	//Get the orderNumber and begin adding the items to the database
 	findOrderNumber();
 }
 
@@ -1510,3 +1524,33 @@ function orderConfirmation(name, email)
     xmlhttp.open("GET", "./php/orderConfirmation.php?name="+name+"&email="+email, true);
 	xmlhttp.send();
 }
+
+function session(request)
+{
+	var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			if(xmlhttp.responseText != ".")
+			{
+				if(request == "n")
+				{
+					document.getElementById("customerName").text = xmlhttp.responseText;
+					session("e");
+				}
+				else if(request == "e")
+				{
+					document.getElementById("customerEmail").text = xmlhttp.responseText;
+				}
+			}
+        }
+    }
+    xmlhttp.open("GET", "./php/getSession.php?request="+request, true);
+	xmlhttp.send();
+}
+window.onload = session("n");

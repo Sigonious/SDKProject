@@ -125,16 +125,16 @@
 								</tr>
 								<tr>
 									<td>
-										<input type="checkbox" name="extras" value="Fries">Fries: 
-										<input type="number" id="friesQuantity" name="friesQuantity" min="0" max="4" value="0">
+										<input type="checkbox" id="fries" name="extras" value="Fries">Fries: 
+										<input type="number" id="friesQuantity" name="friesQuantity" min="0" max="4" value="0" onblur="checkQuantity()">
 									</td>
 									<td>
-										<input type="checkbox" name="extras" value="Rice">Rice: 
-										<input type="number" id="riceQuantity" name="riceQuantity" min="0" max="4" value="0">
+										<input type="checkbox" id="rice" name="extras" value="Rice">Rice: 
+										<input type="number" id="riceQuantity" name="riceQuantity" min="0" max="4" value="0" onblur="checkQuantity()">
 									</td>
                                     <td>
-                                        <input type="checkbox" name="extras" value="Drink">Drink:
-                                        <input type="number" id="drinkQuantity" name="drinkQuantity" min="0" max="4" value="0">
+                                        <input type="checkbox" id="drink" name="extras" value="Drink">Drink:
+                                        <input type="number" id="drinkQuantity" name="drinkQuantity" min="0" max="4" value="0" onblur="checkQuantity()">
                                     </td>
                                 </tr>
 							</table>
