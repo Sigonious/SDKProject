@@ -14,6 +14,7 @@
 	if($_SESSION['email'] != $oldEmail)
 	{
 		header('Location: ' . $_SERVER['HTTP_REFERER']);
+		exit;
 	}
 
 	$oldEmailErr = $emailErr = $checkEmailErr = "";
