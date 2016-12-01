@@ -11,10 +11,11 @@
 		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
 		$requests = $conn->real_escape_string($_GET['requests']);
 		
-		$sql = "INSERT INTO orderitem (orderID, orderIndex, itemName, requests)
-		VALUES ($orderNumber, $itemIndex, '$response', '$requests')";
+		$sql = $conn->prepare("INSERT INTO orderitem (orderID, orderIndex, itemName, requests)
+		VALUES (?, ?, ?, ?)");
+		$sql->bind_param("iiss", $orderNumber, $itemIndex, $response, $requests);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}
@@ -26,10 +27,11 @@
 	{
 		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
 		
-		$sql = "INSERT INTO orderitemmeat (orderID, orderIndex, meat)
-		VALUES ($orderNumber, $itemIndex, '$response')";
+		$sql = $conn->prepare("INSERT INTO orderitemmeat (orderID, orderIndex, meat)
+		VALUES (?, ?, ?)");
+		$sql->bind_param("iis", $orderNumber, $itemIndex, $response);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}
@@ -41,10 +43,11 @@
 	{
 		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
 		
-		$sql = "INSERT INTO orderitemvegetables (orderID, orderIndex, vegetable)
-		VALUES ($orderNumber, $itemIndex, '$response')";
+		$sql = $conn->prepare("INSERT INTO orderitemvegetables (orderID, orderIndex, vegetable)
+		VALUES (?, ?, ?)");
+		$sql->bind_param("iis", $orderNumber, $itemIndex, $response);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}
@@ -56,10 +59,11 @@
 	{
 		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
 		
-		$sql = "INSERT INTO orderitemsauce (orderID, orderIndex, sauce)
-		VALUES ($orderNumber, $itemIndex, '$response')";
+		$sql = $conn->prepare("INSERT INTO orderitemsauce (orderID, orderIndex, sauce)
+		VALUES (?, ?, ?)");
+		$sql->bind_param("iis", $orderNumber, $itemIndex, $response);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === true)
 		{
 			echo "Success";
 		}
@@ -73,10 +77,11 @@
 		
 		$quantity =  $conn->real_escape_string($_GET['quantity']);
 		
-		$sql = "INSERT INTO orderitemextras (orderID, orderIndex, extra, quantity)
-		VALUES ($orderNumber, $itemIndex, '$response', $quantity)";
+		$sql = $conn->prepare("INSERT INTO orderitemextras (orderID, orderIndex, extra, quantity)
+		VALUES (?, ?, ?, ?)");
+		$sql->bind_param("iisi", $orderNumber, $itemIndex, $response, $quantity);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}
@@ -88,10 +93,11 @@
 	{
 		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
 		
-		$sql = "INSERT INTO orderitemprice (orderID, orderIndex, price)
-		VALUES ($orderNumber, $itemIndex, $response)";
+		$sql = $conn->prepare("INSERT INTO orderitemprice (orderID, orderIndex, price)
+		VALUES (?, ?, ?)");
+		$sql->bind_param("iii", $orderNumber, $itemIndex, $response);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}
@@ -103,10 +109,11 @@
 	{
 		$itemIndex = $conn->real_escape_string($_GET['itemIndex']);
 		
-		$sql = "INSERT INTO orderitemboba (orderID, orderIndex, flavor)
-		VALUES ($orderNumber, $itemIndex, '$response')";
+		$sql = $conn->prepare("INSERT INTO orderitemboba (orderID, orderIndex, flavor)
+		VALUES (?, ?, ?)");
+		$sql->bind_param("iis", $orderNumber, $itemIndex, $response);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}
@@ -122,10 +129,11 @@
 		$total = $conn->real_escape_string($_GET['total']);
 		$orderDate = date("Y-m-d");
 		
-		$sql = "INSERT INTO orders (orderID, customerName, customerEmail, orderDatePlaced, orderPickupDate, orderPickupTime, total, status)
-		VALUES ($orderNumber, '$response', '$email', '$orderDate', '$pickupDate', '$pickupTime', $total, 'incomplete')";
+		$sql = $conn->prepare("INSERT INTO orders (orderID, customerName, customerEmail, orderDatePlaced, orderPickupDate, orderPickupTime, total, status)
+		VALUES (?, ?, ?, ?, ?, ?, ?, 'incomplete')");
+		$sql->bind_param("isssssd", $orderNumber, $response, $email, $orderDate, $pickupDate, $pickupTime, $total);
 		
-		if($conn->query($sql) === TRUE)
+		if($sql->execute() === TRUE)
 		{
 			echo "Success";
 		}

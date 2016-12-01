@@ -1,11 +1,17 @@
 <?php
+	session_start();
+	if($_SESSION['loggedin'] != true)
+	{
+		header("Location: " . $_SERVER['DOCUMENT_ROOT'] . "index.php");
+		exit;
+	}
 	
 	include("config.php");
-
+	
 	$email = "";
-	$oldPassword = "";
-	$newPassword = "";
-	$checkNewPassword = "";
+	$oldPassword = "a";
+	$newPassword = "b";
+	$checkNewPassword = "c";
 	$Err = false;
 	$oldPasswordErr = $passwordErr = $checkpasswordErr = "";
 	echo "Working on it.";
@@ -52,18 +58,30 @@
 	}
 	else
 	{
+		header("Location: " . $_SERVER['DOCUMENT_ROOT'] . "index.php");
 		echo "Not a valid method.";
+		exit;
 	}
-		
-	if($newPassword == $checknewPassword){
+
+	if($_SESSION['email'] != $email)
+	{
+		header("Location: " . $_SERVER['HTTP_REFERER']);
+		exit;
+	}
+	
+	if($newPassword == $checkNewPassword){
 		if($Err != true){
 			$oldPassword = hash('sha256', $oldPassword);
 			$newPassword = hash('sha256', $newPassword);
-			$sql = "UPDATE users SET password='$newPassword' WHERE email='$email'";
+			
+			$sql = $conn->prepare("UPDATE users SET password=? WHERE email=?");
+			$sql->bind_param("ss", $newPassword, $email);
+			
 	
-			if ($conn->query($sql) == true) {
+			if ($sql->execute() == true) {
 				echo "Successfully Updated";
 				header("Location: " . $_SERVER['HTTP_REFERER']);
+				exit;
 			} else {
 				echo "Error updating record";
 			}

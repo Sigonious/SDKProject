@@ -7,10 +7,17 @@
 		if(strlen($value) < 1)
 		{
 			echo "Please enter a name";
+			exit;
+		}
+		if(!preg_match("/[a-zA-Z'-]+$/",$value))
+		{
+			echo "Invalid name";
+			exit;
 		}
     else
     {
-      echo "✔";
+		echo "✔";
+		exit;
     }
 	}
   
@@ -22,7 +29,8 @@
     }
     else
     {
-      echo "✔";
+		echo "✔";
+		exit;
     }
   }
 ?>

@@ -12,7 +12,10 @@
 	}
 	else if($type == "e")
 	{
-		echo $_SESSION['email'];
+		if(isset($_SESSION['email']))
+		{
+			echo $_SESSION['email'];
+		}
 	}
 	else
 	{

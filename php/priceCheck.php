@@ -7,8 +7,10 @@
 	$place = $conn->real_escape_string($_GET['place']);
 	$quantity = $conn->real_escape_string($_GET['quantity']);
 	
-	$sql = "SELECT price FROM " . $place . " WHERE itemName='" . $item . "'";
-	$result = $conn->query($sql);
+	$sql = $conn->prepare("SELECT price FROM $place WHERE itemName=?");
+	$sql->bind_param("s", $item);
+	$sql->execute();
+	$result = $sql->get_result();
 	
 	if($result->num_rows === 0)
 	{

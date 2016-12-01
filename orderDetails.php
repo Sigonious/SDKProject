@@ -31,14 +31,14 @@
 				</div>
 			</div>
 			<div class="topthing" style="padding-top:200px; background-color:white;"></div>
-			<div class="accountContainer">
+			<div class="accountContainer2">
 				<h1 id="orderNum">Order #<?php echo $orderID; ?></h1>
 				<h3>Status: <?php
 					$orderstatusquery = $conn->query("SELECT * FROM orders WHERE orderID=$orderID");
 					$orderstatusresult = $orderstatusquery->fetch_array(MYSQLI_ASSOC);
 					echo $orderstatusresult['status'];
 				?></h3>
-				<input type="button" value="Complete order" style="width:150px;" id="changeStatusBtn"></input>
+				<input type="button" value="Complete order" id="changeStatusBtn"></input>
 				<table>
 				<?php
 					$index = 1;
@@ -51,20 +51,26 @@
 							<p><b>Item: </b><?php
 								echo $row['itemName'];
 							?></p>
-						<?php if($row['itemName'] != "bobaTea"){
+						<?php if($row['itemName'] != "Boba Tea"){
 								if($row['itemName'] != "Vegetarian plate"){?>
 							<tr>
 								<p><b>Meat: </b><?php 
-									$meatQuery = $conn->query("SELECT * FROM orderitemmeat WHERE orderID=$orderID AND orderIndex=$index");
-									$meatrow = $meatQuery->fetch_array(MYSQLI_ASSOC);
+									$meatQuery = $conn->prepare("SELECT * FROM orderitemmeat WHERE orderID=? AND orderIndex=$index");
+									$meatQuery->bind_param("i", $orderID);
+									$meatQuery->execute();
+									$meatResult = $meatQuery->get_result();
+									$meatrow = $meatResult->fetch_array(MYSQLI_ASSOC);
 									echo $meatrow['meat'];
 								?></p>
 							</tr>
 							<?php } ?>
 							<tr>
 								<p><b>Vegetables: </b><?php 
-									$vegequery = $conn->query("SELECT * FROM orderitemvegetables WHERE orderID=$orderID AND orderIndex=$index");
-									$vegerows = $vegequery->fetch_all(MYSQLI_ASSOC);
+									$vegequery = $conn->prepare("SELECT * FROM orderitemvegetables WHERE orderID=? AND orderIndex=$index");
+									$vegequery->bind_param("i", $orderID);
+									$vegequery->execute();
+									$vegeresult = $vegequery->get_result();
+									$vegerows = $vegeresult->fetch_all(MYSQLI_ASSOC);
 									foreach($vegerows as $vegerow)
 									{
 										echo $vegerow['vegetable'] . " ";
@@ -73,8 +79,11 @@
 							</tr>
 							<tr>
 								<p><b>Sauces: </b><?php 
-									$saucequery = $conn->query("SELECT * FROM orderitemsauce WHERE orderID=$orderID AND orderIndex=$index");
-									$saucerows = $saucequery->fetch_all(MYSQLI_ASSOC);
+									$saucequery = $conn->prepare("SELECT * FROM orderitemsauce WHERE orderID=? AND orderIndex=$index");
+									$saucequery->bind_param("i", $orderID);
+									$saucequery->execute();
+									$sauceresult = $saucequery->get_result();
+									$saucerows = $sauceresult->fetch_all(MYSQLI_ASSOC);
 									$saucecount = 0;
 									$saucelength = count($saucerows);
 									foreach($saucerows as $saucerow)
@@ -92,8 +101,11 @@
 							</tr>
 							<tr>
 								<p><b>Extras: </b><?php 
-									$extrasquery = $conn->query("SELECT * FROM orderitemextras WHERE orderID=$orderID AND orderIndex=$index");
-									$extrasrows = $extrasquery->fetch_all(MYSQLI_ASSOC);
+									$extrasquery = $conn->prepare("SELECT * FROM orderitemextras WHERE orderID=? AND orderIndex=$index");
+									$extrasquery->bind_param("i", $orderID);
+									$extrasquery->execute();
+									$extrasresult = $extrasquery->get_result();
+									$extrasrows = $extrasresult->fetch_all(MYSQLI_ASSOC);
 									$extracount = 0;
 									$extralength = count($extrasrows);
 									foreach($extrasrows as $extrarow)
@@ -111,8 +123,11 @@
 							</tr>
 							<tr>
 								<p><b>Price: </b><?php 
-									$pricequery = $conn->query("SELECT * FROM orderitemprice WHERE orderID=$orderID AND orderIndex=$index");
-									$pricerow = $pricequery->fetch_array(MYSQLI_ASSOC);
+									$pricequery = $conn->prepare("SELECT * FROM orderitemprice WHERE orderID=? AND orderIndex=$index");
+									$pricequery->bind_param("i", $orderID);
+									$pricequery->execute();
+									$pricequeryresult = $pricequery->get_result();
+									$pricerow = $pricequeryresult->fetch_array(MYSQLI_ASSOC);
 									echo $pricerow['price'];
 								?></p>
 							</tr>
@@ -125,22 +140,31 @@
 						<?php } else{ ?>
 							<tr>
 								<p><b>Flavor: </b><?php
-									$flavorquery = $conn->query("SELECT * FROM orderitemboba WHERE orderID=$orderID AND orderIndex=$index");
-									$flavorrow = $flavorquery->fetch_array(MYSQLI_ASSOC);
+									$flavorquery = $conn->prepare("SELECT * FROM orderitemboba WHERE orderID=? AND orderIndex=$index");
+									$flavorquery->bind_param("i", $orderID);
+									$flavorquery->execute();
+									$flavorqueryresult = $pricequery->get_result();
+									$flavorrow = $flavorqueryresult->fetch_array(MYSQLI_ASSOC);
 									echo $flavorrow['flavor'];
 								?></p>
 							</tr>
 							<tr>
 								<p><b>Tapioca Pearls: </b><?php
-									$tapiocaquery = $conn->query("SELECT * FROM orderitemextras WHERE orderID=$orderID AND orderIndex=$index");
+									$tapiocaquery = $conn->prepare("SELECT * FROM orderitemextras WHERE orderID=? AND orderIndex=$index");
+									$tapiocaquery->bind_param("i", $orderID);
+									$tapiocaquery->execute();
+									$tapiocaqueryresult = $tapiocaquery->get_result();
 									$tapiocarow = $tapiocaquery->fetch_array(MYSQLI_ASSOC);
 									echo $tapiocarow['extra'];
 								?></p>
 							</tr>
 							<tr>
 								<p><b>Price: </b><?php
-									$pricequery = $conn->query("SELECT * FROM orderitemprice WHERE orderID=$orderID AND orderIndex=$index");
-									$pricerow = $pricequery->fetch_array(MYSQLI_ASSOC);
+									$pricequery = $conn->prepare("SELECT * FROM orderitemprice WHERE orderID=? AND orderIndex=$index");
+									$pricequery->bind_param("i", $orderID);
+									$pricequery->execute();
+									$pricequeryresult = $pricequery->get_result();
+									$pricerow = $pricequeryresult->fetch_array(MYSQLI_ASSOC);
 									echo $pricerow['price'];
 								?></b>
 							</tr>

@@ -86,8 +86,10 @@
 		}
 	}
 	
-	$orderInfo = "SELECT * FROM orders WHERE orderID=$orderID";
-	$orderInfoResult = $conn->query($orderInfo);
+	$orderInfo = $conn->prepare("SELECT * FROM orders WHERE orderID=?");
+	$orderInfo->bind_param("i", $orderID);
+	$orderInfo->execute();
+	$orderInfoResult = $orderInfo->get_result();
 	$orderInfoRow = $orderInfoResult->fetch_array(MYSQLI_ASSOC);
 	
 	$message .= "Customer name: " . $name . "<br>Customer Email: " . $email;

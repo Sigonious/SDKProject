@@ -6,13 +6,15 @@
 		exit;
 	}
 	include("config.php");
-
+	$Err = false;
 	$oldEmail = $conn->real_escape_string($_POST['email']);
 	$newEmail = $conn->real_escape_string($_POST['newEmail']);
 	$checkNewEmail = $conn->real_escape_string($_POST['checkNewEmail']);
-
 	
-	
+	if($_SESSION['email'] != $oldEmail)
+	{
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	}
 
 	$oldEmailErr = $emailErr = $checkEmailErr = "";
 	
@@ -56,17 +58,20 @@
 		
 	if($newEmail == $checkNewEmail){
 		if($Err != true){
-			$sql = "UPDATE users SET email='$newEmail' WHERE email='$oldEmail'";
+			$sql = $conn->prepare("UPDATE users SET email=? WHERE email=?");
+			$sql->bind_param("ss", $newEmail, $oldEmail);
 		}
 	} else {
 		echo "Emails do not match";
 	}
 	
-	if ($conn->query($sql) === TRUE) {
-			echo "Successfully Updated";
-			} else {
-			echo "Error updating record: " . $conn->error;
-		}
+	if ($sql->execute() == true) {
+		echo "Successfully Updated";
+		$_SESSION['email'] = $newEmail;
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	} else {
+		echo "Error updating record";
+	}
 		
 	function test_input($data){
 	$data = trim($data);

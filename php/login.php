@@ -8,9 +8,11 @@
 	
 	$pass = hash('sha256',$pass);
 	
-	$sql = "SELECT * FROM users WHERE email='$email'";
 	
-	$result = $conn->query($sql);
+	$sql = $conn->prepare("SELECT * FROM users WHERE email=?");
+	$sql->bind_param("s", $email);
+	$sql->execute();
+	$result = $sql->get_result();
 	
 	$row = $result->fetch_array(MYSQLI_ASSOC);
 	

@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include("config.php");
 	if(!isset($_SESSION['email']))
 	{
 		header("Location: ../index.php");
@@ -7,7 +8,8 @@
 	}
 	else
 	{
-		$result = $conn->query("SELECT * FROM users WHERE email=$_SESSION['email']");
+		$email = $_SESSION['email'];
+		$result = $conn->query("SELECT * FROM users WHERE email='$email'");
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 		if($row['type'] != "admin")
 		{
@@ -15,10 +17,13 @@
 			exit;
 		}
 	}
-	include("config.php");
+	
 	$orderID = $conn->real_escape_string($_GET['orderID']);
-	$orderstatusquery = $conn->query("SELECT * FROM orders WHERE orderID=$orderID");
-	$orderstatusresult = $orderstatusquery->fetch_array(MYSQLI_ASSOC);
+	$orderstatusquery = $conn->prepare("SELECT * FROM orders WHERE orderID=?");
+	$orderstatusquery->bind_param("i", $orderID);
+	$orderstatusquery->execute();
+	$result = $orderstatusquery->get_result();
+	$orderstatusresult = $result->fetch_array(MYSQLI_ASSOC);
 	
 	if($orderstatusresult['status'] == "incomplete")
 	{

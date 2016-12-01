@@ -1454,6 +1454,7 @@ function addOrderItem(response, itemIndex, col, quantity, requests)
     }
     xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			console.log(xmlhttp.responseText);
 			if(orderItemsProcessed = totalOrderItems && col == "price") {
 				orderConfirmation(document.getElementById("customerName").value, document.getElementById("customerEmail").value);
 			}

@@ -46,6 +46,19 @@ div.accountContainer{
 	min-height: 80%;
 }
 
+div.accountContainer2{
+	margin: auto;
+	background-color: white;
+	color: black;
+	position:absolute;
+	top:250px;
+	left:30%;
+}
+
+div.accountContainer2 input[type=button] {
+	width: 250px;
+}
+
 .welcomeForm h1{
 	text-align: center;
 }
@@ -505,6 +518,10 @@ div.viewProfile a {
     div.articleContainer h2 {
         font-size: 15px;
     }
+	
+	div.accountContainer2 {
+		font-size:28px;
+	}
 	
 	div.space {
 		height:25%;
