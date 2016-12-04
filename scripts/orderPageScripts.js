@@ -1519,6 +1519,8 @@ function orderConfirmation(name, email)
     }
     xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById("i").value = orderNumber;
+			document.getElementById("r").value = "1";
 			document.getElementById("submitForm").submit();
         }
     }
@@ -1547,6 +1549,7 @@ function session(request)
 				else if(request == "e")
 				{
 					document.getElementById("customerEmail").value = xmlhttp.responseText;
+					validate("name", document.getElementById("customerName").value);
 				}
 			}
         }

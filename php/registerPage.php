@@ -67,8 +67,10 @@
 		
 		//Check if email is already in database
 		$usersEmail = $conn->real_escape_string($_POST["email"]);
-		$emailCheck = "SELECT * FROM users WHERE email='$usersEmail'";
-		$emailCheckResult = $conn->query($emailCheck);
+		$emailquery = $conn->prepare("SELECT * FROM users WHERE email=?");
+		$emailquery->bind_param("s", $usersEmail);
+		$emailquery->execute();
+		$emailcheckresult = $emailquery->get_result();
 		$emailrows = $emailCheckResult->num_rows;
 		if($emailrows > 0)
 		{
@@ -110,13 +112,14 @@
 		if(isset($Err) && $Err != true){
 			
 			$pwd1 = hash('sha256',$pwd1);
-		
-			$sql = "INSERT INTO users (firstName, lastName, email, password, type)
-			VALUES('$firstName','$lastName','$email','$pwd1', 'user')";
+			
+			$sql = $conn->prepare("INSERT INTO users (firstName, lastName, email, password, type)
+			VALUES(?, ?, ?, ?, 'user')");
+			$sql->bind_param("ssss", $firstName, $lastName, $email, $pwd1);
 
-			if($conn->query($sql)){
+			if($sql->execute()){
 				echo "Success";
-				header("Location: ../refConf.html");
+				header("Location: ../regConf.html");
 			}
 			else{
 				echo "Couldn't submit.";

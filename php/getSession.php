@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	
 	$type = test_input($_GET['request']);
 	
 	if($type == "n")

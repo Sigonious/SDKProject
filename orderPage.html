@@ -1,19 +1,4 @@
 ﻿<!DOCTYPE html>
-
-<!--
-	Short term Todo list:
-
-	Add in php functions such as form checking
-	Finish adding javascript functions to item page
-	Link order to database
-	
-	Long Term:
-	
-	Add links to header buttons
-	Fix scaling (it looks rough right now)
-	Add more style to website (way too bland as is)
-!-->
-
 <html>
 	<head>
 		<title>Order Page</title>
@@ -147,7 +132,7 @@
 					</div>
 				</div>
 				<div class="orderForm">
-				<form method="post" id="submitForm" onsubmit="homePage.html">
+				<form method="post" id="submitForm" action="orderConfirmation.php">
                     <h2><label for="customerName">Name</label></h2><p></p>
 					<input type="text" id="customerName" name="custName" onblur="validate('name', this.value)">
 					<b id="name"></b>
@@ -171,13 +156,14 @@
 					<input type="button" id="addOrderItemButton" value="Add item to order" onclick="createItemList()"><p></p>
 					<input type="button" value="Submit" onclick="startSubmitOrder()" id="submitButton"><br>
 					<b id="itemErr" style="font-size:20px;"></b>
+					<input type="text" name="r" id="r" style="display:none;" />
+					<input type="text" name="i" id="i" style="display:none;" />
 				</form>
 				</div>
 				<div class="currentItems" id="currentItemsDiv">
 					<h1 id="totalCost"></h1>
 				</div>
 			</div>
-		</div>
 		<script src="./scripts/orderPageScripts.js" type="text/javascript"></script>
 		<script src="scripts/checkLogin.js"></script>
 	</body>
