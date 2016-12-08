@@ -1,9 +1,3 @@
-/*var iframe = document.createElement("iframe");
-iframe.setAttribute("src", "https://www.youtube.com/embed/0sfoFdYzMfY?autoplay=1");
-iframe.setAttribute("height", "0");
-iframe.setAttribute("width", "0");
-document.body.appendChild(iframe);*/
-
 function check(){
 	var xmlhttp;
 	if (window.XMLHttpRequest) {

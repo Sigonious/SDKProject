@@ -79,6 +79,12 @@
 			
 			foreach($extrasrows as $extrasrow)
 			{
+				if($extrasrow['extra'] == "No extras")
+				{
+					$message .= $extrasrow['extra'];
+					$message2 .= $extrasrow['extra'];
+					break;
+				}
 				$message .= $extrasrow['extra'] . " (" . $extrasrow['quantity'] . ") ";
 				$message2 .= $extrasrow['extra'] . " (" . $extrasrow['quantity'] . ") ";
 			}

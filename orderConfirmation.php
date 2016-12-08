@@ -47,7 +47,7 @@
 					}
 					else{
 						echo "<h1>Sorry, your order was not able to be placed at this time.<br>
-						Please try again, or call (insert # here)</h1>";
+						Please try again, or call (912) 681 - 7835</h1>";
 					} ?>
 			</div>
 		<script src="scripts/checkLogin.js"></script>

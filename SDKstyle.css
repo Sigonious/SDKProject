@@ -121,7 +121,7 @@ div.orderForm {
 	float:left;
 }
 
-.orderForm p, h1 {
+div.orderForm p, h1, h2 {
 	text-align:left;
 }
 
@@ -305,6 +305,10 @@ div.contactContainer h1 {
 	margin:auto;
 }
 
+div.innerLeft h2, h3 {
+	text-align:center;
+}
+
 .rightContact {
 	display:block;
 	width:45%;
@@ -328,10 +332,6 @@ div.contactContainer h1 {
 .rightContact textarea {
     width: 647px;
     height: 312px;
-}
-
-div.orderConfirmation h1, h2{
-	text-align:center;
 }
 
 @media screen and (max-width: 1750px) {
