@@ -138,13 +138,13 @@
 	$mail->IsSMTP();
 	$mail->Host = "smtp.gmail.com";
 	$mail->SMTPAuth = true;
-	$mail->Username = "webmaster.sonsdonerkebab@gmail.com";
-	$mail->Password = "Sons*Doner*Kebab";
+	$mail->Username = "ENTER EMAIL HERE";
+	$mail->Password = "ENTER PASSWORD HERE";
 	$mail->SMTPSecure = "tls";
 	$mail->Port = "587";
 	
-	$mail->setFrom("webmaster.sonsdonerkebab@gmail.com", "New Online Order");
-	$mail->AddAddress("adamcmurr@gmail.com", "Adam");
+	$mail->setFrom("SENDER EMAIL", "SENDER NAME");
+	$mail->AddAddress("RECEIVER EMAIL", "RECEIVER NAME");
 	$mail->isHTML(true);
 	
 	$mail->Subject = "Order #" . $orderID;
@@ -164,13 +164,13 @@
 	$mail2->IsSMTP();
 	$mail2->Host = "smtp.gmail.com";
 	$mail2->SMTPAuth = true;
-	$mail2->Username = "webmaster.sonsdonerkebab@gmail.com";
-	$mail2->Password = "Sons*Doner*Kebab";
+	$mail2->Username = "SENDER EMAIL";
+	$mail2->Password = "SENDER PASSWORD";
 	$mail2->SMTPSecure = "tls";
 	$mail2->Port = "587";
 	
-	$mail2->setFrom("webmaster.sonsdonerkebab@gmail.com", "New Online Order");
-	$mail2->AddAddress("4783971021@txt.att.net", "Adam");
+	$mail2->setFrom("SENDER EMAIL", "SENDER NAME");
+	$mail2->AddAddress("**********@txt.att.net", "RECEIVER NAME");
 	$mail2->isHTML(true);
 	
 	$mail2->Subject = "Order #" . $orderID;
@@ -191,12 +191,12 @@
 		$mail3->IsSMTP();
 		$mail3->Host = "smtp.gmail.com";
 		$mail3->SMTPAuth = true;
-		$mail3->Username = "webmaster.sonsdonerkebab@gmail.com";
-		$mail3->Password = "Sons*Doner*Kebab";
+		$mail3->Username = "SENDER EMAIL";
+		$mail3->Password = "SENDER PASSWORD";
 		$mail3->SMTPSecure = "tls";
 		$mail3->Port = "587";
 		
-		$mail3->setFrom("webmaster.sonsdonerkebab@gmail.com", "Sons Doner Kebab");
+		$mail3->setFrom("SENDER EMAIL", "SENDER PASSWORD");
 		$mail3->AddAddress($email, $name);
 		$mail3->isHTML(true);
 		
