@@ -11,13 +11,13 @@
 	$mail->IsSMTP();
 	$mail->Host = "smtp.gmail.com";
 	$mail->SMTPAuth = true;
-	$mail->Username = "webmaster.sonsdonerkebab@gmail.com";
-	$mail->Password = "Sons*Doner*Kebab";
+	$mail->Username = "EMAIL HERE";
+	$mail->Password = "PASSWORD HERE";
 	$mail->SMTPSecure = "tls";
 	$mail->Port = "587";
 	
-	$mail->setFrom("webmaster.sonsdonerkebab@gmail.com", $name);
-	$mail->AddAddress("adamcmurr@gmail.com", "Adam");
+	$mail->setFrom("SENDER EMAIL", $name);
+	$mail->AddAddress("RECEIVER EMAIL", "RECEIVER NAME");
 	$mail->isHTML(true);
 	
 	$mail->Subject = "Contact Us Message, reply to " . $email;
